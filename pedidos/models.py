@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from inventario.models import Producto
 from usuarios.models import Usuario
-from usuarios.models import CustomUser as User 
+from usuarios.models import Usuario as User 
 
 
 ESTADOS_PEDIDO = [

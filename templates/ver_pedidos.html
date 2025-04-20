@@ -30,6 +30,10 @@
             {% if user.rol == 'cajero' or user.rol == 'admin' %}
                 <a href="{% url 'marcar_pagado' pedido.id %}" class="inline-block mt-3 bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700">💰 Marcar como Pagado</a>
             {% endif %}
+            {% if request.user.rol == 'mesero' and pedido.estado == 'pendiente' %}
+            <a href="{% url 'editar_pedido' pedido.id %}" class="text-blue-600 hover:underline">✏️ Editar</a>
+            {% endif %}
+
         </div>
         {% endfor %}
     </div>

@@ -32,5 +32,13 @@ function agregarProducto() {
     container.appendChild(div);
     contador++;
 }
+
+document.querySelector("form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const confirmed = confirm("¿Estás seguro de guardar este pedido?");
+    if (confirmed) {
+        this.submit();
+    }
+});
 </script>
 {% endblock %}

@@ -11,7 +11,7 @@ from django.http import HttpResponse
 from django.utils.dateparse import parse_date
 
 class PedidoListCreateView(generics.ListCreateAPIView):
-    queryset = Pedido.objects.all().order_by('-fecha_creacion')
+    queryset = Pedido.objects.all().order_by('-creado')
     serializer_class = PedidoSerializer
     permission_classes = [IsAuthenticated]
 
@@ -123,3 +123,50 @@ def exportar_csv_pedidos(request):
         writer.writerow([pedido.id, pedido.usuario.username, pedido.mesa, pedido.estado, pedido.creado, productos])
 
     return response
+
+@login_required
+def editar_pedido(request, pedido_id):
+    pedido = Pedido.objects.get(id=pedido_id)
+
+    if request.user.rol != 'mesero' or pedido.usuario != request.user or pedido.estado != 'pendiente':
+        return redirect('ver_pedidos')
+
+    productos = Producto.objects.filter(stock__gt=0)
+
+    if request.method == 'POST':
+        nuevos_productos = request.POST.getlist('producto')
+        nuevas_cantidades = request.POST.getlist('cantidad')
+
+        for prod_id, cant in zip(nuevos_productos, nuevas_cantidades):
+            if cant and int(cant) > 0:
+                producto = Producto.objects.get(id=prod_id)
+                PedidoProducto.objects.create(pedido=pedido, producto=producto, cantidad=int(cant))
+                producto.stock -= int(cant)
+                producto.save()
+
+        return redirect('ver_pedidos')
+
+    return render(request, 'pedidos/editar_pedido.html', {
+        'pedido': pedido,
+        'productos': productos,
+    })
+
+@login_required
+def pedidos_por_pagar(request):
+    if request.user.rol != 'cajero' and request.user.rol != 'admin':
+        return redirect('dashboard')
+
+    pedidos = Pedido.objects.filter(estado='pendiente').order_by('-creado')
+
+    return render(request, 'pedidos/pedidos_por_pagar.html', {'pedidos': pedidos})
+
+@login_required
+def marcar_pedido_pagado(request, pedido_id):
+    if request.user.rol != 'cajero' and request.user.rol != 'admin':
+        return redirect('dashboard')
+
+    pedido = Pedido.objects.get(id=pedido_id)
+    pedido.estado = 'pagado'
+    pedido.save()
+    return redirect('pedidos_por_pagar')
+
