@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Pedidos Pendientes{% endblock %}
+{% block content %}
+<h2 class="text-2xl font-bold mb-4">Pedidos Pendientes</h2>
+
+<form method="get" action="{% url 'exportar_csv' %}" class="flex gap-2 mb-4">
+    <input type="date" name="fecha_inicio" required class="border rounded px-2 py-1">
+    <input type="date" name="fecha_fin" required class="border rounded px-2 py-1">
+    <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">
+        📥 Exportar CSV
+    </button>
+</form>
+
+
+{% if pedidos %}
+    <div class="space-y-4">
+        {% for pedido in pedidos %}
+        <div class="bg-white p-4 rounded shadow">
+            <p><strong>Mesa:</strong> {{ pedido.mesa }}</p>
+            <p><strong>Mesero:</strong> {{ pedido.usuario.username }}</p>
+            <p><strong>Fecha:</strong> {{ pedido.creado }}</p>
+            <p><strong>Estado:</strong> {{ pedido.estado }}</p>
+            <p><strong>Productos:</strong></p>
+            <ul class="ml-6 list-disc">
+                {% for item in pedido.productos.all %}
+                    <li>{{ item.producto.nombre }} - Cantidad: {{ item.cantidad }}</li>
+                {% endfor %}
+            </ul>
+
+            {% if user.rol == 'cajero' or user.rol == 'admin' %}
+                <a href="{% url 'marcar_pagado' pedido.id %}" class="inline-block mt-3 bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700">💰 Marcar como Pagado</a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No hay pedidos pendientes.</p>
+{% endif %}
+{% endblock %}

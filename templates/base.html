@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Conejo Blanco | {% block title %}{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <nav class="bg-white shadow p-4 flex justify-between items-center">
+        <h1 class="text-xl font-bold text-pink-600">🍷 Conejo Blanco</h1>
+        {% if user.is_authenticated %}
+            <div>
+                <span class="mr-4 font-semibold">Hola, {{ user.username }}</span>
+                <a href="{% url 'logout' %}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Cerrar sesión</a>
+            </div>
+        {% endif %}
+    </nav>
+
+    <main class="p-6">
+        {% block content %}{% endblock %}
+    </main>
+    {% if messages %}
+  <div class="mb-4">
+    {% for message in messages %}
+      <div class="p-3 rounded text-white {{ message.tags }} 
+                  {% if message.tags == 'error' %}bg-red-600
+                  {% elif message.tags == 'success' %}bg-green-600
+                  {% elif message.tags == 'warning' %}bg-yellow-600
+                  {% endif %}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+</body>
+</html>

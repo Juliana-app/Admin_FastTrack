@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Tomar Pedido{% endblock %}
+{% block content %}
+<h2 class="text-2xl font-bold mb-6">Tomar Pedido</h2>
+<form method="post">
+    {% csrf_token %}
+    <label class="block mb-2 font-semibold">Mesa:</label>
+    <input type="text" name="mesa" required class="w-full mb-4 p-2 border rounded">
+
+    <label class="block mb-2 font-semibold">Productos:</label>
+    <div id="productos-container" class="space-y-2">
+        <div class="flex gap-2">
+            <input type="number" name="producto_id_1" placeholder="ID Producto" class="w-1/2 p-2 border rounded">
+            <input type="number" name="cantidad_1" placeholder="Cantidad" class="w-1/2 p-2 border rounded">
+        </div>
+    </div>
+
+    <button type="button" onclick="agregarProducto()" class="mt-4 bg-gray-300 px-3 py-1 rounded hover:bg-gray-400">➕ Agregar producto</button>
+    <button type="submit" class="block mt-6 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Guardar Pedido</button>
+</form>
+
+<script>
+let contador = 2;
+function agregarProducto() {
+    const container = document.getElementById('productos-container');
+    const div = document.createElement('div');
+    div.classList.add('flex', 'gap-2');
+    div.innerHTML = `
+        <input type="number" name="producto_id_${contador}" placeholder="ID Producto" class="w-1/2 p-2 border rounded">
+        <input type="number" name="cantidad_${contador}" placeholder="Cantidad" class="w-1/2 p-2 border rounded">
+    `;
+    container.appendChild(div);
+    contador++;
+}
+</script>
+{% endblock %}

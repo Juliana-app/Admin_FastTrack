@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Cajero{% endblock %}
+{% block content %}
+<h2 class="text-2xl font-bold mb-4">Panel del Cajero</h2>
+<ul class="space-y-2">
+    <li><a href="#" class="text-blue-600 hover:underline">Ver pedidos</a></li>
+    <li><a href="#" class="text-blue-600 hover:underline">Gestionar inventario</a></li>
+    <li><a href="#" class="text-blue-600 hover:underline">Generar informe CSV</a></li>
+    <li><a href="{% url 'ver_pedidos' %}" class="text-blue-600 hover:underline">Ver pedidos</a></li>
+    <a href="{% url 'dashboard_general' %}" class="block text-white bg-purple-600 hover:bg-purple-700 p-2 rounded shadow text-center mt-4">📊 Ver Panel General</a>
+</ul>
+{% endblock %}
