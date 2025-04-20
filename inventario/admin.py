@@ -1,3 +1,4 @@
 from django.contrib import admin
+from .models import InventarioProducto
 
-# Register your models here.
+admin.site.register(InventarioProducto)

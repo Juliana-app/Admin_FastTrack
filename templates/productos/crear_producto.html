@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Gestión de Productos{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
+  <h2 class="text-2xl font-bold mb-6">🛠 Gestión de Productos</h2>
+
+  <!-- Formulario para crear producto -->
+  <form method="post" class="mb-8">
+    {% csrf_token %}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Nombre</label>
+        {{ form.nombre }}
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Descripción</label>
+        {{ form.descripcion }}
+      </div>
+    </div>
+    <div class="mt-4">
+      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Guardar Producto</button>
+    </div>
+  </form>
+
+  <!-- Tabla de productos -->
+  <table class="min-w-full border text-sm">
+    <thead class="bg-gray-100">
+      <tr>
+        <th class="py-2 px-4 border-b text-left">Nombre</th>
+        <th class="py-2 px-4 border-b text-left">Descripción</th>
+        <th class="py-2 px-4 border-b text-center">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for producto in productos %}
+      <tr>
+        <td class="py-2 px-4 border-b">{{ producto.nombre }}</td>
+        <td class="py-2 px-4 border-b">{{ producto.descripcion }}</td>
+        <td class="py-2 px-4 border-b text-center">
+          <!-- Placeholder para futuras funciones -->
+          <a href="#" class="text-blue-600 hover:underline">Editar</a> |
+          <a href="#" class="text-red-600 hover:underline">Eliminar</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="3" class="text-center py-4">No hay productos registrados.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

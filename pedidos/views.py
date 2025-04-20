@@ -43,7 +43,7 @@ def tomar_pedido(request):
 
         if not productos:
             messages.error(request, "Debe agregar al menos un producto con cantidad válida.")
-            return redirect('tomar_pedido')
+            return redirect('pedidos/tomar_pedido')
 
         pedido = Pedido.objects.create(
             usuario=request.user,
@@ -69,9 +69,9 @@ def tomar_pedido(request):
                 messages.warning(request, f"Producto con ID {prod_id} no existe.")
 
         messages.success(request, "Pedido registrado exitosamente.")
-        return redirect('dashboard_mesero')
+        return redirect('usuarios/dashboard_mesero')
 
-    return render(request, 'tomar_pedido.html')
+    return render(request, 'pedidos/tomar_pedido.html')
 
 @login_required
 def ver_pedidos(request):
@@ -79,7 +79,7 @@ def ver_pedidos(request):
         return redirect('dashboard')
 
     pedidos = Pedido.objects.filter(estado='pendiente').order_by('-creado')
-    return render(request, 'ver_pedidos.html', {'pedidos': pedidos})
+    return render(request, 'pedidos/ver_pedidos.html', {'pedidos': pedidos})
 
 @login_required
 def marcar_pagado(request, pedido_id):
@@ -94,7 +94,7 @@ def marcar_pagado(request, pedido_id):
     except Pedido.DoesNotExist:
         messages.error(request, "El pedido no existe.")
 
-    return redirect('ver_pedidos')
+    return redirect('pedidos/ver_pedidos')
 
 @login_required
 def exportar_csv_pedidos(request):
@@ -170,4 +170,9 @@ def marcar_pedido_pagado(request, pedido_id):
     pedido.estado = 'pagado'
     pedido.save()
     return redirect('pedidos_por_pagar')
+
+
+@login_required
+def vista_cajero(request):
+    return render(request, 'usuarios/caja_dashboard.html')
 

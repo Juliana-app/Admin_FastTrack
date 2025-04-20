@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Cajero{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/dash_caja.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-caja">
+  <h2>💳 Panel del Cajero</h2>
+  <p>Procesa pagos, revisa pedidos y gestiona cobros con facilidad.</p>
+
+  <div class="acciones-caja">
+    <a href="{% url 'pedidos_por_pagar' %}" class="btn-caja">
+      💰 Ver Pedidos por Pagar
+    </a>
+    <a href="/api/pedidos/exportar/" class="btn-caja export">
+      📄 Exportar Reporte CSV
+    </a>
+    <a href="{% url 'ver_pedidos' %}" class="btn-caja secondary">
+      📋 Ver Todos los Pedidos
+    </a>
+    <a href="{% url 'lista_productos' %}" class="btn-caja secondary">
+      📦 Gestionar Inventario
+    </a>
+    <a href="{% url 'crear_producto' %}" class="btn-caja producto">
+      📁 Gestión Productos
+    </a>
+    <a href="{% url 'dashboard_general' %}" class="btn-caja general">
+      📊 Ver Panel General
+    </a>
+  </div>
+</div>
+{% endblock %}

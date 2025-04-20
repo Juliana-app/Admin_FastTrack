@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% block title %}Inventario{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto bg-white p-6 rounded shadow">
+  <h2 class="text-2xl font-bold mb-4">📦 Inventario de Productos</h2>
+
+  <!-- Botón para abrir el modal -->
+  <div class="flex justify-end mb-4">
+    <button id="btnOpenModal" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+      ➕ Agregar Producto
+    </button>
+  </div>
+
+  <!-- Tabla del inventario -->
+  <table class="min-w-full border">
+    <thead class="bg-gray-100">
+      <tr>
+        <th class="py-2 px-4 border-b text-left">Imagen</th>
+        <th class="py-2 px-4 border-b text-left">Producto</th>
+        <th class="py-2 px-4 border-b text-left">Cantidad</th>
+        <th class="py-2 px-4 border-b text-left">Stock mínimo</th>
+        <th class="py-2 px-4 border-b text-left">Sede</th>
+        <th class="py-2 px-4 border-b text-center">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for producto in productos %}
+      <tr class="{% if producto.cantidad <= producto.stock_minimo %}bg-red-50{% endif %}">
+        <td class="py-2 px-4 border-b">
+          <img src="{{ MEDIA_URL }}productos/{{ producto.producto.nombre }}.jpg" alt="{{ producto.producto.nombre }}" class="w-16 h-16 object-cover rounded">
+        </td>
+        <td class="py-2 px-4 border-b">{{ producto.producto.nombre }}</td>
+        <td class="py-2 px-4 border-b">{{ producto.cantidad }}</td>
+        <td class="py-2 px-4 border-b">{{ producto.stock_minimo }}</td>
+        <td class="py-2 px-4 border-b">{{ producto.sede.nombre }}</td>
+        <td class="py-2 px-4 border-b text-center">
+          <a href="{% url 'editar_producto' producto.pk %}" class="text-blue-600 hover:underline">Editar</a> |
+          <a href="{% url 'eliminar_producto' producto.pk %}" class="text-red-600 hover:underline">Eliminar</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" class="text-center py-4">No hay productos en inventario.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal -->
+<div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+  <div class="bg-white p-6 rounded shadow-md w-full max-w-lg relative">
+    <button id="btnCloseModal" type="button" class="absolute top-2 right-2 text-gray-600 hover:text-red-600 text-2xl">&times;</button>
+    <h3 class="text-xl font-bold mb-4">Agregar Producto al Inventario</h3>
+
+    <form method="post" action="{% url 'crear_inventario' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="mb-4">
+        <label for="id_producto" class="block text-sm font-medium text-gray-700">Producto</label>
+        <select name="producto" id="id_producto" class="w-full border-gray-300 rounded">
+          {% for p in form.fields.producto.queryset %}
+          <option value="{{ p.id }}">{{ p.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label for="id_sede" class="block text-sm font-medium text-gray-700">Sede</label>
+        <select name="sede" id="id_sede" class="w-full border-gray-300 rounded">
+          {% for s in form.fields.sede.queryset %}
+          <option value="{{ s.id }}">{{ s.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label for="id_cantidad" class="block text-sm font-medium text-gray-700">Cantidad</label>
+        <input type="number" name="cantidad" id="id_cantidad" class="w-full border-gray-300 rounded">
+      </div>
+
+      <div class="mb-4">
+        <label for="id_stock_minimo" class="block text-sm font-medium text-gray-700">Stock mínimo</label>
+        <input type="number" name="stock_minimo" id="id_stock_minimo" class="w-full border-gray-300 rounded" value="5">
+      </div>
+
+      <div class="mb-4">
+        <label for="id_imagen" class="block text-sm font-medium text-gray-700">Imagen</label>
+        {{ form.imagen }}
+      </div>
+
+      <div class="mt-4 flex justify-end">
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Guardar</button>
+        <button type="button" id="btnCancelModal" class="ml-2 px-4 py-2 border rounded hover:bg-gray-100">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('modal');
+    const openBtn = document.getElementById('btnOpenModal');
+    const closeBtn = document.getElementById('btnCloseModal');
+    const cancelBtn = document.getElementById('btnCancelModal');
+
+    function showModal() {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function hideModal() {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    openBtn?.addEventListener('click', showModal);
+    closeBtn?.addEventListener('click', hideModal);
+    cancelBtn?.addEventListener('click', hideModal);
+  });
+</script>
+{% endblock %}

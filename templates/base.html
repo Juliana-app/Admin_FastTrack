@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Conejo Blanco | {% block title %}{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    {% block head %}{% endblock %}
 </head>
 <body class="bg-gray-100 text-gray-800">
     <nav class="bg-white shadow p-4 flex justify-between items-center">
@@ -19,19 +20,21 @@
     <main class="p-6">
         {% block content %}{% endblock %}
     </main>
-    {% if messages %}
-  <div class="mb-4">
-    {% for message in messages %}
-      <div class="p-3 rounded text-white {{ message.tags }} 
-                  {% if message.tags == 'error' %}bg-red-600
-                  {% elif message.tags == 'success' %}bg-green-600
-                  {% elif message.tags == 'warning' %}bg-yellow-600
-                  {% endif %}">
-        {{ message }}
-      </div>
-    {% endfor %}
-  </div>
-{% endif %}
 
+    {% if messages %}
+    <div class="mb-4">
+        {% for message in messages %}
+        <div class="p-3 rounded text-white {{ message.tags }} 
+                    {% if message.tags == 'error' %}bg-red-600
+                    {% elif message.tags == 'success' %}bg-green-600
+                    {% elif message.tags == 'warning' %}bg-yellow-600
+                    {% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 </body>
 </html>
+{% block extra_scripts %}{% endblock %}
+

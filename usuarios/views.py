@@ -3,18 +3,41 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from .models import Usuario
 from .forms import RegistroForm, LoginForm
+from django.contrib import messages
+
+from django.http import HttpResponse
 
 def vista_login(request):
+    print("Método:", request.method)  
     if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            usuario = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
-            if usuario:
-                login(request, usuario)
-                return redirect('dashboard')
-    else:
-        form = LoginForm()
-    return render(request, 'login.html', {'form': form})
+        print("Entró al POST")
+
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        print("Usuario:", username)
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            print("Autenticado:", user.username, "Rol:", user.rol)
+            login(request, user)
+
+            # Redirección automática según rol
+            if user.rol == 'mesero':
+                return redirect('/api/pedidos/mesero/')
+            elif user.rol == 'cajero':
+                return redirect('/api/pedidos/caja/')
+            elif user.rol == 'administrador':
+                return redirect('/admin/')  # O cambia esto por donde quieras
+
+            return redirect('/')  # Redirección de respaldo si no matchea rol
+
+        else:
+            print("Falló la autenticación")
+            messages.error(request, 'Usuario o contraseña inválidos.')
+
+    return render(request, 'login.html')
+
 
 def vista_logout(request):
     logout(request)
@@ -45,12 +68,12 @@ def dashboard(request):
 
 @login_required
 def dashboard_mesero(request):
-    return render(request, 'dashboard_mesero.html')
+    return render(request, 'usuarios/dashboard_mesero.html')
 
 @login_required
 def dashboard_cajero(request):
-    return render(request, 'dashboard_cajero.html')
+    return render(request, 'usuarios/caja_dashboard.html')
 
 @login_required
 def dashboard_admin(request):
-    return render(request, 'dashboard_admin.html')
+    return render(request, 'usuarios/dashboard_admin.html')

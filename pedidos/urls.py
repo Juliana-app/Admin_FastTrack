@@ -2,7 +2,7 @@ from django.urls import path
 from .views import (
     PedidoListCreateView, PedidoDetailView, editar_pedido, 
     exportar_csv_pedidos, marcar_pagado, marcar_pedido_pagado, 
-    pedidos_por_pagar, tomar_pedido, ver_pedidos
+    pedidos_por_pagar, tomar_pedido, ver_pedidos, vista_cajero
 )
 
 urlpatterns = [
@@ -16,4 +16,5 @@ urlpatterns = [
     path('por_pagar/', pedidos_por_pagar, name='pedidos_por_pagar'),
     path('marcar_pagado/<int:pedido_id>/', marcar_pedido_pagado, name='marcar_pedido_pagado'),
     path('mesero/', ver_pedidos, name='ver_pedidos_mesero'),
+    path('caja/', vista_cajero, name='dashboard_caja'),
 ]
