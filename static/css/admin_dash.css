@@ -1,0 +1,92 @@
+body {
+    font-family: 'Rubik', sans-serif;
+}
+
+/* Estructura general del dashboard admin */
+.dashboard-admin {
+    background: linear-gradient(135deg, #fdfbfb, #ebedee);
+    padding: 50px;
+    border-radius: 20px;
+    max-width: 800px;
+    margin: 50px auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    animation: fadeInAdmin 1s ease-in-out;
+}
+
+/* Título */
+.dashboard-admin h2 {
+    color: #2c3e50;
+    font-size: 32px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* Subtítulo */
+.dashboard-admin p {
+    color: #555;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+/* Contenedor de botones */
+.acciones-admin {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Botones generales */
+.btn-admin {
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+}
+
+.btn-admin:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+}
+
+/* Variantes de botón */
+.btn-admin.sedes {
+    background-color: #1abc9c;
+}
+.btn-admin.sedes:hover {
+    background-color: #16a085;
+}
+
+.btn-admin.usuarios {
+    background-color: #9b59b6;
+}
+.btn-admin.usuarios:hover {
+    background-color: #8e44ad;
+}
+
+.btn-admin.general {
+    background-color: #e67e22;
+    width: 100%;
+    max-width: 300px;
+}
+.btn-admin.general:hover {
+    background-color: #d35400;
+}
+
+.btn-admin.inventario {
+    background-color: #f39c12;
+}
+.btn-admin.inventario:hover {
+    background-color: #e67e22;
+}
+
+@keyframes fadeInAdmin {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

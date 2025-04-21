@@ -1,7 +1,22 @@
-<!-- templates/sede/crear_sede.html -->
-<h2>Crear Sede</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Guardar</button>
-</form>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Crear Nueva Sede{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/crear_sede.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+  <h2 class="form-title">🏢 Crear Nueva Sede</h2>
+
+  <form method="post" class="sede-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit" class="submit-btn">💾 Guardar Sede</button>
+    <a href="{% url 'dashboard_admin' %}" class="cancel-btn">⬅️ Volver al Panel</a>
+  </form>
+</div>
+{% endblock %}

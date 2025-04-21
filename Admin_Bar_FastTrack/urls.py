@@ -4,13 +4,17 @@ from django.urls import path, include
 from Admin_Bar_FastTrack import views 
 from django.conf import settings
 from django.conf.urls.static import static
-
+from usuarios.views import redireccion_por_rol
 
 urlpatterns = [
+    path('', redireccion_por_rol, name='inicio'),
+    
     path('admin/', admin.site.urls),
     path('api/usuarios/', include('usuarios.urls')),
     path('api/inventario/', include('inventario.urls')),
     path('api/pedidos/', include('pedidos.urls')),  
-    path('', lambda request: redirect('/api/pedidos/mesero/')),
     path('productos/', include('productos.urls')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path('api/sede/', include('sede.urls')),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
+  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

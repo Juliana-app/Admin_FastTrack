@@ -5,7 +5,7 @@ from rest_framework import generics
 from .models import Pedido, PedidoProducto
 from .serializers import PedidoSerializer
 from rest_framework.permissions import IsAuthenticated
-from inventario.models import Producto
+from inventario.models import InventarioProducto, Producto
 from django.contrib import messages
 from datetime import datetime
 from django.http import HttpResponse
@@ -21,10 +21,13 @@ class PedidoDetailView(generics.RetrieveUpdateAPIView):
     serializer_class = PedidoSerializer
     permission_classes = [IsAuthenticated]
 
+
 @login_required
 def tomar_pedido(request):
-    if request.user.rol != 'mesero' and request.user.rol != 'admin':
+    if request.user.rol not in ['mesero', 'admin']:
         return redirect('dashboard')
+
+    sede = request.user.sede  # Asegúrate de que el usuario tenga la FK `sede`
 
     if request.method == 'POST':
         mesa = request.POST.get('mesa')
@@ -54,24 +57,28 @@ def tomar_pedido(request):
 
         for prod_id, cantidad in productos:
             try:
-                producto = Producto.objects.get(id=prod_id)
-                if producto.stock >= cantidad:
+                inventario = InventarioProducto.objects.get(producto_id=prod_id, sede=sede)
+                if inventario.stock >= cantidad:
                     PedidoProducto.objects.create(
                         pedido=pedido,
-                        producto=producto,
+                        producto=inventario.producto,
                         cantidad=cantidad
                     )
-                    producto.stock -= cantidad
-                    producto.save()
+                    inventario.stock -= cantidad
+                    inventario.save()
                 else:
-                    messages.warning(request, f"Producto {producto.nombre} no tiene stock suficiente.")
-            except Producto.DoesNotExist:
-                messages.warning(request, f"Producto con ID {prod_id} no existe.")
+                    messages.warning(request, f"Producto {inventario.producto.nombre} no tiene stock suficiente.")
+            except InventarioProducto.DoesNotExist:
+                messages.warning(request, f"Producto con ID {prod_id} no existe en la sede.")
 
         messages.success(request, "Pedido registrado exitosamente.")
         return redirect('usuarios/dashboard_mesero')
 
-    return render(request, 'pedidos/tomar_pedido.html')
+    productos_disponibles = InventarioProducto.objects.filter(sede=sede, stock__gt=0).select_related('producto')
+
+    return render(request, 'pedidos/tomar_pedido.html', {
+        'productos': productos_disponibles
+    })
 
 @login_required
 def ver_pedidos(request):

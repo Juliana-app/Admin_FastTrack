@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/listar_sedes.css' %}">
+
+<div class="container-sedes">
+    <h1 class="titulo">📍 Lista de Sedes</h1>
+    <p class="descripcion">Consulta, edita o elimina las sedes registradas.</p>
+
+    <div class="acciones">
+        <a href="{% url 'crear_sede' %}" class="btn crear">➕ Crear nueva sede</a>
+        <a href="{% url 'dashboard_admin' %}" class="btn volver">⬅ Volver al Panel</a>
+    </div>
+
+    {% if sedes %}
+        <table class="tabla-sedes">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sede in sedes %}
+                    <tr>
+                        <td>{{ sede.nombre }}</td>
+                        <td>{{ sede.direccion }}</td>
+                        <td>{{ sede.telefono }}</td>
+                        <td>{{ sede.email }}</td>
+                        <td>
+                            <a href="#" class="btn tabla editar">✏️</a>
+                            <a href="{% url 'eliminar_sede' sede.id %}" class="btn tabla eliminar" onclick="return confirm('¿Estás seguro de eliminar esta sede?')">🗑️</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="no-sedes">No hay sedes registradas aún.</p>
+    {% endif %}
+</div>
+{% endblock %}

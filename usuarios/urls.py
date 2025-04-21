@@ -1,15 +1,16 @@
 from django.urls import path
-from .views import (
-    vista_login, vista_logout, vista_registro, dashboard,
-    dashboard_mesero, dashboard_cajero, dashboard_admin
-)
+
+from Admin_Bar_FastTrack import views
+from . import views
+
 
 urlpatterns = [
-    path('login/', vista_login, name='login'),
-    path('logout/', vista_logout, name='logout'),
-    path('registro/', vista_registro, name='registro'),
-    path('dashboard/', dashboard, name='dashboard'),
-    path('dashboard/mesero/', dashboard_mesero, name='dashboard_mesero'),
-    path('dashboard/cajero/', dashboard_cajero, name='dashboard_cajero'),
-    path('dashboard/admin/', dashboard_admin, name='dashboard_admin'),
+    path('login/', views.vista_login, name='login'),
+    path('logout/', views.vista_logout, name='logout'),
+    path('registro/', views.vista_registro, name='registro'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('dashboard/mesero/', views.dashboard_mesero, name='dashboard_mesero'),
+    path('dashboard/cajero/', views.dashboard_cajero, name='dashboard_cajero'),
+    path('dashboard/admin/', views.dashboard_admin, name='dashboard_admin'),
 ]
+    

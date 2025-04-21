@@ -24,11 +24,11 @@ def vista_login(request):
 
             # Redirección automática según rol
             if user.rol == 'mesero':
-                return redirect('/api/pedidos/mesero/')
+                return redirect('dashboard_mesero')
             elif user.rol == 'cajero':
-                return redirect('/api/pedidos/caja/')
+                return redirect('dashboard_cajero')
             elif user.rol == 'administrador':
-                return redirect('/admin/')  # O cambia esto por donde quieras
+                return redirect('dashboard_admin') 
 
             return redirect('/')  # Redirección de respaldo si no matchea rol
 
@@ -77,3 +77,15 @@ def dashboard_cajero(request):
 @login_required
 def dashboard_admin(request):
     return render(request, 'usuarios/dashboard_admin.html')
+
+@login_required
+def redireccion_por_rol(request):
+    rol = request.user.rol
+    if rol == 'mesero':
+        return redirect('dashboard_mesero')
+    elif rol == 'cajero':
+        return redirect('dashboard_cajero')
+    elif rol == 'admin':
+        return redirect('dashboard_admin')
+    else:
+        return redirect('login')

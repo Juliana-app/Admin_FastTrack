@@ -38,19 +38,14 @@ def lista_productos(request):
         'form': form,
     })
 
-@login_required
-def editar_producto(request, producto_id):
-    producto = get_object_or_404(Producto, pk=producto_id)
-
+def editar_producto_modal(request, pk):
+    producto = get_object_or_404(InventarioProducto, pk=pk)
     if request.method == 'POST':
-        producto.nombre = request.POST.get('nombre')
-        producto.cantidad = int(request.POST.get('cantidad'))
-        producto.stock_minimo = int(request.POST.get('stock_minimo'))
-        producto.save()
-        messages.success(request, 'Producto actualizado correctamente.')
-        return redirect('productos/lista_productos')
-
-    return render(request, 'productos/editar_producto.html', {'producto': producto})
+        form = ProductoInventarioForm(request.POST, request.FILES, instance=producto)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_productos')  # o la vista principal del inventario
+    return redirect('productos/lista_productos')
 
 @login_required
 def eliminar_producto(request, producto_id):
@@ -63,7 +58,7 @@ def eliminar_producto(request, producto_id):
 @require_POST
 @login_required
 def crear_producto_inventario(request):
-    form = ProductoInventarioForm(request.POST)
+    form = ProductoInventarioForm(request.POST, request.FILES)  
     if form.is_valid():
         form.save()
     return redirect('lista_productos')
