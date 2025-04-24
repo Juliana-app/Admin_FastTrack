@@ -1,0 +1,89 @@
+@import url('./base.css');
+@import url('./navbar.css');
+@import url('./botones.css');
+@import url('./animaciones.css');
+@import url('./darkmode.css');
+
+/* General */
+body {
+    font-family: 'Rubik', sans-serif;
+    background-color: #f9fafb;
+  }
+  
+  h2 {
+    color: #2c3e50;
+    font-size: 28px;
+    font-weight: 600;
+  }
+  
+  label {
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 4px;
+    display: block;
+  }
+  
+  /* Formulario */
+  form input[type="text"],
+  form textarea,
+  form select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background-color: #fefefe;
+    transition: border 0.3s ease;
+  }
+  
+  form input:focus,
+  form textarea:focus,
+  form select:focus {
+    border-color: #3b82f6;
+    outline: none;
+  }
+  
+  /* Botón */
+  button[type="submit"] {
+    background-color: #3b82f6;
+    color: white;
+    padding: 10px 20px;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #2563eb;
+  }
+  
+  /* Tabla */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14px;
+  }
+  
+  th {
+    background-color: #f3f4f6;
+    text-align: left;
+    padding: 10px;
+    border-bottom: 2px solid #e5e7eb;
+  }
+  
+  td {
+    padding: 10px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  a {
+    font-weight: 500;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  

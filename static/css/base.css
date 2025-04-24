@@ -1,0 +1,17 @@
+@import url('./base.css');
+@import url('./navbar.css');
+@import url('./botones.css');
+@import url('./animaciones.css');
+@import url('./darkmode.css');
+
+body {
+    font-family: 'Rubik', sans-serif;
+    background-color: #f3f4f6;
+    color: #1f2937;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  main {
+    padding: 2rem;
+  }
+  

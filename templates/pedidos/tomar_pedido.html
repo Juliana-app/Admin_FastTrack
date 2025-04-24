@@ -15,8 +15,8 @@
             <select name="producto_id_1" class="w-1/2 p-2 border rounded" required>
                 <option value="">-- Selecciona un producto --</option>
                 {% for inventario in productos %}
-                    <option value="{{ inventario.producto.id }}">
-                        {{ inventario.producto.nombre }} (Stock: {{ inventario.stock }})
+                    <option value="{{ inventario.producto.nombre }}">
+                        {{ inventario.producto.nombre }} (Stock: {{ inventario.cantidad }})
                     </option>
                 {% endfor %}
             </select>
@@ -30,10 +30,11 @@
 
 <script>
 let contador = 2;
+
 const productosOptions = `
     <option value="">-- Selecciona un producto --</option>
     {% for inventario in productos %}
-        <option value="{{ inventario.producto.id }}">{{ inventario.producto.nombre }} (Stock: {{ inventario.stock }})</option>
+        <option value="{{ inventario.producto.nombre }}">{{ inventario.producto.nombre }} (Stock: {{ inventario.cantidad }})</option>
     {% endfor %}
 `;
 

@@ -1,40 +1,80 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="{% if request.COOKIES.theme == 'dark' %}dark{% endif %}">
 <head>
     <meta charset="UTF-8">
     <title>Conejo Blanco | {% block title %}{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/base_estilos.css' %}">
+    <link rel="stylesheet" href="{% static 'css/darkmode.css' %}">
     {% block head %}{% endblock %}
 </head>
-<body class="bg-gray-100 text-gray-800">
-    <nav class="bg-white shadow p-4 flex justify-between items-center">
-        <h1 class="text-xl font-bold text-pink-600">🍷 Conejo Blanco</h1>
-        {% if user.is_authenticated %}
-            <div>
-                <span class="mr-4 font-semibold">Hola, {{ user.username }}</span>
-                <a href="{% url 'logout' %}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Cerrar sesión</a>
+<body class="bg-white dark:bg-gray-900 text-black dark:text-white">
+    <!-- NAVBAR -->
+    <nav class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800">
+        <div class="nav-left">
+            {% if user.is_authenticated %}
+                {% if user.rol == 'administrador' %}
+                    <a href="{% url 'dashboard_admin' %}" class="logo glow">🍷 Conejo Blanco</a>
+                {% elif user.rol == 'cajero' %}
+                    <a href="{% url 'dashboard_caja' %}" class="logo glow">🍷 Conejo Blanco</a>
+                {% elif user.rol == 'mesero' %}
+                    <a href="{% url 'dashboard_mesero' %}" class="logo glow">🍷 Conejo Blanco</a>
+                {% else %}
+                    <span class="logo glow">🍷 Conejo Blanco</span>
+                {% endif %}
+            {% else %}
+                <a href="{% url 'login' %}" class="logo glow">🍷 Conejo Blanco</a>
+            {% endif %}
+        </div>
+
+        <div class="nav-right flex items-center gap-4">
+            {% if user.is_authenticated %}
+            <div class="user-info flex gap-2">
+                <span class="greeting">Hola, {{ user.first_name }}</span>
+                <span class="badge-sede">🏢 {{ user.sede.nombre|default:"Sin sede" }}</span>
+                <a href="{% url 'logout' %}" class="logout-btn">Cerrar sesión</a>
             </div>
-        {% endif %}
+            {% endif %}
+            <!-- Botón Modo Oscuro/Claro -->
+            <button id="toggleTheme" class="theme-btn border rounded px-2 py-1" title="Alternar modo claro/oscuro">🌓</button>
+        </div>
     </nav>
 
-    <main class="p-6">
+    <!-- CONTENIDO -->
+    <main class="p-4">
         {% block content %}{% endblock %}
     </main>
 
+    <!-- MENSAJES -->
     {% if messages %}
-    <div class="mb-4">
+    <div class="messages p-4">
         {% for message in messages %}
-        <div class="p-3 rounded text-white {{ message.tags }} 
-                    {% if message.tags == 'error' %}bg-red-600
-                    {% elif message.tags == 'success' %}bg-green-600
-                    {% elif message.tags == 'warning' %}bg-yellow-600
-                    {% endif %}">
+        <div class="message {{ message.tags }}">
             {{ message }}
         </div>
         {% endfor %}
     </div>
     {% endif %}
+
+    <script>
+        const toggleTheme = document.getElementById('toggleTheme');
+        const html = document.documentElement;
+
+        if (localStorage.getItem('theme') === 'dark') {
+            html.classList.add('dark');
+        }
+
+        toggleTheme.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const currentTheme = html.classList.contains('dark') ? 'dark' : 'light';
+            localStorage.setItem('theme', currentTheme);
+
+            // También actualiza la cookie si querés manejarlo desde servidor
+            document.cookie = `theme=${currentTheme}; path=/; max-age=31536000`;
+        });
+    </script>
+
+    {% block extra_scripts %}{% endblock %}
 </body>
 </html>
-{% block extra_scripts %}{% endblock %}
-

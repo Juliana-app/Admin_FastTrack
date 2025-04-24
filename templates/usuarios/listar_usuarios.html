@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Lista de Usuarios{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/listar_usuarios.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="contenedor-usuarios">
+  <h2 class="titulo">👥 Lista de Usuarios</h2>
+
+  <form method="get" class="formulario-filtros">
+    <input type="text" name="q" value="{{ query }}" placeholder="Buscar por usuario o email" class="input-text" />
+    <select name="sede" class="select-sede">
+      <option value="">Todas las sedes</option>
+      {% for sede in sedes %}
+        <option value="{{ sede.id }}" {% if sede.id|stringformat:"s" == sede_id %}selected{% endif %}>{{ sede.nombre }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn-filtrar">🔍 Filtrar</button>
+  </form>
+
+  <table class="tabla-usuarios">
+    <thead>
+      <tr>
+        <th>Usuario</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Email</th>
+        <th>Rol</th>
+        <th>Sede</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for usuario in usuarios %}
+      <tr>
+        <td>{{ usuario.username }}</td>
+        <td>{{ usuario.first_name }}</td>
+        <td>{{ usuario.last_name }}</td>
+        <td>{{ usuario.email }}</td>
+        <td class="capitalize">{{ usuario.rol }}</td>
+        <td>{{ usuario.sede.nombre }}</td>
+        <td>
+          <button class="btn-editar" 
+                  data-id="{{ usuario.id }}"
+                  data-username="{{ usuario.username }}"
+                  data-first_name="{{ usuario.first_name }}"
+                  data-last_name="{{ usuario.last_name }}"
+                  data-email="{{ usuario.email }}"
+                  data-rol="{{ usuario.rol }}"
+                  data-sede="{{ usuario.sede.id }}">
+            ✏️ Editar
+          </button>
+          <form action="{% url 'eliminar_usuario' usuario.id %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" onclick="return confirm('¿Estás seguro de eliminar este usuario?')">🗑 Eliminar</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal de Edición -->
+<div id="modal-editar" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded w-full max-w-lg relative">
+    <button id="btnCerrarModal" class="absolute top-2 right-2 text-gray-600 text-xl hover:text-red-600">&times;</button>
+    <h3 class="text-xl font-bold mb-4">✏️ Editar Usuario</h3>
+    <form method="post" id="formEditarUsuario" action="">
+      {% csrf_token %}
+      <input type="hidden" name="usuario_id" id="edit_usuario_id">
+      <div class="grid gap-4">
+        <input type="text" name="username" id="edit_username" class="input-text" placeholder="Usuario" required>
+        <input type="text" name="first_name" id="edit_first_name" class="input-text" placeholder="Nombre">
+        <input type="text" name="last_name" id="edit_last_name" class="input-text" placeholder="Apellido">
+        <input type="email" name="email" id="edit_email" class="input-text" placeholder="Correo">
+
+        <div class="relative">
+          <input type="password" name="password" id="edit_password" class="input-text pr-10" placeholder="Nueva contraseña (opcional)">
+          <button type="button" class="toggle-password absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-500" onclick="togglePassword()">
+            👁️
+          </button>
+        </div>
+
+        <select name="rol" id="edit_rol" class="select-sede">
+          <option value="mesero">Mesero</option>
+          <option value="cajero">Cajero</option>
+          <option value="administrador">Administrador</option>
+        </select>
+        <select name="sede" id="edit_sede" class="select-sede">
+          {% for s in sedes %}
+            <option value="{{ s.id }}">{{ s.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="flex justify-end mt-4">
+        <button type="submit" class="btn-filtrar bg-blue-600 text-white">Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.btn-editar').forEach(btn => {
+    btn.addEventListener('click', function () {
+      document.getElementById('edit_usuario_id').value = this.dataset.id;
+      document.getElementById('edit_username').value = this.dataset.username;
+      document.getElementById('edit_first_name').value = this.dataset.first_name;
+      document.getElementById('edit_last_name').value = this.dataset.last_name;
+      document.getElementById('edit_email').value = this.dataset.email;
+      document.getElementById('edit_rol').value = this.dataset.rol;
+      document.getElementById('edit_sede').value = this.dataset.sede;
+      document.getElementById('edit_password').value = "";
+
+      document.getElementById('formEditarUsuario').action = `/api/usuarios/editar/${this.dataset.id}/`;
+      document.getElementById('modal-editar').classList.remove('hidden');
+    });
+  });
+
+  document.getElementById('btnCerrarModal').addEventListener('click', function () {
+    document.getElementById('modal-editar').classList.add('hidden');
+  });
+
+  function togglePassword() {
+    const input = document.getElementById('edit_password');
+    input.type = input.type === "password" ? "text" : "password";
+  }
+
+  // Ocultar alertas automáticamente
+  setTimeout(() => {
+    document.querySelectorAll('.alert').forEach(alert => {
+      alert.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+      setTimeout(() => alert.remove(), 500);
+    });
+  }, 4000);
+</script>
+{% endblock %}

@@ -1,8 +1,22 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %}Mesero{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/dash_mesero.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
-<h2 class="text-2xl font-bold mb-4">🤵 Panel del Mesero</h2>
-<a href="{% url 'tomar_pedido' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">➕ Tomar Pedido</a>
-<a href="{% url 'ver_pedidos' %}" class="text-blue-600 hover:underline ml-4">👁️ Ver Pedidos</a>
-<a href="{% url 'dashboard_general' %}" class="block text-white bg-purple-600 hover:bg-purple-700 p-2 rounded shadow text-center mt-4">📊 Ver Panel General</a>
+<div class="dashboard-mesero bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-6 rounded-lg shadow-md">
+  <h2>🤵 {{ user.first_name }}, este es tu panel de Mesero</h2>
+  <p>Gestiona pedidos, actualízalos en tiempo real y libera mesas con eficiencia.</p>
+
+  <div class="acciones-mesero grid gap-4 mt-4">
+    <a href="{% url 'tomar_pedido' %}" class="btn-mesero">➕ Tomar Pedido</a>
+    <a href="{% url 'ver_pedidos' %}" class="btn-mesero secondary">👁️ Ver Pedidos</a>
+    <a href="{% url 'dashboard_general' %}" class="btn-mesero general">📊 Ver Panel General</a>
+  </div>
+</div>
 {% endblock %}

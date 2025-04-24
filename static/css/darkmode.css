@@ -1,0 +1,341 @@
+@import url('./base.css');
+@import url('./navbar.css');
+@import url('./botones.css');
+@import url('./animaciones.css');
+
+/* FONDO Y TEXTO GENERAL */
+html.dark body,
+html.dark {
+  background-color: #1f2937 !important;
+  color: #f3f4f6 !important;
+}
+
+/* NAVBAR */
+html.dark nav {
+  background: linear-gradient(to right, #1f2937, #111827) !important;
+  border-bottom: 1px solid #374151 !important;
+}
+html.dark .logo {
+  color: #f472b6 !important;
+  text-shadow: 0 0 6px #f472b633;
+}
+
+/* TEXTOS */
+html.dark .text-gray-800,
+html.dark .text-black,
+html.dark .text-gray-900,
+html.dark .text-gray-700,
+html.dark .text-gray-600,
+html.dark .text-neutral-800 {
+  color: #f3f4f6 !important;
+}
+
+/* ENCABEZADOS */
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6,
+html.dark .title,
+html.dark .titulo,
+html.dark .heading {
+  color: #f9fafb !important;
+}
+
+/* LINKS */
+html.dark a {
+  color: #93c5fd !important;
+}
+html.dark a:hover {
+  color: #60a5fa !important;
+}
+
+/* BOTONES */
+html.dark .btn,
+html.dark button,
+html.dark .logout-btn,
+html.dark .theme-btn {
+  background-color: #374151 !important;
+  color: #f3f4f6 !important;
+  border-color: #4b5563 !important;
+}
+html.dark .btn:hover,
+html.dark button:hover {
+  background-color: #4b5563 !important;
+  transform: scale(1.03);
+}
+
+/* FORMULARIOS */
+html.dark input,
+html.dark select,
+html.dark textarea {
+  background-color: #374151 !important;
+  border-color: #4b5563 !important;
+  color: #f3f4f6 !important;
+}
+html.dark input:focus,
+html.dark select:focus,
+html.dark textarea:focus {
+  border-color: #60a5fa !important;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.5) !important;
+}
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #9ca3af !important;
+}
+html.dark label {
+  color: #e5e7eb !important;
+}
+
+/* TABLAS */
+html.dark table,
+html.dark .table,
+html.dark thead,
+html.dark th,
+html.dark td {
+  background-color: #1e293b !important;
+  color: #e5e7eb !important;
+  border-color: #4b5563 !important;
+}
+
+/* MENSAJES */
+html.dark .message,
+html.dark .alert,
+html.dark .bg-red-600,
+html.dark .bg-green-600,
+html.dark .bg-yellow-600 {
+  background-color: #374151 !important;
+  color: #f3f4f6 !important;
+  border: 1px solid #4b5563 !important;
+}
+html.dark .message.success { background-color: #15803d !important; }
+html.dark .message.error { background-color: #b91c1c !important; }
+html.dark .message.warning { background-color: #d97706 !important; }
+
+/* BADGES */
+html.dark .badge,
+html.dark .badge-sede {
+  background-color: #1e40af !important;
+  color: #dbeafe !important;
+}
+
+/* CONTENEDORES */
+html.dark .bg-white,
+html.dark .content-container,
+html.dark .rounded,
+html.dark .rounded-xl,
+html.dark .shadow,
+html.dark .shadow-xl,
+html.dark .p-6,
+html.dark .box,
+html.dark .card,
+html.dark .form-section,
+html.dark .panel {
+  background-color: #1f2937 !important;
+  color: #f3f4f6 !important;
+  border-color: #4b5563 !important;
+}
+
+/* GRADIENTES BLANCOS */
+html.dark .bg-gradient-to-r,
+html.dark .from-white,
+html.dark .to-white {
+  background: linear-gradient(to right, #1e293b, #111827) !important;
+}
+
+/* MODALES */
+html.dark #modal,
+html.dark #modal .bg-white,
+html.dark .modal-content {
+  background-color: #1f2937 !important;
+  color: #f3f4f6 !important;
+  border-color: #374151 !important;
+}
+
+/* ALERTAS CRÍTICAS */
+html.dark .alerta-stock {
+  background-color: #7f1d1d !important;
+  color: #fef2f2 !important;
+}
+html.dark .critico {
+  color: #fca5a5 !important;
+}
+
+/* SEPARADORES */
+html.dark hr,
+html.dark .divider {
+  border-color: #4b5563 !important;
+}
+
+/* SOMBRAS */
+html.dark .shadow-lg,
+html.dark .shadow {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* 🌙 Dark mode base */
+html.dark {
+  background-color: #1f2937;
+  color: #f3f4f6;
+}
+
+/* Textos generales */
+html.dark,
+html.dark .text-gray-800,
+html.dark .text-black,
+html.dark .text-gray-600,
+html.dark .text-gray-700,
+html.dark .text-gray-900 {
+  color: #f3f4f6 !important;
+}
+
+/* Encabezados */
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6,
+html.dark label {
+  color: #f9fafb !important;
+}
+
+/* NAVBAR */
+html.dark nav {
+  background: linear-gradient(to right, #1f2937, #111827) !important;
+  border-bottom: 1px solid #374151;
+}
+html.dark .logo {
+  color: #f472b6;
+  text-shadow: 0 0 6px #f472b633;
+}
+html.dark .badge-sede {
+  background-color: #1e3a8a !important;
+  color: #dbeafe !important;
+}
+
+/* LINKS */
+html.dark a {
+  color: #93c5fd;
+}
+html.dark a:hover {
+  color: #60a5fa;
+}
+
+/* BOTONES */
+html.dark .btn,
+html.dark button,
+html.dark .logout-btn,
+html.dark .theme-btn,
+html.dark .btnEdit {
+  background-color: #374151 !important;
+  border-color: #4b5563 !important;
+  color: #f3f4f6 !important;
+}
+html.dark .btn:hover,
+html.dark button:hover,
+html.dark .logout-btn:hover {
+  background-color: #4b5563 !important;
+  transform: scale(1.03);
+}
+
+/* CONTENEDORES */
+html.dark .bg-white,
+html.dark .rounded,
+html.dark .shadow,
+html.dark .p-6,
+html.dark .card,
+html.dark .box,
+html.dark .form-section,
+html.dark .panel,
+html.dark .content-container,
+html.dark .section,
+html.dark .modal-content {
+  background-color: #1f2937 !important;
+  color: #f3f4f6 !important;
+  border-color: #4b5563 !important;
+}
+
+/* INPUTS / FORMULARIOS */
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background-color: #374151 !important;
+  color: #f3f4f6 !important;
+  border-color: #4b5563 !important;
+}
+html.dark input:focus,
+html.dark textarea:focus,
+html.dark select:focus {
+  border-color: #60a5fa !important;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.5);
+}
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #9ca3af;
+}
+
+/* TABLAS */
+html.dark table,
+html.dark .table {
+  background-color: #1e293b;
+  color: #f3f4f6;
+}
+html.dark thead {
+  background-color: #374151;
+  color: #e5e7eb;
+}
+html.dark th,
+html.dark td {
+  border-color: #4b5563;
+  color: #e5e7eb;
+}
+
+/* MODALES */
+html.dark #modal,
+html.dark .modal-content,
+html.dark #modal .bg-white {
+  background-color: #1f2937 !important;
+  color: #f3f4f6 !important;
+  border: 1px solid #374151 !important;
+}
+
+/* MENSAJES */
+html.dark .message,
+html.dark .alert {
+  background-color: #374151 !important;
+  color: #f3f4f6 !important;
+  border: 1px solid #4b5563 !important;
+}
+html.dark .message.success {
+  background-color: #15803d !important;
+}
+html.dark .message.error {
+  background-color: #b91c1c !important;
+}
+html.dark .message.warning {
+  background-color: #d97706 !important;
+}
+
+/* CAMPOS CRÍTICOS */
+html.dark .alerta-stock {
+  background-color: #7f1d1d !important;
+  color: #fef2f2 !important;
+}
+html.dark .critico {
+  color: #fca5a5 !important;
+}
+
+/* SOMBREADOS */
+html.dark .shadow,
+html.dark .shadow-lg {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* SEPARADORES */
+html.dark hr,
+html.dark .divider {
+  border-color: #4b5563 !important;
+}
+

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Registrar Precio{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/precio_historial.css' %}">
+{% endblock %}
+
+{% block content %}
+<h2>💵 Registrar Precio de Producto</h2>
+
+<form method="post" class="mb-6">
+  {% csrf_token %}
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div>
+      {{ form.producto.label_tag }} 
+      {{ form.producto }}
+    </div>
+    <div>
+      {{ form.precio_compra.label_tag }} 
+      {{ form.precio_compra }}
+    </div>
+    <div>
+      {{ form.precio_venta.label_tag }} 
+      {{ form.precio_venta }}
+    </div>
+  </div>
+  <button type="submit">Guardar</button>
+</form>
+
+<h3>📜 Historial Reciente</h3>
+<div class="overflow-x-auto">
+  <table class="historial-table">
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Precio Compra</th>
+        <th>Precio Venta</th>
+        <th>Fecha</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in historial %}
+        <tr>
+          <td>{{ item.producto.nombre }}</td>
+          <td>${{ item.precio_compra }}</td>
+          <td>${{ item.precio_venta }}</td>
+          <td>{{ item.fecha|date:"Y-m-d H:i" }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="4" class="text-center">No hay historial aún.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

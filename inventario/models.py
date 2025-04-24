@@ -10,6 +10,7 @@ class InventarioProducto(models.Model):
     cantidad = models.IntegerField()
     stock_minimo = models.IntegerField(default=5)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
+    precio_venta = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     def en_alerta(self):
         return self.cantidad <= self.stock_minimo

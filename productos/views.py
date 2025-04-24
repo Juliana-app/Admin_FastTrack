@@ -16,21 +16,22 @@ def crear_producto_general(request):
 
 def editar_producto_general(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
+
     if request.method == 'POST':
         form = ProductoForm(request.POST, instance=producto)
         if form.is_valid():
             form.save()
             return JsonResponse({'success': True})
         return JsonResponse({'success': False, 'errors': form.errors})
-    else:
-        form = ProductoForm(instance=producto)
-        return JsonResponse({
-            'id': producto.id,
-            'nombre': producto.nombre,
-            'descripcion': producto.descripcion
-        })
+    
+    # Para petición GET (opcional, si quisieras usarlo con AJAX también)
+    return JsonResponse({
+        'id': producto.id,
+        'nombre': producto.nombre,
+        'descripcion': producto.descripcion
+    })
 
 def eliminar_producto_general(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
     producto.delete()
-    return redirect('lista_productos')
+    return redirect('crear_producto')

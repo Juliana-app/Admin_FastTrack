@@ -1,3 +1,9 @@
+@import url('./base.css');
+@import url('./navbar.css');
+@import url('./botones.css');
+@import url('./animaciones.css');
+@import url('./darkmode.css');
+
 body {
     font-family: 'Rubik', sans-serif;
 }
@@ -83,4 +89,11 @@ body {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+.btn-caja.precios {
+    background-color: #2ecc71;
+}
+.btn-caja.precios:hover {
+    background-color: #27ae60;
 }

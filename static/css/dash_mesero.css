@@ -1,0 +1,78 @@
+@import url('./base.css');
+@import url('./navbar.css');
+@import url('./botones.css');
+@import url('./animaciones.css');
+@import url('./darkmode.css');
+
+body {
+    font-family: 'Rubik', sans-serif;
+}
+
+.dashboard-mesero {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    padding: 50px;
+    border-radius: 20px;
+    max-width: 800px;
+    margin: 50px auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.dashboard-mesero h2 {
+    color: #2d3436;
+    font-size: 32px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.dashboard-mesero p {
+    color: #636e72;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.acciones-mesero {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.btn-mesero {
+    background-color: #0984e3;
+    color: white;
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+}
+
+.btn-mesero:hover {
+    background-color: #74b9ff;
+    transform: scale(1.05);
+}
+
+.btn-mesero.secondary {
+    background-color: #6c5ce7;
+}
+.btn-mesero.secondary:hover {
+    background-color: #a29bfe;
+}
+
+.btn-mesero.general {
+    background-color: #fdcb6e;
+    width: 100%;
+    max-width: 300px;
+}
+.btn-mesero.general:hover {
+    background-color: #e17055;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

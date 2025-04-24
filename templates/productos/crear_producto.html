@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}Gestión de Productos{% endblock %}
 
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/productos_crear.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
   <h2 class="text-2xl font-bold mb-6">🛠 Gestión de Productos</h2>
@@ -34,13 +40,19 @@
     </thead>
     <tbody>
       {% for producto in productos %}
-      <tr>
+      <tr id="producto-{{ producto.id }}">
         <td class="py-2 px-4 border-b">{{ producto.nombre }}</td>
         <td class="py-2 px-4 border-b">{{ producto.descripcion }}</td>
         <td class="py-2 px-4 border-b text-center">
-          <!-- Placeholder para futuras funciones -->
-          <a href="#" class="text-blue-600 hover:underline">Editar</a> |
-          <a href="#" class="text-red-600 hover:underline">Eliminar</a>
+          <button
+              type="button"
+              class="text-blue-600 hover:underline btnEdit"
+              data-id="{{ producto.id }}"
+              data-nombre="{{ producto.nombre }}"
+              data-descripcion="{{ producto.descripcion }}"
+          >Editar</button>
+
+          <a href="{% url 'eliminar_producto' producto.id %}" class="text-red-600 hover:underline">Eliminar</a>
         </td>
       </tr>
       {% empty %}
@@ -51,4 +63,89 @@
     </tbody>
   </table>
 </div>
+
+<!-- Modal -->
+<div id="modalEdit" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+  <div class="bg-white p-6 rounded shadow-md w-full max-w-lg relative">
+    <button type="button" id="btnCloseModal" class="absolute top-2 right-2 text-gray-600 hover:text-red-600 text-2xl">&times;</button>
+    <h3 class="text-xl font-bold mb-4">Editar Producto</h3>
+
+    <form method="post" id="formEdit">
+      {% csrf_token %}
+      <input type="hidden" name="producto_id" id="edit_id">
+      <div class="mb-4">
+        <label for="edit_nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+        <input type="text" name="nombre" id="edit_nombre" class="w-full border-gray-300 rounded p-2">
+      </div>
+      <div class="mb-4">
+        <label for="edit_descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>
+        <textarea name="descripcion" id="edit_descripcion" rows="3" class="w-full border-gray-300 rounded p-2"></textarea>
+      </div>
+      <div class="flex justify-end mt-4">
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Actualizar</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('modalEdit');
+    const form = document.getElementById('formEdit');
+    const closeBtn = document.getElementById('btnCloseModal');
+
+    let currentId = null;
+
+    // Mostrar modal
+    document.querySelectorAll('.btnEdit').forEach(btn => {
+      btn.addEventListener('click', function () {
+        currentId = this.getAttribute('data-id');
+        document.getElementById('edit_nombre').value = this.getAttribute('data-nombre');
+        document.getElementById('edit_descripcion').value = this.getAttribute('data-descripcion');
+
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      });
+    });
+
+    // Cerrar modal
+    closeBtn.addEventListener('click', () => {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    });
+
+    // Enviar AJAX
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      fetch(`/productos/editar/${currentId}/`, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          nombre: document.getElementById('edit_nombre').value,
+          descripcion: document.getElementById('edit_descripcion').value
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Actualizar la fila sin recargar
+          const row = document.querySelector(`#producto-${currentId}`);
+          row.children[0].textContent = document.getElementById('edit_nombre').value;
+          row.children[1].textContent = document.getElementById('edit_descripcion').value;
+
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        } else {
+          alert("Error al actualizar");
+        }
+      });
+    });
+  });
+</script>
 {% endblock %}

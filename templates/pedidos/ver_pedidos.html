@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load custom_filters %}
 {% block title %}Pedidos Pendientes{% endblock %}
 {% block content %}
 <h2 class="text-2xl font-bold mb-4">Pedidos Pendientes</h2>
@@ -11,7 +12,6 @@
     </button>
 </form>
 
-
 {% if pedidos %}
     <div class="space-y-4">
         {% for pedido in pedidos %}
@@ -23,17 +23,24 @@
             <p><strong>Productos:</strong></p>
             <ul class="ml-6 list-disc">
                 {% for item in pedido.productos.all %}
-                    <li>{{ item.producto.nombre }} - Cantidad: {{ item.cantidad }}</li>
+                    <li>{{ item.producto.nombre }} - Cantidad: {{ item.cantidad }} - 
+                        Precio unitario: ${{ item.precio_unitario }} - 
+                        Subtotal c/IVA: ${{ item.subtotal_con_iva|floatformat:2 }}
+                    </li>
                 {% endfor %}
             </ul>
+
+            <p class="mt-2 font-semibold text-right">
+                Total con IVA: $
+                {{ pedido.productos.all|total_con_iva }}
+            </p>            
 
             {% if user.rol == 'cajero' or user.rol == 'admin' %}
                 <a href="{% url 'marcar_pagado' pedido.id %}" class="inline-block mt-3 bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700">💰 Marcar como Pagado</a>
             {% endif %}
             {% if request.user.rol == 'mesero' and pedido.estado == 'pendiente' %}
-            <a href="{% url 'editar_pedido' pedido.id %}" class="text-blue-600 hover:underline">✏️ Editar</a>
+                <a href="{% url 'editar_pedido' pedido.id %}" class="text-blue-600 hover:underline">✏️ Editar</a>
             {% endif %}
-
         </div>
         {% endfor %}
     </div>

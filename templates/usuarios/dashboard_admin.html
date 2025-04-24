@@ -8,15 +8,18 @@
 {% endblock %}
 
 {% block content %}
-<div class="dashboard-admin">
-    <h2>👨🏻‍💻 Hola {{ user.username }}, este es tu panel de Administrador</h2>
+<div class="dashboard-admin bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-6 rounded-lg shadow-md">
+    <h2>👨🏻‍💻 {{ user.first_name }}, este es tu panel de Administrador</h2>
     <p>Gestiona usuarios, sedes, inventario y más</p>
 
-    <div class="acciones-admin">
-        <a href="{% url 'registro' %}" class="btn-admin usuarios">➕ Crear usuario</a>
-        <a href="#" class="btn-admin inventario">📦 Gestionar inventario</a>
+    <div class="acciones-admin grid gap-4 mt-4">
+        <a href="{% url 'crear_usuario' %}" class="btn-admin usuarios">➕ Crear usuario</a>
+        <a href="{% url 'listar_usuarios' %}" class="btn-admin usuarios">👥 Ver usuarios</a>
+        <a href="{% url 'lista_productos' %}" class="btn-admin inventario">📦 Gestionar inventario</a>
+        <a href="{% url 'crear_producto' %}" class="btn-caja producto">📁 Gestión Productos</a>
+        <a href="{% url 'crear_precio_producto' %}" class="btn-admin precios">💲 Registrar precio de producto</a>
         <a href="{% url 'crear_sede' %}" class="btn-admin sedes">🏢 Crear nueva sede</a>
-        <a href="#" class="btn-admin">📁 Ver pedidos</a>
+        <a href="{% url 'ver_pedidos' %}" class="btn-admin">📁 Ver pedidos</a>
         <a href="#" class="btn-admin">📊 Generar informes</a>
         <a href="{% url 'dashboard_general' %}" class="btn-admin general">📈 Ver Panel General</a>
     </div>

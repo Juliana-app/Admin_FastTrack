@@ -1,5 +1,7 @@
 from pyexpat.errors import messages
 from rest_framework import generics
+
+from historial.models import HistorialPrecio
 from .models import Producto, InventarioProducto
 from .serializers import ProductoSerializer
 from django.contrib.auth.decorators import login_required 
@@ -31,7 +33,14 @@ def dashboard_general(request):
 
 @login_required
 def lista_productos(request):
-    productos = InventarioProducto.objects.select_related('producto', 'sede').order_by('producto__nombre')
+    if request.user.rol not in ['administrador', 'cajero']:
+        return redirect('dashboard')
+
+    sede_usuario = request.user.sede
+    productos = InventarioProducto.objects.select_related('producto', 'sede') \
+                                          .filter(sede=sede_usuario) \
+                                          .order_by('producto__nombre')
+
     form = ProductoInventarioForm()
     return render(request, 'productos/lista_productos.html', {
         'productos': productos,
@@ -58,7 +67,19 @@ def eliminar_producto(request, producto_id):
 @require_POST
 @login_required
 def crear_producto_inventario(request):
-    form = ProductoInventarioForm(request.POST, request.FILES)  
+    form = ProductoInventarioForm(request.POST, request.FILES)
     if form.is_valid():
-        form.save()
+        inventario = form.save(commit=False)
+
+        # Asignar la sede automáticamente desde el usuario
+        inventario.sede = request.user.sede
+
+        # Asignar el precio desde el historial
+        ultimo_precio = HistorialPrecio.objects.filter(producto=inventario.producto).order_by('-fecha').first()
+        if ultimo_precio:
+            inventario.precio_venta = ultimo_precio.precio_venta
+
+        inventario.save()
+    else:
+        print("Errores:", form.errors)  # Debug
     return redirect('lista_productos')
