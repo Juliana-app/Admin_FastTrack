@@ -30,7 +30,7 @@
         {% if user.is_authenticated %}
         <div class="user-info">
             <span class="greeting">Hola, {{ user.first_name }}</span>
-            <span class="badge-sede">🏢 {{ user.sede.nombre|default:"Sin sede" }}</span>
+            <span class="badge-sede"> {{ user.sede.nombre|default:"Sin sede" }}</span>
             <a href="{% url 'logout' %}" class="logout-btn">Cerrar sesión</a>
         </div>
         {% endif %}

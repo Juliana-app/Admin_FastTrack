@@ -13,7 +13,7 @@
   <h2>💳 {{ user.first_name }}, este es tu panel de Cajero</h2>
   <p>Procesa pagos, revisa pedidos y gestiona cobros con facilidad.</p>
 
-  <div class="acciones-caja grid gap-4 mt-4">
+  <div class="acciones-admin grid grid-cols-2 gap-4 mt-4">
     <a href="{% url 'pedidos_por_pagar' %}" class="btn-caja">💰 Ver Pedidos por Pagar</a>
     <a href="/api/pedidos/exportar/" class="btn-caja export">📄 Exportar Reporte CSV</a>
     <a href="{% url 'ver_pedidos' %}" class="btn-caja secondary">📋 Ver Todos los Pedidos</a>

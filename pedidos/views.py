@@ -28,7 +28,7 @@ class PedidoDetailView(generics.RetrieveUpdateAPIView):
 
 @login_required
 def tomar_pedido(request):
-    if request.user.rol not in ['mesero', 'admin']:
+    if request.user.rol not in ['mesero', 'administrador']:
         return redirect('dashboard')
 
     sede = request.user.sede
@@ -200,7 +200,7 @@ def editar_pedido(request, pedido_id):
 
 @login_required
 def pedidos_por_pagar(request):
-    if request.user.rol not in ['cajero', 'admin']:
+    if request.user.rol not in ['cajero', 'administrador']:
         return redirect('dashboard')
 
     sede_usuario = request.user.sede

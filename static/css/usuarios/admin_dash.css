@@ -178,6 +178,19 @@ html.dark .acciones-admin {
     background-color: #5d4037;
 }
 
+.btn-admin.tomar-pedido {
+    background-color: #ff5722; /* naranja fuerte */
+}
+.btn-admin.tomar-pedido:hover {
+    background-color: #e64a19;
+}
+
+.btn-admin.pendiente {
+    background-color: #607d8b; /* azul grisáceo */
+}
+.btn-admin.pendiente:hover {
+    background-color: #455a64;
+}
 
 /* ✨ Animación entrada */
 @keyframes fadeInAdmin {
