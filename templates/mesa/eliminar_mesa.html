@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Eliminar Mesa{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/mesas/mesas_form.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto p-6 bg-white text-gray-900 rounded-lg shadow">
+    <h2 class="text-2xl font-bold mb-4">🗑️ Eliminar Mesa</h2>
+    <p>¿Estás seguro de que deseas eliminar la mesa <strong>#{{ mesa.id }} - Número {{ mesa.numero }}</strong> de la sede <strong>{{ mesa.sede.nombre }}</strong>?</p>
+    
+    <form method="POST" class="mt-4">
+        {% csrf_token %}
+        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded">Sí, eliminar</button>
+        <a href="{% url 'ver_mesas' %}" class="ml-4 text-blue-500 hover:underline">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

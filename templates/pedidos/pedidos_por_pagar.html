@@ -21,9 +21,11 @@
                 <p><strong>📅 Fecha:</strong> {{ pedido.creado|date:"d M Y H:i" }}</p>
             </div>
             <div>
-                <button onclick="confirmarPago('{{ pedido.id }}')" class="btn-pagar">
-                    ✅ Marcar como Pagado
+                <button onclick="confirmarPago(this)" class="btn-pagar"
+                data-url="{% url 'marcar_pedido_pagado' pedido.id %}">
+                ✅ Marcar como Pagado
                 </button>
+        
             </div>
         </div>
         <div>
@@ -46,20 +48,21 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-function confirmarPago(pedidoId) {
-    Swal.fire({
-        title: '¿Confirmar pago?',
-        text: "Este pedido será marcado como pagado.",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#16a34a',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, marcar como pagado'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            window.location.href = '/pedidos/marcar_pagado/' + pedidoId + '/';
-        }
-    });
-}
+    function confirmarPago(btn) {
+        const url = btn.dataset.url;
+        Swal.fire({
+            title: '¿Confirmar pago?',
+            text: "Este pedido será marcado como pagado.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#16a34a',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, marcar como pagado'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    }
 </script>
 {% endblock %}

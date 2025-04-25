@@ -81,25 +81,20 @@ html.dark .acciones-admin {
 
 /* 🎨 Botones generales */
 .btn-admin {
-    background-color: #3498db;
     color: white;
     text-decoration: none;
     padding: 14px 28px;
     border-radius: 12px;
     font-weight: 600;
     transition: all 0.35s ease;
-    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     display: inline-block;
     position: relative;
     overflow: hidden;
 }
 .btn-admin:hover {
-    background-color: #2980b9;
     transform: translateY(-3px) scale(1.03);
-    box-shadow: 0 6px 20px rgba(41, 128, 185, 0.3);
 }
-
-/* ✨ Efecto hover visual extra */
 .btn-admin::after {
     content: '';
     position: absolute;
@@ -117,7 +112,7 @@ html.dark .acciones-admin {
     z-index: 1;
 }
 
-/* 🎯 Variantes */
+/* 🎯 Variantes con colores únicos */
 .btn-admin.sedes {
     background-color: #1abc9c;
 }
@@ -154,6 +149,35 @@ html.dark .acciones-admin {
 .btn-admin.productos:hover {
     background-color: #c2185b;
 }
+
+.btn-admin.precios {
+    background-color: #3f51b5;
+}
+.btn-admin.precios:hover {
+    background-color: #303f9f;
+}
+
+.btn-admin.reportes {
+    background-color: #00bcd4;
+}
+.btn-admin.reportes:hover {
+    background-color: #0097a7;
+}
+
+.btn-admin.pedidos {
+    background-color: #4caf50;
+}
+.btn-admin.pedidos:hover {
+    background-color: #388e3c;
+}
+
+.btn-admin.mesas {
+    background-color: #795548;
+}
+.btn-admin.mesas:hover {
+    background-color: #5d4037;
+}
+
 
 /* ✨ Animación entrada */
 @keyframes fadeInAdmin {

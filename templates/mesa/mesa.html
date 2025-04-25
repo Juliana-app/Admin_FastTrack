@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Mesas Registradas{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/mesas/mesas.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto p-6 bg-white text-gray-900 rounded-lg shadow">
+    <h2 class="text-2xl font-bold mb-4">🪑 Mesas Registradas</h2>
+
+    {% if mesas %}
+        <table class="w-full table-auto border-collapse mb-4">
+            <thead>
+                <tr class="bg-blue-100 text-left">
+                    <th class="px-4 py-2">Número de Mesa</th>
+                    <th class="px-4 py-2">Sede</th>
+                    <th class="px-4 py-2">Estado</th> 
+                    <th class="px-4 py-2">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mesa in mesas %}
+                <tr class="border-b hover:bg-blue-50 {% if mesa.ocupada %}bg-red-100{% else %}bg-green-100{% endif %}">
+                    <td class="px-4 py-2 font-semibold">{{ mesa.numeroMesa }}</td>
+                    <td class="px-4 py-2">{{ mesa.sede.nombre }}</td>
+                    <td class="px-4 py-2">
+                        {% if mesa.ocupada %}
+                            <span class="text-red-600 font-semibold">🔴 Ocupada</span>
+                        {% else %}
+                            <span class="text-green-600 font-semibold">🟢 Libre</span>
+                        {% endif %}
+                    </td>
+                    <td class="px-4 py-2">
+                        <a href="{% url 'editar_mesa' mesa.id %}" class="text-blue-600 hover:underline mr-3">✏️ Editar</a>
+                        <a href="{% url 'eliminar_mesa' mesa.id %}" class="text-red-600 hover:underline">🗑️ Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No hay mesas registradas todavía.</p>
+    {% endif %}
+
+    <a href="{% url 'dashboard_admin' %}" class="text-blue-500 hover:underline">← Volver al panel</a>
+</div>
+{% endblock %}

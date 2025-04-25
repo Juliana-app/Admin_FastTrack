@@ -12,7 +12,13 @@
 <form method="post" class="formulario-pedido">
     {% csrf_token %}
     <label>Mesa:</label>
-    <input type="text" name="mesa" required class="input-texto">
+<select name="mesa_id" class="input-select" required>
+    <option value="">-- Selecciona una mesa --</option>
+    {% for mesa in mesas %}
+        <option value="{{ mesa.id }}">Mesa {{ mesa.numeroMesa }} - {{ mesa.sede.nombre }}</option>
+    {% endfor %}
+</select>
+
 
     <label>Productos:</label>
     <div id="productos-container">

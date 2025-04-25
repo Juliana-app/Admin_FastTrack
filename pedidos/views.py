@@ -1,25 +1,30 @@
 import csv
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from rest_framework import generics
-from .models import Pedido, PedidoProducto
-from .serializers import PedidoSerializer
-from rest_framework.permissions import IsAuthenticated
-from inventario.models import InventarioProducto, Producto
-from django.contrib import messages
 from datetime import datetime
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.utils.dateparse import parse_date
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+
+from mesa.models import Mesa
+from .models import Pedido, PedidoProducto
+from .serializers import PedidoSerializer
+from inventario.models import InventarioProducto, Producto
+
 
 class PedidoListCreateView(generics.ListCreateAPIView):
     queryset = Pedido.objects.all().order_by('-creado')
     serializer_class = PedidoSerializer
     permission_classes = [IsAuthenticated]
 
+
 class PedidoDetailView(generics.RetrieveUpdateAPIView):
     queryset = Pedido.objects.all()
     serializer_class = PedidoSerializer
     permission_classes = [IsAuthenticated]
+
 
 @login_required
 def tomar_pedido(request):
@@ -29,7 +34,7 @@ def tomar_pedido(request):
     sede = request.user.sede
 
     if request.method == 'POST':
-        mesa = request.POST.get('mesa')
+        mesa_id = request.POST.get('mesa_id')
         productos = []
 
         for key, value in request.POST.items():
@@ -44,9 +49,20 @@ def tomar_pedido(request):
                 except ValueError:
                     continue
 
-        if not productos:
-            messages.error(request, "Debe agregar al menos un producto con cantidad válida.")
+        if not productos or not mesa_id:
+            messages.error(request, "Debes seleccionar una mesa y al menos un producto.")
             return redirect('tomar_pedido')
+
+        try:
+            mesa = Mesa.objects.get(id=mesa_id, sede=sede)
+        except Mesa.DoesNotExist:
+            messages.error(request, "La mesa seleccionada no es válida.")
+            return redirect('tomar_pedido')
+        
+        mesa = Mesa.objects.get(id=mesa_id, sede=sede)
+        mesa.ocupada = True
+        mesa.save()
+
 
         pedido = Pedido.objects.create(
             usuario=request.user,
@@ -62,25 +78,30 @@ def tomar_pedido(request):
                 if inventario.cantidad >= cantidad:
                     PedidoProducto.objects.create(
                         pedido=pedido,
-                        producto=inventario.producto,
+                        producto=producto,
                         cantidad=cantidad,
-                        precio_unitario=inventario.precio_venta  # ✅ Aquí se asigna el precio
+                        precio_unitario=inventario.precio_venta
                     )
                     inventario.cantidad -= cantidad
                     inventario.save()
                 else:
-                    messages.warning(request, f"Producto {inventario.producto.nombre} no tiene stock suficiente.")
+                    messages.warning(request, f"Producto {producto.nombre} no tiene stock suficiente.")
             except (Producto.DoesNotExist, InventarioProducto.DoesNotExist):
                 messages.warning(request, f"Producto {nombre_producto} no disponible en esta sede.")
 
+        messages.success(request, "Pedido creado correctamente.")
+        return redirect('tomar_pedido')
 
     productos_disponibles = InventarioProducto.objects.filter(
         sede=sede,
         cantidad__gt=0
     ).select_related('producto')
 
+    mesas_disponibles = Mesa.objects.filter(sede=sede)
+
     return render(request, 'pedidos/tomar_pedido.html', {
-        'productos': productos_disponibles
+        'productos': productos_disponibles,
+        'mesas': mesas_disponibles
     })
 
 
@@ -98,21 +119,6 @@ def ver_pedidos(request):
 
     return render(request, 'pedidos/ver_pedidos.html', {'pedidos': pedidos})
 
-
-@login_required
-def marcar_pagado(request, pedido_id):
-    if request.user.rol not in ['cajero', 'admin']:
-        return redirect('dashboard')
-
-    try:
-        pedido = Pedido.objects.get(id=pedido_id)
-        pedido.estado = 'pagado'
-        pedido.save()
-        messages.success(request, "Pedido marcado como pagado.")
-    except Pedido.DoesNotExist:
-        messages.error(request, "El pedido no existe.")
-
-    return redirect('pedidos/ver_pedidos')
 
 @login_required
 def exportar_csv_pedidos(request):
@@ -139,33 +145,57 @@ def exportar_csv_pedidos(request):
         productos = ", ".join(
             [f"{pp.producto.nombre} ({pp.cantidad})" for pp in pedido.productos.all()]
         )
-        writer.writerow([pedido.id, pedido.usuario.username, pedido.mesa, pedido.estado, pedido.creado, productos])
+        writer.writerow([
+            pedido.id,
+            pedido.usuario.username,
+            pedido.mesa.nombre if pedido.mesa else "Sin mesa",
+            pedido.estado,
+            pedido.creado.strftime('%Y-%m-%d %H:%M'),
+            productos
+        ])
 
     return response
 
 @login_required
 def editar_pedido(request, pedido_id):
-    pedido = Pedido.objects.get(id=pedido_id)
+    pedido = get_object_or_404(Pedido, id=pedido_id)
 
     if request.user.rol != 'mesero' or pedido.usuario != request.user or pedido.estado != 'pendiente':
         return redirect('ver_pedidos')
 
-    productos = Producto.objects.all()
+    sede = request.user.sede
+    inventario = InventarioProducto.objects.filter(sede=sede).select_related('producto')
 
     if request.method == 'POST':
         nuevos_productos = request.POST.getlist('producto')
         nuevas_cantidades = request.POST.getlist('cantidad')
 
         for prod_id, cant in zip(nuevos_productos, nuevas_cantidades):
-            if cant and int(cant) > 0:
+            try:
+                cantidad = int(cant)
                 producto = Producto.objects.get(id=prod_id)
-                PedidoProducto.objects.create(pedido=pedido, producto=producto, cantidad=int(cant))
+                invent = InventarioProducto.objects.get(producto=producto, sede=sede)
 
+                if cantidad > 0 and invent.cantidad >= cantidad:
+                    PedidoProducto.objects.create(
+                        pedido=pedido,
+                        producto=producto,
+                        cantidad=cantidad,
+                        precio_unitario=invent.precio_venta  # <-- ASIGNA PRECIO
+                    )
+                    invent.cantidad -= cantidad  # <-- DESCUENTA STOCK
+                    invent.save()
+                else:
+                    messages.warning(request, f"No hay suficiente stock de {producto.nombre}.")
+            except (ValueError, Producto.DoesNotExist, InventarioProducto.DoesNotExist):
+                continue
+
+        messages.success(request, "Pedido actualizado.")
         return redirect('ver_pedidos')
 
     return render(request, 'pedidos/editar_pedido.html', {
         'pedido': pedido,
-        'productos': productos,
+        'inventario': inventario,
     })
 
 @login_required
@@ -188,12 +218,34 @@ def marcar_pedido_pagado(request, pedido_id):
     if request.user.rol not in ['cajero', 'admin']:
         return redirect('dashboard')
 
-    pedido = Pedido.objects.get(id=pedido_id)
-    pedido.estado = 'pagado'
-    pedido.save()
+    try:
+        pedido = Pedido.objects.get(id=pedido_id)
+        pedido.marcar_pagado() 
+
+        # Liberar mesa
+        mesa = pedido.mesa
+        mesa.ocupada = False
+        mesa.save()
+
+        messages.success(request, "Pedido marcado como pagado y mesa liberada.")
+
+    except Pedido.DoesNotExist:
+        messages.error(request, "El pedido no existe.")
+
     return redirect('pedidos_por_pagar')
+
 
 @login_required
 def vista_cajero(request):
-    return render(request, 'usuarios/caja_dashboard.html')
+    if request.user.rol not in ['cajero', 'admin']:
+        return redirect('dashboard')
+    
+    sede = request.user.sede
+    pedidos = Pedido.objects.filter(
+        usuario__sede=sede,
+        estado='pendiente'
+    ).order_by('-creado')
 
+    return render(request, 'usuarios/caja_dashboard.html', {
+        'pedidos': pedidos,
+    })

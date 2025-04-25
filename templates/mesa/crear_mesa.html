@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Crear Mesa{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/mesas/mesas_form.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto p-6 bg-white text-gray-900 rounded-lg shadow">
+    <h2 class="text-2xl font-bold mb-4">🪑 Crear nueva mesa</h2>
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="id_numeroMesa">Número de Mesa:</label>
+            {{ form.numeroMesa }}
+        </div>
+        
+        <div class="mb-3">
+            <label for="id_capacidad">Capacidad:</label>
+            {{ form.capacidad }}
+        </div>
+    
+        <div class="mb-3">
+            <label for="id_ubicacion">Ubicación:</label>
+            {{ form.ubicacion }}
+        </div>
+    
+        <div class="mb-3">
+            <label for="id_sede">Sede:</label>
+            {{ form.sede }}
+        </div>
+    
+        <button type="submit" class="btn btn-primary mt-3">Guardar Mesa</button>
+    </form>    
+</div>
+{% endblock %}

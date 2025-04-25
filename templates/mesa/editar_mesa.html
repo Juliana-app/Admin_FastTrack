@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Editar Mesa{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/mesas/mesas_form.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto p-6 bg-white text-gray-900 rounded-lg shadow">
+    <h2 class="text-2xl font-bold mb-4">✏️ Editar Mesa #{{ mesa.id }}</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded mt-4">Guardar Cambios</button>
+        <a href="{% url 'ver_mesas' %}" class="ml-4 text-blue-500 hover:underline">← Cancelar</a>
+    </form>
+</div>
+{% endblock %}

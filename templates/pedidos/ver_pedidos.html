@@ -31,17 +31,17 @@
             <p><strong>Productos:</strong></p>
             <ul class="ml-6 list-disc">
                 {% for item in pedido.productos.all %}
-                    <li>{{ item.producto.nombre }} - Cantidad: {{ item.cantidad }} - 
-                        Precio unitario: ${{ item.precio_unitario }} - 
-                        Subtotal c/IVA: ${{ item.subtotal_con_iva|floatformat:2 }}
-                    </li>
+                <li>
+                    {{ item.producto.nombre }} - Cantidad: {{ item.cantidad }} - 
+                    Precio unitario: ${{ item.precio_unitario }} - 
+                    Subtotal c/IVA: ${{ item.subtotal_con_iva|floatformat:2 }}
+                </li>                
                 {% endfor %}
             </ul>
-
+            
             <p class="mt-2 font-semibold text-right">
-                Total con IVA: $
-                {{ pedido.productos.all|total_con_iva }}
-            </p>            
+                Total con IVA: ${{ pedido.productos.all|total_con_iva }}
+            </p>                     
 
             {% if user.rol == 'cajero' or user.rol == 'admin' %}
                 <a href="{% url 'marcar_pagado' pedido.id %}" class="inline-block mt-3 bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700">💰 Marcar como Pagado</a>

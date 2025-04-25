@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'sede',
     'productos',
     'historial',
+    'mesa',
 ]
 
 MIDDLEWARE = [

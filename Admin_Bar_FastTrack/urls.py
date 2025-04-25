@@ -16,6 +16,7 @@ urlpatterns = [
     path('productos/', include('productos.urls')),
     path('api/sede/', include('sede.urls')),
     path('precios/', include('historial.urls')),
+    path('mesas/', include('mesa.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
   + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
