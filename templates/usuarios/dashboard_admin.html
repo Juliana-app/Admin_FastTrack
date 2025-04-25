@@ -3,7 +3,7 @@
 {% block title %}Panel Admin{% endblock %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'css/admin_dash.css' %}">
+<link rel="stylesheet" href="{% static 'css/usuarios/admin_dash.css' %}">
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet">
 {% endblock %}
 
@@ -16,7 +16,7 @@
         <a href="{% url 'crear_usuario' %}" class="btn-admin usuarios">➕ Crear usuario</a>
         <a href="{% url 'listar_usuarios' %}" class="btn-admin usuarios">👥 Ver usuarios</a>
         <a href="{% url 'lista_productos' %}" class="btn-admin inventario">📦 Gestionar inventario</a>
-        <a href="{% url 'crear_producto' %}" class="btn-caja producto">📁 Gestión Productos</a>
+        <a href="{% url 'crear_producto' %}" class="btn-admin productos">📁 Gestión Productos</a>
         <a href="{% url 'registrar_precio' %}" class="btn-admin precios">💲 Registrar precio de producto</a>
         <a href="{% url 'crear_sede' %}" class="btn-admin sedes">🏢 Crear nueva sede</a>
         <a href="{% url 'ver_pedidos' %}" class="btn-admin">📁 Ver pedidos</a>

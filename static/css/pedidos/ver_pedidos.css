@@ -1,0 +1,150 @@
+@import url('../botones.css');
+@import url('../darkmode.css');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap');
+
+body {
+  font-family: 'Rubik', sans-serif;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  transition: all 0.3s ease-in-out;
+}
+
+/* 🧾 Título */
+h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--color-texto);
+  text-shadow: 0 1px 0 rgba(0,0,0,0.04);
+}
+
+/* 📅 Formulario fechas */
+form {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+input[type="date"] {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-weight: 500;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+input[type="date"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.4);
+  border-color: #60a5fa;
+}
+html.dark input[type="date"] {
+  background-color: #374151;
+  color: #f3f4f6;
+  border-color: #4b5563;
+}
+
+/* 📥 Botón Exportar */
+form button {
+  background: linear-gradient(to right, #3b82f6, #2563eb);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2);
+}
+form button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+}
+
+/* 📦 Caja flotante para cada pedido */
+.space-y-4 > div {
+  background: linear-gradient(145deg, #ffffff, #f3f4f6);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 
+    0 12px 30px rgba(0, 0, 0, 0.08),
+    0 0 20px rgba(147, 197, 253, 0.15),
+    inset 0 0 10px rgba(255, 255, 255, 0.25);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+.space-y-4 > div:hover {
+  transform: translateY(-6px);
+  box-shadow: 
+    0 18px 35px rgba(0, 0, 0, 0.1),
+    0 0 24px rgba(96, 165, 250, 0.2);
+}
+
+html.dark .space-y-4 > div {
+  background: linear-gradient(145deg, #1f2937, #111827);
+  box-shadow: 
+    0 12px 30px rgba(255, 255, 255, 0.04),
+    0 0 20px rgba(96, 165, 250, 0.2),
+    inset 0 0 6px rgba(255, 255, 255, 0.05);
+  color: #f3f4f6;
+}
+
+/* Texto */
+.space-y-4 p,
+.space-y-4 li {
+  color: inherit;
+  font-size: 0.95rem;
+}
+.space-y-4 strong {
+  font-weight: 600;
+}
+.space-y-4 ul {
+  margin-top: 0.5rem;
+  margin-left: 1.5rem;
+}
+
+/* 💲 Total */
+.space-y-4 .text-right {
+  color: #111827;
+  font-size: 1.15rem;
+  font-weight: bold;
+}
+html.dark .text-right {
+  color: #e5e7eb;
+}
+
+/* ✅ Botón pagar */
+a.inline-block {
+  margin-top: 1.2rem;
+  background: linear-gradient(to right, #22c55e, #16a34a);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+  display: inline-block;
+}
+a.inline-block:hover {
+  background: #15803d;
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(21, 128, 61, 0.4);
+}
+
+/* ✏️ Editar */
+a.text-blue-600 {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: #2563eb;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+a.text-blue-600:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+html.dark a.text-blue-600 {
+  color: #60a5fa;
+}
+html.dark a.text-blue-600:hover {
+  color: #3b82f6;
+}

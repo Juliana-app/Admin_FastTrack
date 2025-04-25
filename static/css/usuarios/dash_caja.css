@@ -1,0 +1,163 @@
+@import url('./base.css');
+@import url('./navbar.css');
+@import url('./botones.css');
+@import url('./animaciones.css');
+@import url('./darkmode.css');
+
+body {
+    font-family: 'Rubik', sans-serif;
+}
+
+/* 💳 Caja principal del dashboard del cajero */
+.dashboard-caja {
+    background: linear-gradient(135deg, #fdfbfb, #ebedee);
+    padding: 50px;
+    border-radius: 24px;
+    max-width: 850px;
+    margin: 50px auto;
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.1),
+        0 0 40px rgba(147, 197, 253, 0.25),
+        inset 0 0 10px rgba(255, 255, 255, 0.4);
+    text-align: center;
+    animation: fadeInCaja 0.9s ease-in-out;
+    color: #1f2937;
+    position: relative;
+    backdrop-filter: blur(6px);
+}
+
+html.dark .dashboard-caja {
+    background: linear-gradient(135deg, #1f2937, #111827);
+    box-shadow:
+        0 20px 40px rgba(255, 255, 255, 0.04),
+        0 0 40px rgba(96, 165, 250, 0.2),
+        inset 0 0 10px rgba(255, 255, 255, 0.05);
+    color: #f3f4f6;
+}
+
+/* Título */
+.dashboard-caja h2 {
+    color: #2c3e50;
+    font-size: 32px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+html.dark .dashboard-caja h2 {
+    color: #f9fafb;
+}
+
+/* Subtítulo */
+.dashboard-caja p {
+    color: #555;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+html.dark .dashboard-caja p {
+    color: #d1d5db;
+}
+
+/* 💼 Contenedor de botones */
+.acciones-caja {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    background: #f9fafbcc;
+    padding: 30px;
+    border-radius: 16px;
+    backdrop-filter: blur(6px);
+    box-shadow:
+        0 8px 20px rgba(173, 216, 230, 0.3),
+        0 0 18px rgba(255, 255, 255, 0.15);
+    transition: all 0.4s ease;
+}
+
+html.dark .acciones-caja {
+    background: #1f2937cc;
+    box-shadow:
+        0 8px 20px rgba(96, 165, 250, 0.25),
+        0 0 18px rgba(255, 255, 255, 0.08);
+}
+
+/* 🧾 Botones de acción */
+.btn-caja {
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.35s ease;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-caja:hover {
+    background-color: #2980b9;
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 6px 20px rgba(41, 128, 185, 0.3);
+}
+
+/* ✨ Efecto hover visual */
+.btn-caja::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 0%; height: 100%;
+    background: rgba(255, 255, 255, 0.15);
+    transition: width 0.4s ease;
+    z-index: 0;
+}
+.btn-caja:hover::after {
+    width: 100%;
+}
+.btn-caja span {
+    position: relative;
+    z-index: 1;
+}
+
+/* 🎯 Variantes */
+.btn-caja.export {
+    background-color: #1abc9c;
+}
+.btn-caja.export:hover {
+    background-color: #16a085;
+}
+
+.btn-caja.secondary {
+    background-color: #9b59b6;
+}
+.btn-caja.secondary:hover {
+    background-color: #8e44ad;
+}
+
+.btn-caja.general {
+    background-color: #e67e22;
+    width: 100%;
+    max-width: 300px;
+}
+.btn-caja.general:hover {
+    background-color: #d35400;
+}
+
+.btn-caja.producto {
+    background-color: #f39c12;
+}
+.btn-caja.producto:hover {
+    background-color: #e67e22;
+}
+
+.btn-caja.precios {
+    background-color: #2ecc71;
+}
+.btn-caja.precios:hover {
+    background-color: #27ae60;
+}
+
+/* ✨ Animación entrada */
+@keyframes fadeInCaja {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

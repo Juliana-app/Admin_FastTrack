@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 {% load custom_filters %}
+{% load static %}
+
 {% block title %}Pedidos Pendientes{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/pedidos/ver_pedidos.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 <h2 class="text-2xl font-bold mb-4">Pedidos Pendientes</h2>
 

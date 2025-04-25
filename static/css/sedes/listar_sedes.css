@@ -118,3 +118,62 @@ body {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
+body.modo-oscuro {
+    background-color: #1e1e2f;
+}
+
+body.modo-oscuro .container-sedes {
+    background-color: #2a2a3d;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+body.modo-oscuro .titulo,
+body.modo-oscuro .descripcion {
+    color: #ecf0f1;
+}
+
+body.modo-oscuro .tabla-sedes th {
+    background-color: #333;
+    color: #f5f5f5;
+}
+
+body.modo-oscuro .tabla-sedes td {
+    color: #f0f0f0;
+    border-bottom: 1px solid #444;
+}
+
+body.modo-oscuro .no-sedes {
+    color: #aaa;
+}
+
+body.modo-oscuro .btn.crear {
+    background-color: #2ecc71;
+}
+
+body.modo-oscuro .btn.crear:hover {
+    background-color: #27ae60;
+}
+
+body.modo-oscuro .btn.volver {
+    background-color: #3498db;
+}
+
+body.modo-oscuro .btn.volver:hover {
+    background-color: #2980b9;
+}
+
+body.modo-oscuro .btn.tabla.editar {
+    background-color: #f1c40f;
+}
+
+body.modo-oscuro .btn.tabla.editar:hover {
+    background-color: #d4ac0d;
+}
+
+body.modo-oscuro .btn.tabla.eliminar {
+    background-color: #e74c3c;
+}
+
+body.modo-oscuro .btn.tabla.eliminar:hover {
+    background-color: #c0392b;
+}

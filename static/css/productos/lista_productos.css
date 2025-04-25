@@ -253,3 +253,10 @@ body {
     50% { background-color: #fecaca; }
   }
   
+  .modal-hide {
+    animation: fadeOut 0.3s ease forwards;
+  }
+  @keyframes fadeOut {
+    to { opacity: 0; transform: scale(0.95); }
+  }
+  

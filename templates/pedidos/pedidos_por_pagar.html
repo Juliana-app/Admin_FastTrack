@@ -1,47 +1,49 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load custom_filters %}
 {% block title %}Pedidos por Pagar{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/pedidos/pedidos_pendientes.css' %}">
+{% endblock %}
+
 {% block content %}
-<h2 class="text-2xl font-bold mb-6 text-center">💵 Pedidos Pendientes de Pago</h2>
+<h2 class="titulo-seccion">💵 Pedidos Pendientes de Pago</h2>
 
 {% if pedidos %}
-    <div class="space-y-6">
-        {% for pedido in pedidos %}
-        <div class="bg-white p-6 rounded shadow border">
-            <div class="flex justify-between items-center mb-2">
-                <div>
-                    <p><strong>🧾 Pedido:</strong> #{{ pedido.id }}</p>
-                    <p><strong>🍽️ Mesa:</strong> {{ pedido.mesa }}</p>
-                    <p><strong>📅 Fecha:</strong> {{ pedido.creado|date:"d M Y H:i" }}</p>
-                </div>
-                <div>
-                    <button onclick="confirmarPago('{{ pedido.id }}')" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-                        ✅ Marcar como Pagado
-                    </button>
-                </div>
-            </div>
-
+<div class="contenedor-pedidos">
+    {% for pedido in pedidos %}
+    <div class="pedido-card">
+        <div class="pedido-header">
             <div>
-                <p class="font-semibold mb-1">📦 Productos:</p>
-                <ul class="list-disc ml-6 text-sm">
-                    {% for item in pedido.productos.all %}
-                        <li>{{ item.producto.nombre }} - Cantidad: {{ item.cantidad }} - Unitario: ${{ item.precio_unitario }} - Subtotal + IVA: ${{ item.subtotal_con_iva|floatformat:2 }}</li>
-                    {% endfor %}
-                </ul>
+                <p><strong>🧾 Pedido:</strong> #{{ pedido.id }}</p>
+                <p><strong>🍽️ Mesa:</strong> {{ pedido.mesa }}</p>
+                <p><strong>📅 Fecha:</strong> {{ pedido.creado|date:"d M Y H:i" }}</p>
             </div>
-
-            <div class="mt-4 text-right font-semibold text-lg">
-                Total con IVA: ${{ pedido.productos.all|total_con_iva }}
+            <div>
+                <button onclick="confirmarPago('{{ pedido.id }}')" class="btn-pagar">
+                    ✅ Marcar como Pagado
+                </button>
             </div>
         </div>
-        {% endfor %}
+        <div>
+            <p class="font-semibold mb-1">📦 Productos:</p>
+            <ul class="lista-productos">
+                {% for item in pedido.productos.all %}
+                    <li>{{ item.producto.nombre }} - Cantidad: {{ item.cantidad }} - Unitario: ${{ item.precio_unitario }} - Subtotal + IVA: ${{ item.subtotal_con_iva|floatformat:2 }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="total-pedido">
+            Total con IVA: ${{ pedido.productos.all|total_con_iva }}
+        </div>
     </div>
+    {% endfor %}
+</div>
 {% else %}
-    <p class="text-center text-gray-600">No hay pedidos pendientes de pago.</p>
+<p class="mensaje-vacio">No hay pedidos pendientes de pago.</p>
 {% endif %}
 
-<!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 function confirmarPago(pedidoId) {
