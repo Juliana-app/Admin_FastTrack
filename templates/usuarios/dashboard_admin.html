@@ -13,19 +13,15 @@
     <p>Gestiona usuarios, sedes, inventario y más</p>
 
     <div class="acciones-admin grid grid-cols-2 gap-4 mt-4">
-        <a href="{% url 'crear_usuario' %}" class="btn-admin usuarios">➕ Crear usuario</a>
-        <a href="{% url 'listar_usuarios' %}" class="btn-admin usuarios">👥 Ver usuarios</a>
-        <a href="{% url 'lista_productos' %}" class="btn-admin inventario">📦 Gestionar inventario</a>
-        <a href="{% url 'crear_producto' %}" class="btn-admin productos">📁 Gestión Productos</a>
-        <a href="{% url 'registrar_precio' %}" class="btn-admin precios">💲 Registrar precio de producto</a>
-        <a href="{% url 'crear_sede' %}" class="btn-admin sedes">🏢 Crear nueva sede</a>
-        <a href="{% url 'crear_mesa' %}" class="btn-admin mesas">🪑 Crear mesa</a>
-        <a href="{% url 'ver_mesas' %}" class="btn-admin mesas">🪑 Ver mesas</a>
-        <a href="{% url 'tomar_pedido' %}" class="btn-admin tomar-pedido">➕ Tomar Pedido</a>
-        <a href="{% url 'ver_pedidos' %}" class="btn-admin pedidos">📁 Ver pedidos</a>
-        <a href="{% url 'pedidos_por_pagar' %}" class="btn-admin pendiente">💰 Ver Pedidos por Pagar</a>
-        <a href="#" class="btn-admin reportes">📊 Generar informes</a>        
-        <a href="{% url 'dashboard_general' %}" class="btn-admin general">📈 Ver Panel General</a>
+        <a href="{% url 'listar_usuarios' %}" class="btn-admin usuarios">👥 Usuarios</a>
+        <a href="{% url 'lista_productos' %}" class="btn-admin inventario">📦 Inventario</a>
+        <a href="{% url 'crear_producto' %}" class="btn-admin productos">📁 Productos</a>
+        <a href="{% url 'listar_sedes' %}" class="btn-admin sedes">🏢 Sedes</a>
+        <a href="{% url 'ver_mesas' %}" class="btn-admin mesas">🪑 Mesas</a>
+        <a href="{% url 'ver_pedidos' %}" class="btn-admin pedidos">📁 Pedidos</a>
+        <a href="{% url 'pedidos_por_pagar' %}" class="btn-admin pendiente">💰 Pedidos por Pagar</a>
+        <a href="#" class="btn-admin reportes">📊 Informes</a>        
+        <a href="{% url 'dashboard_general' %}" class="btn-admin general">📈 Panel General</a>
     </div>    
 </div>
 {% endblock %}

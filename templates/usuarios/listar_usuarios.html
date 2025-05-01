@@ -8,18 +8,27 @@
 
 {% block content %}
 <div class="contenedor-usuarios">
-  <h2 class="titulo">👥 Lista de Usuarios</h2>
+  <h2 class="text-2xl font-bold mb-4">👥 Lista de Usuarios</h2>
+
+  <div class="flex justify-end mb-4">
+    <button id="btnCrearUsuario" class="btn-filtrar custom-btn-filtrar">
+      ➕ Crear Usuario
+    </button>
+  </div>
 
   <form method="get" class="formulario-filtros">
-    <input type="text" name="q" value="{{ query }}" placeholder="Buscar por usuario o email" class="input-text" />
-    <select name="sede" class="select-sede">
-      <option value="">Todas las sedes</option>
-      {% for sede in sedes %}
-        <option value="{{ sede.id }}" {% if sede.id|stringformat:"s" == sede_id %}selected{% endif %}>{{ sede.nombre }}</option>
-      {% endfor %}
-    </select>
-    <button type="submit" class="btn-filtrar">🔍 Filtrar</button>
+    <div class="filtros-container">
+      <input type="text" name="q" value="{{ query }}" placeholder="Buscar por usuario o email" class="input-text filtro-input" />
+      <select name="sede" class="select-sede filtro-input">
+        <option value="">Todas las sedes</option>
+        {% for sede in sedes %}
+          <option value="{{ sede.id }}" {% if sede.id|stringformat:"s" == sede_id %}selected{% endif %}>{{ sede.nombre }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn-filtrar custom-btn-filtrar">🔍 Filtrar</button>
+    </div>
   </form>
+  
 
   <table class="tabla-usuarios">
     <thead>
@@ -64,10 +73,52 @@
   </table>
 </div>
 
+<!-- Fondo Borroso al Abrir Modal -->
+<div id="backdrop" class="backdrop hidden"></div>
+
+<!-- Modal de Crear Usuario -->
+<div id="modal-crear" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded w-full max-w-lg relative">
+    <button id="btnCerrarModalCrearUsuario" class="absolute top-2 right-2 text-gray-600 text-xl hover:text-red-600">&times;</button>
+    <h3 class="text-xl font-bold mb-4">➕ Crear Usuario</h3>
+    <form method="post" id="formCrearUsuario" action="{% url 'crear_usuario' %}">
+      {% csrf_token %}
+      <div class="grid gap-4">
+        <input type="text" name="username" id="crear_username" class="input-text" placeholder="Usuario" required>
+        <input type="text" name="first_name" id="crear_first_name" class="input-text" placeholder="Nombre" required>
+        <input type="text" name="last_name" id="crear_last_name" class="input-text" placeholder="Apellido" required>
+        <input type="email" name="email" id="crear_email" class="input-text" placeholder="Correo" required>
+
+        <div class="relative">
+          <input type="password" name="password" id="crear_password" class="input-text pr-10" placeholder="Contraseña" required>
+          <button type="button" class="toggle-password absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-500" onclick="togglePasswordCrear()">
+            👁️
+          </button>
+        </div>
+
+        <select name="rol" id="crear_rol" class="select-sede">
+          <option value="mesero">Mesero</option>
+          <option value="cajero">Cajero</option>
+          <option value="administrador">Administrador</option>
+        </select>
+        <select name="sede" id="crear_sede" class="select-sede">
+          {% for s in sedes %}
+            <option value="{{ s.id }}">{{ s.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="flex justify-end mt-4">
+        <button type="submit" class="btn-filtrar custom-btn-filtrar">Crear Usuario</button>
+        <button type="button" id="btnCancelModalCrear" class="ml-2 px-4 py-2 border rounded hover:bg-gray-100">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- Modal de Edición -->
 <div id="modal-editar" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   <div class="bg-white p-6 rounded w-full max-w-lg relative">
-    <button id="btnCerrarModal" class="absolute top-2 right-2 text-gray-600 text-xl hover:text-red-600">&times;</button>
+    <button id="btnCerrarModalEditarUsuario" class="absolute top-2 right-2 text-gray-600 text-xl hover:text-red-600">&times;</button>
     <h3 class="text-xl font-bold mb-4">✏️ Editar Usuario</h3>
     <form method="post" id="formEditarUsuario" action="">
       {% csrf_token %}
@@ -97,13 +148,31 @@
         </select>
       </div>
       <div class="flex justify-end mt-4">
-        <button type="submit" class="btn-filtrar bg-blue-600 text-white">Guardar cambios</button>
+        <button type="submit" class="btn-filtrar custom-btn-filtrar">Guardar cambios</button>
+        <button type="button" id="btnCancelModalEditar" class="ml-2 px-4 py-2 border rounded hover:bg-gray-100">Cancelar</button>
       </div>
     </form>
   </div>
 </div>
 
 <script>
+  // Modal Crear Usuario
+  document.getElementById('btnCrearUsuario').addEventListener('click', function() {
+    document.getElementById('modal-crear').classList.remove('hidden');
+    document.getElementById('backdrop').classList.remove('hidden');
+  });
+
+  document.getElementById('btnCerrarModalCrearUsuario').addEventListener('click', function() {
+    document.getElementById('modal-crear').classList.add('hidden');
+    document.getElementById('backdrop').classList.add('hidden');
+  });
+
+  document.getElementById('btnCancelModalCrear').addEventListener('click', function() {
+    document.getElementById('modal-crear').classList.add('hidden');
+    document.getElementById('backdrop').classList.add('hidden');
+  });
+
+  // Modal Editar Usuario
   document.querySelectorAll('.btn-editar').forEach(btn => {
     btn.addEventListener('click', function () {
       document.getElementById('edit_usuario_id').value = this.dataset.id;
@@ -115,26 +184,21 @@
       document.getElementById('edit_sede').value = this.dataset.sede;
       document.getElementById('edit_password').value = "";
 
-      document.getElementById('formEditarUsuario').action = `/api/usuarios/editar/${this.dataset.id}/`;
+      document.getElementById('formEditarUsuario').action = '/api/usuarios/editar/' + this.dataset.id + '/';
       document.getElementById('modal-editar').classList.remove('hidden');
+      document.getElementById('backdrop').classList.remove('hidden');
     });
   });
 
-  document.getElementById('btnCerrarModal').addEventListener('click', function () {
+  document.getElementById('btnCerrarModalEditarUsuario').addEventListener('click', function () {
     document.getElementById('modal-editar').classList.add('hidden');
+    document.getElementById('backdrop').classList.add('hidden');
   });
 
-  function togglePassword() {
-    const input = document.getElementById('edit_password');
-    input.type = input.type === "password" ? "text" : "password";
-  }
-
-  // Ocultar alertas automáticamente
-  setTimeout(() => {
-    document.querySelectorAll('.alert').forEach(alert => {
-      alert.classList.add('opacity-0', 'transition-opacity', 'duration-500');
-      setTimeout(() => alert.remove(), 500);
-    });
-  }, 4000);
+  document.getElementById('btnCancelModalEditar').addEventListener('click', function() {
+    document.getElementById('modal-editar').classList.add('hidden');
+    document.getElementById('backdrop').classList.add('hidden');
+  });
 </script>
+
 {% endblock %}

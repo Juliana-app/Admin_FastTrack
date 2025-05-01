@@ -6,174 +6,238 @@
 
 body {
     font-family: 'Rubik', sans-serif;
-    background-color: #f4f6f9;
+    background-color: #f9fafb;
 }
 
-.container-sedes {
-    max-width: 1000px;
-    margin: 40px auto;
-    background: #ffffff;
-    padding: 40px;
-    border-radius: 16px;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-    animation: fadeIn 0.6s ease-in-out;
-}
-
-.titulo {
-    font-size: 32px;
-    font-weight: bold;
-    color: #2c3e50;
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.descripcion {
-    text-align: center;
-    font-size: 18px;
-    color: #555;
-    margin-bottom: 30px;
-}
-
-.acciones {
-    text-align: center;
+/* TÍTULOS */
+h2 {
+    color: #1f2937;
+    font-size: 28px;
     margin-bottom: 20px;
 }
 
-.btn {
-    display: inline-block;
-    padding: 10px 20px;
-    margin: 0 8px;
-    border-radius: 8px;
-    text-decoration: none;
+/* 🟦 BOTÓN FILTRAR */
+.custom-btn-filtrar {
+  background-color: #5c6bc0; /* Azul suave */
+  color: white !important; /* Aseguramos que el texto sea blanco con !important */
+  border: none;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.3s, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(92, 107, 192, 0.3); /* Sombra sutil */
+}
+
+.custom-btn-filtrar:hover {
+  background-color: #3f51b5; /* Azul más oscuro al pasar el ratón */
+  transform: translateY(-3px); /* Ligera elevación */
+  box-shadow: 0 6px 12px rgba(92, 107, 192, 0.4); /* Sombra más pronunciada */
+}
+
+/* 🟢 BOTÓN CREAR USUARIO */
+.custom-btn-crear-sede {
+  background-color: #007BFF; /* Azul moderno */
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: 600;
+  transition: background-color 0.3s, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 6px 14px rgba(0, 123, 255, 0.3); /* Sombra suave */
+}
+
+.custom-btn-crear-sede:hover {
+  background-color: #0056b3; /* Azul más oscuro al pasar el ratón */
+  transform: translateY(-3px); /* Sutil efecto de elevación */
+  box-shadow: 0 8px 16px rgba(0, 123, 255, 0.5); /* Sombra más pronunciada */
+}
+
+
+/* 🟦 BOTÓN EDITAR */
+button.btn-editar {
     font-weight: 500;
-    transition: all 0.3s ease;
+    color: #2563eb;
+    transition: color 0.3s ease, transform 0.2s ease;
 }
 
-.crear {
-    background-color: #27ae60;
-    color: white;
-}
-.crear:hover {
-    background-color: #1e874b;
+button.btn-editar:hover {
+    color: #1d4ed8;
+    transform: scale(1.03);
 }
 
-.volver {
-    background-color: #3498db;
-    color: white;
-}
-.volver:hover {
-    background-color: #2980b9;
+/* 🔴 BOTÓN ELIMINAR */
+button[type="submit"] {
+    color: #dc2626;
+    transition: color 0.3s ease, transform 0.2s ease;
 }
 
-.tabla-sedes {
-    width: 100%;
+button[type="submit"]:hover {
+    color: #b91c1c;
+    transform: scale(1.03);
+}
+
+/* TABLA */
+table {
     border-collapse: collapse;
-    margin-top: 20px;
+    width: 100%;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
-.tabla-sedes th,
-.tabla-sedes td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #ddd;
-    text-align: center;
+thead {
+    background-color: #f3f4f6;
+    text-transform: uppercase;
+    font-size: 14px;
+    color: #374151;
 }
 
-.tabla-sedes th {
-    background-color: #f0f0f0;
-    font-weight: bold;
+th, td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
 }
 
-.btn.tabla {
-    padding: 6px 12px;
+/* MODAL */
+#modal-crear-usuario {
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease-in-out;
+}
+
+/* ANIMACIÓN DEL MODAL */
+.modal-anim {
+    animation: slideUpFade 0.4s ease-out;
+}
+
+@keyframes slideUpFade {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* FORMULARIO MODAL */
+form label {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 6px;
+    display: block;
+}
+
+form input,
+form select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #d1d5db;
     border-radius: 6px;
-    font-size: 16px;
-    text-decoration: none;
-    margin: 0 4px;
+    font-size: 14px;
+    color: #111827;
 }
 
-.editar {
-    background-color: #f1c40f;
-    color: white;
-}
-.editar:hover {
-    background-color: #d4ac0d;
-}
-
-.eliminar {
-    background-color: #e74c3c;
-    color: white;
-}
-.eliminar:hover {
-    background-color: #c0392b;
+form input:focus,
+form select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px #2563eb33;
+    outline: none;
 }
 
-.no-sedes {
-    text-align: center;
-    color: #999;
-    font-size: 16px;
-    margin-top: 30px;
+/* ANIMACIONES */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.6;
+    }
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-body.modo-oscuro {
-    background-color: #1e1e2f;
+@keyframes parpadeo-fondo {
+    0%, 100% { background-color: #fee2e2; }
+    50% { background-color: #fecaca; }
 }
 
-body.modo-oscuro .container-sedes {
-    background-color: #2a2a3d;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+.modal-hide {
+    animation: fadeOut 0.3s ease forwards;
 }
 
-body.modo-oscuro .titulo,
-body.modo-oscuro .descripcion {
-    color: #ecf0f1;
+@keyframes fadeOut {
+    to { opacity: 0; transform: scale(0.95); }
 }
 
-body.modo-oscuro .tabla-sedes th {
-    background-color: #333;
-    color: #f5f5f5;
+/* Estilo para el fondo borroso */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: none;
+  z-index: 40; /* Se asegura de que esté debajo del modal pero encima del contenido */
 }
 
-body.modo-oscuro .tabla-sedes td {
-    color: #f0f0f0;
-    border-bottom: 1px solid #444;
+/* Mostrar la capa de fondo cuando el modal está abierto */
+.backdrop.hidden {
+  display: none;
+}
+.backdrop:not(.hidden) {
+  display: block;
 }
 
-body.modo-oscuro .no-sedes {
-    color: #aaa;
-}
+  /* ⚪ BOTÓN CANCELAR */
+  #btnCancelModalEditar {
+    background-color: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 10px 20px;
+    transition: background-color 0.3s, transform 0.2s ease;
+  }
+  
+  #btnCancelModalEditar:hover {
+    background-color: #e5e7eb;
+    transform: scale(1.03);
+  }
 
-body.modo-oscuro .btn.crear {
-    background-color: #2ecc71;
-}
+    /* ⚪ BOTÓN CANCELAR */
+  #btnCancelModalEditar {
+    background-color: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 10px 20px;
+    transition: background-color 0.3s, transform 0.2s ease;
+  }
+  
+  #btnCancelModalEditar:hover {
+    background-color: #e5e7eb;
+    transform: scale(1.03);
+  }
 
-body.modo-oscuro .btn.crear:hover {
-    background-color: #27ae60;
-}
-
-body.modo-oscuro .btn.volver {
-    background-color: #3498db;
-}
-
-body.modo-oscuro .btn.volver:hover {
-    background-color: #2980b9;
-}
-
-body.modo-oscuro .btn.tabla.editar {
-    background-color: #f1c40f;
-}
-
-body.modo-oscuro .btn.tabla.editar:hover {
-    background-color: #d4ac0d;
-}
-
-body.modo-oscuro .btn.tabla.eliminar {
-    background-color: #e74c3c;
-}
-
-body.modo-oscuro .btn.tabla.eliminar:hover {
-    background-color: #c0392b;
-}
+    /* ⚪ BOTÓN CANCELAR */
+  #btnCancelModalCrear{
+    background-color: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 10px 20px;
+    transition: background-color 0.3s, transform 0.2s ease;
+  }
+  
+  #btnCancelModalCrear:hover {
+    background-color: #e5e7eb;
+    transform: scale(1.03);
+  }

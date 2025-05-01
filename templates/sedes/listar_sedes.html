@@ -1,46 +1,143 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block title %}Lista de Sedes{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/sedes/listar_sedes.css' %}">
+{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/sedes/listar_sedes.css' %}">
+<div class="contenedor-sedes">
+  <h2 class="text-2xl font-bold mb-4">📍 Lista de Sedes</h2>
 
-<div class="container-sedes">
-    <h1 class="titulo">📍 Lista de Sedes</h1>
-    <p class="descripcion">Consulta, edita o elimina las sedes registradas.</p>
+  <div class="flex justify-end mb-4">
+    <button id="btnCrearSede" class="btn-filtrar custom-btn-filtrar">
+      ➕ Crear Sede
+    </button>
+  </div>
 
-    <div class="acciones">
-        <a href="{% url 'crear_sede' %}" class="btn crear">➕ Crear nueva sede</a>
-        <a href="{% url 'dashboard_admin' %}" class="btn volver">⬅ Volver al Panel</a>
-    </div>
-
-    {% if sedes %}
-        <table class="tabla-sedes">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Dirección</th>
-                    <th>Teléfono</th>
-                    <th>Email</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for sede in sedes %}
-                    <tr>
-                        <td>{{ sede.nombre }}</td>
-                        <td>{{ sede.direccion }}</td>
-                        <td>{{ sede.telefono }}</td>
-                        <td>{{ sede.email }}</td>
-                        <td>
-                            <a href="#" class="btn tabla editar">✏️</a>
-                            <a href="{% url 'eliminar_sede' sede.id %}" class="btn tabla eliminar" onclick="return confirm('¿Estás seguro de eliminar esta sede?')">🗑️</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p class="no-sedes">No hay sedes registradas aún.</p>
-    {% endif %}
+  <table class="tabla-sedes">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Dirección</th>
+        <th>Teléfono</th>
+        <th>Email</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sede in sedes %}
+      <tr>
+        <td>{{ sede.nombre }}</td>
+        <td>{{ sede.direccion }}</td>
+        <td>{{ sede.telefono }}</td>
+        <td>{{ sede.email }}</td>
+        <td>
+          <button class="btn-editar" 
+                  data-id="{{ sede.id }}"
+                  data-nombre="{{ sede.nombre }}"
+                  data-direccion="{{ sede.direccion }}"
+                  data-telefono="{{ sede.telefono }}"
+                  data-email="{{ sede.email }}">
+            ✏️ Editar
+          </button>
+          <form action="{% url 'eliminar_sede' sede.id %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" onclick="return confirm('¿Estás seguro de eliminar esta sede?')">🗑 Eliminar</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
+
+<!-- Fondo Borroso al Abrir Modal -->
+<div id="backdrop" class="backdrop hidden"></div>
+
+<!-- Modal de Crear Sede -->
+<div id="modal-crear" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded w-full max-w-lg relative">
+    <button id="btnCerrarModalCrearSede" class="absolute top-2 right-2 text-gray-600 text-xl hover:text-red-600">&times;</button>
+    <h3 class="text-xl font-bold mb-4">➕ Crear Sede</h3>
+    <form method="post" id="formCrearSede" action="{% url 'crear_sede' %}">
+      {% csrf_token %}
+      <div class="grid gap-4">
+        <input type="text" name="nombre" id="crear_nombre" class="input-text" placeholder="Nombre" required>
+        <input type="text" name="direccion" id="crear_direccion" class="input-text" placeholder="Dirección" required>
+        <input type="text" name="telefono" id="crear_telefono" class="input-text" placeholder="Teléfono" required>
+        <input type="email" name="email" id="crear_email" class="input-text" placeholder="Correo" required>
+      </div>
+      <div class="flex justify-end mt-4">
+        <button type="submit" class="btn-filtrar custom-btn-filtrar">Crear Sede</button>
+        <button type="button" id="btnCancelModalCrear" class="ml-2 px-4 py-2 border rounded hover:bg-gray-100">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal de Edición -->
+<div id="modal-editar" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded w-full max-w-lg relative">
+    <button id="btnCerrarModalEditarSede" class="absolute top-2 right-2 text-gray-600 text-xl hover:text-red-600">&times;</button>
+    <h3 class="text-xl font-bold mb-4">✏️ Editar Sede</h3>
+    <form method="post" id="formEditarSede" action="">
+      {% csrf_token %}
+      <div class="grid gap-4">
+        <input type="text" name="nombre" id="edit_nombre" class="input-text" placeholder="Nombre" required>
+        <input type="text" name="direccion" id="edit_direccion" class="input-text" placeholder="Dirección" required>
+        <input type="text" name="telefono" id="edit_telefono" class="input-text" placeholder="Teléfono" required>
+        <input type="email" name="email" id="edit_email" class="input-text" placeholder="Correo" required>
+      </div>
+      <div class="flex justify-end mt-4">
+        <button type="submit" class="btn-filtrar custom-btn-filtrar">Guardar cambios</button>
+        <button type="button" id="btnCancelModalEditar" class="ml-2 px-4 py-2 border rounded hover:bg-gray-100">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Modal Crear Sede
+  document.getElementById('btnCrearSede').addEventListener('click', function() {
+    document.getElementById('modal-crear').classList.remove('hidden');
+    document.getElementById('backdrop').classList.remove('hidden');
+  });
+
+  document.getElementById('btnCerrarModalCrearSede').addEventListener('click', function() {
+    document.getElementById('modal-crear').classList.add('hidden');
+    document.getElementById('backdrop').classList.add('hidden');
+  });
+
+  document.getElementById('btnCancelModalCrear').addEventListener('click', function() {
+    document.getElementById('modal-crear').classList.add('hidden');
+    document.getElementById('backdrop').classList.add('hidden');
+  });
+
+  // Modal Editar Sede
+  document.querySelectorAll('.btn-editar').forEach(btn => {
+    btn.addEventListener('click', function () {
+      document.getElementById('edit_nombre').value = this.dataset.nombre;
+      document.getElementById('edit_direccion').value = this.dataset.direccion;
+      document.getElementById('edit_telefono').value = this.dataset.telefono;
+      document.getElementById('edit_email').value = this.dataset.email;
+
+      document.getElementById('formEditarSede').action = "{% url 'actualizar_sede' '0' %}".replace('0', this.dataset.id);
+      document.getElementById('modal-editar').classList.remove('hidden');
+      document.getElementById('backdrop').classList.remove('hidden');
+    });
+  });
+
+  document.getElementById('btnCerrarModalEditarSede').addEventListener('click', function () {
+    document.getElementById('modal-editar').classList.add('hidden');
+    document.getElementById('backdrop').classList.add('hidden');
+  });
+
+  document.getElementById('btnCancelModalEditar').addEventListener('click', function() {
+    document.getElementById('modal-editar').classList.add('hidden');
+    document.getElementById('backdrop').classList.add('hidden');
+  });
+</script>
+
 {% endblock %}

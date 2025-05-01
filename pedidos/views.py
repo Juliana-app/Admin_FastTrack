@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.utils.dateparse import parse_date
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+from django.utils.timezone import now 
 
 from mesa.models import Mesa
 from .models import Pedido, PedidoProducto
@@ -51,13 +52,13 @@ def tomar_pedido(request):
 
         if not productos or not mesa_id:
             messages.error(request, "Debes seleccionar una mesa y al menos un producto.")
-            return redirect('tomar_pedido')
+            return redirect('ver_pedidos')
 
         try:
             mesa = Mesa.objects.get(id=mesa_id, sede=sede)
         except Mesa.DoesNotExist:
             messages.error(request, "La mesa seleccionada no es válida.")
-            return redirect('tomar_pedido')
+            return redirect('ver_pedidos')
         
         mesa = Mesa.objects.get(id=mesa_id, sede=sede)
         mesa.ocupada = True
@@ -90,7 +91,7 @@ def tomar_pedido(request):
                 messages.warning(request, f"Producto {nombre_producto} no disponible en esta sede.")
 
         messages.success(request, "Pedido creado correctamente.")
-        return redirect('tomar_pedido')
+        return redirect('ver_pedidos')
 
     productos_disponibles = InventarioProducto.objects.filter(
         sede=sede,
@@ -99,27 +100,107 @@ def tomar_pedido(request):
 
     mesas_disponibles = Mesa.objects.filter(sede=sede)
 
-    return render(request, 'pedidos/tomar_pedido.html', {
+    return render(request, 'pedidos/ver_pedidos.html', {
         'productos': productos_disponibles,
         'mesas': mesas_disponibles
     })
 
-
 @login_required
 def ver_pedidos(request):
+    # Verifica si el usuario tiene el rol adecuado
     if request.user.rol not in ['cajero', 'administrador', 'mesero']:
         return redirect('dashboard')
 
     sede_usuario = request.user.sede
 
-    pedidos = Pedido.objects.filter(
-        usuario__sede=sede_usuario,
-        estado='pendiente'
-    ).select_related('usuario').prefetch_related('productos__producto').order_by('-creado')
+    # Manejo de GET: Mostrar pedidos pendientes
+    if request.method == 'GET':
+        pedidos = Pedido.objects.filter(
+            usuario__sede=sede_usuario,
+            estado='pendiente'
+        ).select_related('usuario').prefetch_related('productos__producto').order_by('-creado')
+        
+        return render(request, 'pedidos/ver_pedidos.html', {'pedidos': pedidos})
 
-    return render(request, 'pedidos/ver_pedidos.html', {'pedidos': pedidos})
+    # Manejo de POST: Crear un nuevo pedido
+    if request.method == 'POST':
+        mesa_id = request.POST.get('mesa_id')
+        productos = []
 
+        # Extraer los productos seleccionados y sus cantidades
+        for key, value in request.POST.items():
+            if key.startswith('producto_id_'):
+                index = key.split('_')[-1]
+                cantidad = request.POST.get(f'cantidad_{index}', 0)
+                try:
+                    nombre_producto = value
+                    cantidad = int(cantidad)
+                    if cantidad > 0:
+                        productos.append((nombre_producto, cantidad))
+                except ValueError:
+                    continue
 
+        # Verificar si se seleccionaron productos y una mesa
+        if not productos or not mesa_id:
+            messages.error(request, "Debes seleccionar una mesa y al menos un producto.")
+            return redirect('ver_pedidos')
+
+        # Verificar si la mesa existe en la sede del usuario
+        try:
+            mesa = Mesa.objects.get(id=mesa_id, sede=sede_usuario)
+        except Mesa.DoesNotExist:
+            messages.error(request, "La mesa seleccionada no es válida.")
+            return redirect('ver_pedidos')
+
+        # Marcar la mesa como ocupada
+        mesa.ocupada = True
+        mesa.save()
+
+        # Crear el pedido
+        pedido = Pedido.objects.create(
+            usuario=request.user,
+            mesa=mesa,
+            estado='pendiente',
+            creado=now()  # Usamos `now()` para obtener la fecha y hora actual
+        )
+
+        # Añadir los productos al pedido
+        for nombre_producto, cantidad in productos:
+            try:
+                producto = Producto.objects.get(nombre=nombre_producto)
+                inventario = InventarioProducto.objects.get(producto=producto, sede=sede_usuario)
+                if inventario.cantidad >= cantidad:
+                    # Crear los productos del pedido
+                    PedidoProducto.objects.create(
+                        pedido=pedido,
+                        producto=producto,
+                        cantidad=cantidad,
+                        precio_unitario=inventario.precio_venta
+                    )
+                    # Restar del inventario
+                    inventario.cantidad -= cantidad
+                    inventario.save()
+                else:
+                    messages.warning(request, f"Producto {producto.nombre} no tiene stock suficiente.")
+            except (Producto.DoesNotExist, InventarioProducto.DoesNotExist):
+                messages.warning(request, f"Producto {nombre_producto} no disponible en esta sede.")
+
+        messages.success(request, "Pedido creado correctamente.")
+        return redirect('ver_pedidos')
+
+    # Si es POST pero aún no ha sido procesado, obtener los productos y mesas
+    productos_disponibles = InventarioProducto.objects.filter(
+        sede=sede_usuario,
+        cantidad__gt=0
+    ).select_related('producto')
+
+    mesas_disponibles = Mesa.objects.filter(sede=sede_usuario)
+
+    return render(request, 'pedidos/ver_pedidos.html', {
+        'productos': productos_disponibles,
+        'mesas': mesas_disponibles
+    })
+    
 @login_required
 def exportar_csv_pedidos(request):
     if request.user.rol not in ['cajero', 'admin']:
@@ -249,3 +330,34 @@ def vista_cajero(request):
     return render(request, 'usuarios/caja_dashboard.html', {
         'pedidos': pedidos,
     })
+
+@login_required
+def editar_pedido(request, pedido_id):
+    # Obtener el pedido a editar
+    pedido = get_object_or_404(Pedido, id=pedido_id)
+
+    if request.method == 'POST':
+        # Actualizar cantidades de los productos existentes
+        for producto in pedido.productos.all():
+            cantidad = int(request.POST.get(f'cantidad_{producto.id}', producto.cantidad)) 
+            producto.cantidad = cantidad
+            producto.save()
+
+        # Agregar nuevos productos
+        productos_nuevos = request.POST.getlist('producto_id')
+        cantidades_nuevas = request.POST.getlist('cantidad')
+        
+        # Iterar sobre los nuevos productos y agregarlos al pedido
+        for producto_id, cantidad in zip(productos_nuevos, cantidades_nuevas):
+            producto = get_object_or_404(Producto, id=producto_id)
+            pedido.productos.add(producto)
+            # Actualizar la cantidad
+            producto.cantidad += int(cantidad)
+            producto.save()
+
+        return redirect('ver_pedidos')  # Redirige a la vista de pedidos pendientes
+
+    # Obtener la lista de productos disponibles
+    productos_disponibles = Producto.objects.all()
+
+    return render(request, 'pedidos/ver_pedidos.html', {'pedido': pedido, 'productos_disponibles': productos_disponibles})

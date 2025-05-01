@@ -7,11 +7,11 @@
 {% endblock %}
 
 {% block content %}
-<div class="max-w-6xl mx-auto bg-white p-6 rounded shadow">
+<div class="w-full min-h-screen bg-white p-6">
   <h2 class="text-2xl font-bold mb-4">📦 Inventario de Productos</h2>
 
   <div class="flex justify-end mb-4">
-    <button id="btnOpenModal" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+    <button id="btnOpenModal" class="btn-filtrar custom-btn-filtrar">
       ➕ Agregar Producto
     </button>
   </div>
@@ -51,17 +51,21 @@
         <td class="py-2 px-4 border-b">${{ producto.precio_venta }}</td>
         <td class="py-2 px-4 border-b">{{ producto.sede.nombre }}</td>
         <td class="py-2 px-4 border-b text-center">
-          <button
-            class="text-blue-600 hover:underline btnEdit"
+          <button class="btn-editar" 
             data-id="{{ producto.id }}"
             data-producto="{{ producto.producto.id }}"
             data-cantidad="{{ producto.cantidad }}"
-            data-stock_minimo="{{ producto.stock_minimo }}"
-          >
-            Editar
+            data-stock_minimo="{{ producto.stock_minimo }}">
+            ✏️ Editar
           </button>
-          |
-          <a href="{% url 'eliminar_producto_inventario' producto.pk %}" class="text-red-600 hover:underline">Eliminar</a>
+
+          <form action="{% url 'eliminar_producto_inventario' producto.pk %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" onclick="return confirm('¿Estás seguro de eliminar este producto?')">
+              🗑 Eliminar
+            </button>
+          </form>
+
         </td>
       </tr>
       {% empty %}
@@ -108,7 +112,7 @@
       </div>
 
       <div class="mt-4 flex justify-end">
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Guardar</button>
+        <button type="submit" class="btn-filtrar custom-btn-filtrar">Guardar</button>
         <button type="button" id="btnCancelModal" class="ml-2 px-4 py-2 border rounded hover:bg-gray-100">Cancelar</button>
       </div>
     </form>
@@ -157,7 +161,7 @@
     closeBtn?.addEventListener('click', hideModal);
     cancelBtn?.addEventListener('click', hideModal);
 
-    document.querySelectorAll('.btnEdit').forEach(btn => {
+    document.querySelectorAll('.btn-editar').forEach(btn => {
       btn.addEventListener('click', function () {
         const id = this.getAttribute('data-id');
         const producto = this.getAttribute('data-producto');

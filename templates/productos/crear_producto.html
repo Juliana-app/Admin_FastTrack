@@ -1,151 +1,134 @@
 {% extends 'base.html' %}
-{% block title %}Gestión de Productos{% endblock %}
+{% load static %}
+{% block title %}Gestión de productos{% endblock %}
 
 {% block head %}
-{% load static %}
 <link rel="stylesheet" href="{% static 'css/productos/productos_crear.css' %}">
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
-  <h2 class="text-2xl font-bold mb-6">🛠 Gestión de Productos</h2>
+<div class="contenedor-productos">
+  <h2 class="text-2xl font-bold mb-4">🛠 Gestión de Productos</h2>
 
-  <!-- Formulario para crear producto -->
-  <form method="post" class="mb-8">
-    {% csrf_token %}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Nombre</label>
-        {{ form.nombre }}
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Descripción</label>
-        {{ form.descripcion }}
-      </div>
-    </div>
-    <div class="mt-4">
-      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Guardar Producto</button>
-    </div>
-  </form>
+  <div class="flex justify-end gap-4 mb-4">
+    <button id="btnCrearProducto" class="btn-filtrar custom-btn-filtrar">
+      ➕ Crear Producto
+    </button>
+    <a href="{% url 'registrar_precio' %}" class="btn-filtrar custom-btn-filtrar">
+      💰 Asignar precio
+    </a>
+  </div>  
 
-  <!-- Tabla de productos -->
-  <table class="min-w-full border text-sm">
-    <thead class="bg-gray-100">
+  <table class="tabla-productos">
+    <thead>
       <tr>
-        <th class="py-2 px-4 border-b text-left">Nombre</th>
-        <th class="py-2 px-4 border-b text-left">Descripción</th>
-        <th class="py-2 px-4 border-b text-center">Acciones</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
       {% for producto in productos %}
-      <tr id="producto-{{ producto.id }}">
-        <td class="py-2 px-4 border-b">{{ producto.nombre }}</td>
-        <td class="py-2 px-4 border-b">{{ producto.descripcion }}</td>
-        <td class="py-2 px-4 border-b text-center">
-          <button
-              type="button"
-              class="text-blue-600 hover:underline btnEdit"
-              data-id="{{ producto.id }}"
-              data-nombre="{{ producto.nombre }}"
-              data-descripcion="{{ producto.descripcion }}"
-          >Editar</button>
-
-          <a href="{% url 'eliminar_producto' producto.id %}" class="text-red-600 hover:underline">Eliminar</a>
-        </td>
-      </tr>
-      {% empty %}
       <tr>
-        <td colspan="3" class="text-center py-4">No hay productos registrados.</td>
+        <td>{{ producto.nombre }}</td>
+        <td>{{ producto.descripcion }}</td>
+        <td>
+          <button class="btn-editar" 
+                  data-id="{{ producto.id }}"
+                  data-nombre="{{ producto.nombre }}"
+                  data-descripcion="{{ producto.descripcion }}">
+            ✏️ Editar
+          </button>
+          <form action="{% url 'eliminar_producto' producto.id %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" onclick="return confirm('¿Estás seguro de eliminar este producto?')">🗑 Eliminar</button>
+          </form>
+        </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
 
-<!-- Modal -->
-<div id="modalEdit" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-  <div class="bg-white p-6 rounded shadow-md w-full max-w-lg relative">
-    <button type="button" id="btnCloseModal" class="absolute top-2 right-2 text-gray-600 hover:text-red-600 text-2xl">&times;</button>
-    <h3 class="text-xl font-bold mb-4">Editar Producto</h3>
+<!-- Fondo Borroso al Abrir Modal -->
+<div id="backdrop" class="backdrop hidden"></div>
 
-    <form method="post" id="formEdit">
+<!-- Modal de Crear Producto -->
+<div id="modal-crear" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded w-full max-w-lg relative">
+    <button id="btnCerrarModalCrearProducto" class="absolute top-2 right-2 text-gray-600 text-xl hover:text-red-600">&times;</button>
+    <h3 class="text-xl font-bold mb-4">➕ Crear Producto</h3>
+    <form method="post" id="formCrearProducto" action="{% url 'crear_producto' %}">
       {% csrf_token %}
-      <input type="hidden" name="producto_id" id="edit_id">
-      <div class="mb-4">
-        <label for="edit_nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
-        <input type="text" name="nombre" id="edit_nombre" class="w-full border-gray-300 rounded p-2">
-      </div>
-      <div class="mb-4">
-        <label for="edit_descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>
-        <textarea name="descripcion" id="edit_descripcion" rows="3" class="w-full border-gray-300 rounded p-2"></textarea>
+      <div class="grid gap-4">
+        <input type="text" name="nombre" id="crear_nombre" class="input-text" placeholder="Nombre" required>
+        <input type="text" name="descripcion" id="crear_descripcion" class="input-text" placeholder="Descripción" required>
       </div>
       <div class="flex justify-end mt-4">
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Actualizar</button>
+        <button type="submit" class="btn-filtrar custom-btn-filtrar">Crear Producto</button>
+        <button type="button" id="btnCancelModalCrear" class="ml-2 px-4 py-2 border rounded hover:bg-gray-100">Cancelar</button>
       </div>
     </form>
   </div>
 </div>
-{% endblock %}
 
-{% block extra_scripts %}
+<!-- Modal de Edición -->
+<div id="modal-editar" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded w-full max-w-lg relative">
+    <button id="btnCerrarModalEditarProducto" class="absolute top-2 right-2 text-gray-600 text-xl hover:text-red-600">&times;</button>
+    <h3 class="text-xl font-bold mb-4">✏️ Editar Producto</h3>
+    <form method="post" id="formEditarProducto" action="">
+      {% csrf_token %}
+      <div class="grid gap-4">
+        <input type="text" name="nombre" id="edit_nombre" class="input-text" placeholder="Nombre" required>
+        <input type="text" name="descripcion" id="edit_descripcion" class="input-text" placeholder="Descripción" required>
+      </div>
+      <div class="flex justify-end mt-4">
+        <button type="submit" class="btn-filtrar custom-btn-filtrar">Guardar cambios</button>
+        <button type="button" id="btnCancelModalEditar" class="ml-2 px-4 py-2 border rounded hover:bg-gray-100">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const modal = document.getElementById('modalEdit');
-    const form = document.getElementById('formEdit');
-    const closeBtn = document.getElementById('btnCloseModal');
+  // Modal Crear Producto
+  document.getElementById('btnCrearProducto').addEventListener('click', function() {
+    document.getElementById('modal-crear').classList.remove('hidden');
+    document.getElementById('backdrop').classList.remove('hidden');
+  });
 
-    let currentId = null;
+  document.getElementById('btnCerrarModalCrearProducto').addEventListener('click', function() {
+    document.getElementById('modal-crear').classList.add('hidden');
+    document.getElementById('backdrop').classList.add('hidden');
+  });
 
-    // Mostrar modal
-    document.querySelectorAll('.btnEdit').forEach(btn => {
-      btn.addEventListener('click', function () {
-        currentId = this.getAttribute('data-id');
-        document.getElementById('edit_nombre').value = this.getAttribute('data-nombre');
-        document.getElementById('edit_descripcion').value = this.getAttribute('data-descripcion');
+  document.getElementById('btnCancelModalCrear').addEventListener('click', function() {
+    document.getElementById('modal-crear').classList.add('hidden');
+    document.getElementById('backdrop').classList.add('hidden');
+  });
 
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-      });
-    });
+  // Modal Editar Producto
+  document.querySelectorAll('.btn-editar').forEach(btn => {
+    btn.addEventListener('click', function () {
+      document.getElementById('edit_nombre').value = this.dataset.nombre;
+      document.getElementById('edit_descripcion').value = this.dataset.descripcion;
 
-    // Cerrar modal
-    closeBtn.addEventListener('click', () => {
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    });
-
-    // Enviar AJAX
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      fetch(`/productos/editar/${currentId}/`, {
-        method: 'POST',
-        headers: {
-          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          nombre: document.getElementById('edit_nombre').value,
-          descripcion: document.getElementById('edit_descripcion').value
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          // Actualizar la fila sin recargar
-          const row = document.querySelector(`#producto-${currentId}`);
-          row.children[0].textContent = document.getElementById('edit_nombre').value;
-          row.children[1].textContent = document.getElementById('edit_descripcion').value;
-
-          modal.classList.add('hidden');
-          modal.classList.remove('flex');
-        } else {
-          alert("Error al actualizar");
-        }
-      });
+      document.getElementById('formEditarProducto').action = "{% url 'editar_producto' '0' %}".replace('0', this.dataset.id);
+      document.getElementById('modal-editar').classList.remove('hidden');
+      document.getElementById('backdrop').classList.remove('hidden');
     });
   });
+
+  document.getElementById('btnCerrarModalEditarProducto').addEventListener('click', function () {
+    document.getElementById('modal-editar').classList.add('hidden');
+    document.getElementById('backdrop').classList.add('hidden');
+  });
+
+  document.getElementById('btnCancelModalEditar').addEventListener('click', function() {
+    document.getElementById('modal-editar').classList.add('hidden');
+    document.getElementById('backdrop').classList.add('hidden');
+  });
 </script>
+
 {% endblock %}

@@ -1,15 +1,34 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+
+from sede.models import Sede
 from .models import Mesa
 from .forms import MesaForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 @login_required
 def listar_mesas(request):
-    # Solo mesas de la sede del usuario
-    mesas = Mesa.objects.filter(sede=request.user.sede)
-    return render(request, 'mesas.html', {'mesas': mesas})
+    sedes = Sede.objects.all()
+    sede_id = request.GET.get('sede')
+    ordenar_por = request.GET.get('orden') 
+
+    mesas = Mesa.objects.all()
+    
+    if sede_id:
+        mesas = mesas.filter(sede_id=sede_id)
+
+    if ordenar_por:
+        mesas = mesas.order_by(ordenar_por)
+    else:
+        mesas = mesas.order_by('numeroMesa')  # Orden predeterminado
+
+    return render(request, 'mesa/mesa.html', {
+        'mesas': mesas,
+        'sedes': sedes,
+        'sede_id': sede_id
+    })
+
 
 @require_POST
 @login_required
@@ -35,35 +54,84 @@ def es_admin(user):
 @login_required
 @user_passes_test(es_admin)
 def crear_mesa(request):
+    sedes = Sede.objects.all()
     if request.method == 'POST':
         form = MesaForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('dashboard_admin')
+            return redirect('listar_mesas')  # Redirige a la vista 'listar_mesas'
     else:
         form = MesaForm()
-    return render(request, 'mesa/crear_mesa.html', {'form': form})
 
+    mesas = Mesa.objects.all()
+    return render(request, 'mesa/mesa.html', {
+        'form': form,
+        'mesas': mesas,
+        'sedes': sedes 
+    })
+
+@login_required
 def ver_mesas(request):
+    sede_id = request.GET.get('sede')
+    ordenar_por = request.GET.get('orden')
+
     mesas = Mesa.objects.select_related('sede').all()
-    return render(request, 'mesa/mesa.html', {'mesas': mesas})
+
+    if sede_id:
+        mesas = mesas.filter(sede_id=sede_id)
+
+    if ordenar_por:
+        mesas = mesas.order_by(ordenar_por)
+
+    sedes = Sede.objects.all()
+    return render(request, 'mesa/mesa.html', {'mesas': mesas, 'sedes': sedes, 'sede_id': sede_id})
 
 @login_required
 @user_passes_test(es_admin)
 def editar_mesa(request, mesa_id):
     mesa = get_object_or_404(Mesa, id=mesa_id)
+    sedes = Sede.objects.all()  
+
     if request.method == 'POST':
         form = MesaForm(request.POST, instance=mesa)
         if form.is_valid():
             form.save()
-            return redirect('ver_mesas')
+            return redirect('listar_mesas')
     else:
         form = MesaForm(instance=mesa)
-    return render(request, 'mesa/editar_mesa.html', {'form': form})
+
+    return render(request, 'mesa/editar_mesa.html', {
+        'form': form,
+        'sedes': sedes, 
+        'mesa': mesa     
+    })
+
 
 @login_required
 @user_passes_test(es_admin)
 def eliminar_mesa(request, mesa_id):
     mesa = get_object_or_404(Mesa, id=mesa_id)
     mesa.delete()
-    return redirect('ver_mesas')
+    return redirect('listar_mesas')
+
+@login_required
+@user_passes_test(es_admin)
+def mesas_registradas_view(request):
+    sede_id = request.GET.get('sede')
+    orden = request.GET.get('orden')
+
+    mesas = Mesa.objects.all()
+
+    if sede_id:
+        mesas = mesas.filter(sede_id=sede_id)
+
+    if orden:
+        mesas = mesas.order_by(orden)
+
+    sedes = Sede.objects.all()
+
+    return render(request, 'mesa/mesa.html', {
+        'mesas': mesas,
+        'sedes': sedes,
+        'sede_id': sede_id,
+    })

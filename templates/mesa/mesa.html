@@ -1,43 +1,166 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Mesas Registradas{% endblock %}
+
+{% block title %}
+    Mesas Registradas
+{% endblock %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'css/mesas/mesas.css' %}">
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/mesas/mesa.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
 <div class="container mx-auto p-6 bg-white text-gray-900 rounded-lg shadow">
     <h2 class="text-2xl font-bold mb-4">🪑 Mesas Registradas</h2>
 
+    <form method="get" action="{% url 'listar_mesas' %}" class="mb-4 flex items-center gap-2">
+        <label for="sede" class="font-semibold">Filtrar por sede:</label>
+        <select name="sede" id="sede" class="campo-texto">
+            <option value="">Todas las sedes</option>
+            {% for sede in sedes %}
+                <option value="{{ sede.id }}" {% if sede.id|stringformat:"s" == sede_id %}selected{% endif %}>
+                    {{ sede.nombre }}
+                </option>
+            {% endfor %}
+        </select>
+    
+        <label for="orden" class="font-semibold">Ordenar por:</label>
+        <select name="orden" id="orden" class="campo-texto">
+            <option value="">Por número</option>
+            <option value="capacidad" {% if request.GET.orden == "capacidad" %}selected{% endif %}>Por capacidad</option>
+            <option value="ubicacion" {% if request.GET.orden == "ubicacion" %}selected{% endif %}>Por ubicación</option>
+            <option value="-ocupada" {% if request.GET.orden == "-ocupada" %}selected{% endif %}>Por estado (libres primero)</option>
+        </select>
+    
+        <button type="submit" class="custom-btn-filtrar">Filtrar</button>
+    </form>    
+    
+    <div class="flex justify-end gap-4 mb-4">
+        <button id="btnAbrirCrearMesa" class="custom-btn-filtrar">➕ Crear Mesa</button>
+    </div>
+
     {% if mesas %}
-        <table class="w-full table-auto border-collapse mb-4">
+        <table class="w-full table-auto border-collapse rounded overflow-hidden shadow-sm">
             <thead>
                 <tr class="bg-blue-100 text-left">
                     <th class="px-4 py-2">Número de Mesa</th>
                     <th class="px-4 py-2">Sede</th>
+                    <th class="px-4 py-2">Ubicación/Piso</th>
                     <th class="px-4 py-2">Estado</th> 
+                    <th class="px-4 py-2">Capacidad personas</th>
                     <th class="px-4 py-2">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for mesa in mesas %}
-                <tr class="border-b hover:bg-blue-50 {% if mesa.ocupada %}bg-red-100{% else %}bg-green-100{% endif %}">
-                    <td class="px-4 py-2 font-semibold">{{ mesa.numeroMesa }}</td>
-                    <td class="px-4 py-2">{{ mesa.sede.nombre }}</td>
-                    <td class="px-4 py-2">
-                        {% if mesa.ocupada %}
-                            <span class="text-red-600 font-semibold">🔴 Ocupada</span>
-                        {% else %}
-                            <span class="text-green-600 font-semibold">🟢 Libre</span>
-                        {% endif %}
-                    </td>
-                    <td class="px-4 py-2">
-                        <a href="{% url 'editar_mesa' mesa.id %}" class="text-blue-600 hover:underline mr-3">✏️ Editar</a>
-                        <a href="{% url 'eliminar_mesa' mesa.id %}" class="text-red-600 hover:underline">🗑️ Eliminar</a>
-                    </td>
-                </tr>
+                    <tr class="border-b hover:bg-blue-50 {% if mesa.ocupada %}bg-red-100{% else %}bg-green-100{% endif %}">
+                        <td class="px-4 py-2 font-semibold">{{ mesa.numeroMesa }}</td>
+                        <td class="px-4 py-2">{{ mesa.sede.nombre }}</td>
+                        <td class="px-4 py-2">{{ mesa.ubicacion}}</td>
+                        <td class="px-4 py-2">
+                            {% if mesa.ocupada %}
+                                <span class="inline-flex items-center text-red-600 font-medium">
+                                    <svg class="w-4 h-4 mr-1 fill-red-500" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10"/></svg>
+                                    Ocupada
+                                </span>
+                            {% else %}
+                                <span class="inline-flex items-center text-green-600 font-medium">
+                                    <svg class="w-4 h-4 mr-1 fill-green-500" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10"/></svg>
+                                    Libre
+                                </span>
+                            {% endif %}                        
+                        </td>
+                        <td class="px-4 py-2">{{ mesa.capacidad }}</td>
+                        <td class="px-4 py-2">
+                            <button onclick="openEditModal({{ mesa.id }})" class="text-blue-600 hover:underline mr-3">✏️ Editar</button>
+                            <a href="{% url 'eliminar_mesa' mesa.id %}" class="text-red-600 hover:underline">🗑️ Eliminar</a>
+                        </td>
+                    </tr>
+
+                    <!-- Modal Editar Mesa -->
+                    <div id="modalEditarMesa{{ mesa.id }}" class="fixed inset-0 bg-gray-800 bg-opacity-75 hidden flex items-center justify-center z-50">
+                        <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
+                            <h2 class="text-xl font-bold mb-4">✏️ Editar Mesa</h2>
+                            <form method="POST" action="{% url 'editar_mesa' mesa.id %}">
+                                {% csrf_token %}
+                                <div class="mb-4">
+                                    <label class="block font-semibold mb-1">Número de Mesa:</label>
+                                    <input type="text" name="numeroMesa" class="input-text w-full" value="{{ mesa.numeroMesa }}" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block font-semibold mb-1">Capacidad:</label>
+                                    <input type="number" name="capacidad" class="input-text w-full" value="{{ mesa.capacidad }}" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block font-semibold mb-1">Ubicación:</label>
+                                    <select name="ubicacion" class="input-text w-full" required>
+                                        <option value="1">Primer piso</option>
+                                        <option value="2">Segundo piso</option>
+                                    </select>
+                                </div>                                
+                                <div class="mb-4">
+                                    <label class="block font-semibold mb-1">Sede:</label>
+                                    <select name="sede" class="select-sede">
+                                        {% for sede in sedes %}
+                                            <option value="{{ sede.id }}" {% if mesa.sede.id == sede.id %}selected{% endif %}>{{ sede.nombre }}</option>
+                                        {% endfor %}
+                                    </select>                                
+                                </div>
+                                <div class="flex justify-end gap-4 mt-6">
+                                    <button type="button" onclick="closeEditModal({{ mesa.id }})" class="px-4 py-2 bg-gray-400 hover:bg-gray-500 text-white rounded">
+                                        Cancelar
+                                    </button>
+                                    <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded">
+                                        Guardar
+                                    </button>
+                                </div>
+                            </form>
+                            <button onclick="closeEditModal({{ mesa.id }})" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900">✖️</button>
+                        </div>
+                    </div>
+
+                    <!-- Modal Crear Mesa -->
+                    <div id="modalCrearMesa" class="fixed inset-0 bg-gray-800 bg-opacity-75 hidden flex items-center justify-center z-50">
+                        <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
+                            <h2 class="text-xl font-bold mb-4">✏️ Crear Mesa</h2>
+                            <form method="POST" action="{% url 'crear_mesa'%}">
+                                {% csrf_token %}
+                                <div class="mb-4">
+                                    <label class="block font-semibold mb-1">Número de Mesa:</label>
+                                    <input type="text" name="numeroMesa" class="input-text w-full" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block font-semibold mb-1">Capacidad:</label>
+                                    <input type="number" name="capacidad" class="input-text w-full" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block font-semibold mb-1">Ubicación:</label>
+                                    <select name="ubicacion" class="input-text w-full" required>
+                                        <option value="1">Primer piso</option>
+                                        <option value="2">Segundo piso</option>
+                                    </select>
+                                </div>                                
+                                <div class="mb-4">
+                                    <label class="block font-semibold mb-1">Sede:</label>
+                                    <select name="sede" class="select-sede">
+                                        {% for sede in sedes %}
+                                            <option value="{{ sede.id }}" {% if mesa.sede.id == sede.id %}selected{% endif %}>{{ sede.nombre }}</option>
+                                        {% endfor %}
+                                    </select>                                
+                                </div>
+                                <div class="flex justify-end gap-4 mt-6">
+                                    <button type="button" id="cancelar" class="px-4 py-2 bg-gray-400 hover:bg-gray-500 text-white rounded-md">
+                                        Cancelar
+                                    </button>
+                                    <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded">
+                                        Guardar
+                                    </button>
+                                </div>
+                            </form>
+                            <button id="cerrarModalCrear" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900">✖️</button>
+                        </div>
+                    </div>
                 {% endfor %}
             </tbody>
         </table>
@@ -47,4 +170,35 @@
 
     <a href="{% url 'dashboard_admin' %}" class="text-blue-500 hover:underline">← Volver al panel</a>
 </div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Mostrar el modal cuando se haga click en el botón Crear Mesa
+        document.getElementById("btnAbrirCrearMesa").addEventListener("click", function() {
+            document.getElementById("modalCrearMesa").classList.remove("hidden"); // Mostrar modal
+        });
+    
+        // Cerrar el modal al hacer clic en el botón de cerrar
+        document.getElementById("cerrarModalCrear").addEventListener("click", function() {
+            document.getElementById("modalCrearMesa").classList.add("hidden"); // Ocultar modal
+        });
+
+        // Cerrar el modal al hacer clic en el botón de cancelar
+        document.getElementById("cancelar").addEventListener("click", function() {
+            document.getElementById("modalCrearMesa").classList.add("hidden");
+        });
+    });
+
+    // Funciones para mostrar y cerrar modales de edición
+    function openEditModal(id) {
+        document.getElementById('modalEditarMesa' + id).classList.remove('hidden');
+    }
+
+    function closeEditModal(id) {
+        document.getElementById('modalEditarMesa' + id).classList.add('hidden');
+    }
+</script>
 {% endblock %}

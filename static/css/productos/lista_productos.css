@@ -1,6 +1,5 @@
 @import url('./base.css');
 @import url('./navbar.css');
-@import url('./botones.css');
 @import url('./animaciones.css');
 @import url('./darkmode.css');
 
@@ -15,42 +14,45 @@ body {
     font-size: 28px;
     margin-bottom: 20px;
   }
+
+  /* 🟦 BOTÓN FILTRAR */
+.custom-btn-filtrar {
+  background-color: #5c6bc0; /* Azul suave */
+  color: white !important; /* Aseguramos que el texto sea blanco con !important */
+  border: none;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.3s, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(92, 107, 192, 0.3); /* Sombra sutil */
+}
+
+.custom-btn-filtrar:hover {
+  background-color: #3f51b5; /* Azul más oscuro al pasar el ratón */
+  transform: translateY(-3px); /* Ligera elevación */
+  box-shadow: 0 6px 12px rgba(92, 107, 192, 0.4); /* Sombra más pronunciada */
+}
   
-  /* 🟢 BOTÓN AGREGAR PRODUCTO */
-  #btnOpenModal {
-    font-weight: bold;
-    background-color: #16a34a;
-    color: #fff;
-    padding: 10px 24px;
-    border-radius: 8px;
-    font-size: 16px;
-    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
-    transition: background-color 0.3s, transform 0.2s ease, box-shadow 0.2s ease;
-  }
+/* 🟢 BOTÓN CREAR USUARIO */
+.custom-btn-crear-producto {
+  background-color: #007BFF; /* Azul moderno */
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: 600;
+  transition: background-color 0.3s, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 6px 14px rgba(0, 123, 255, 0.3); /* Sombra suave */
+}
+
+.custom-btn-crear-sede:hover {
+  background-color: #0056b3; /* Azul más oscuro al pasar el ratón */
+  transform: translateY(-3px); /* Sutil efecto de elevación */
+  box-shadow: 0 8px 16px rgba(0, 123, 255, 0.5); /* Sombra más pronunciada */
+}
   
-  #btnOpenModal:hover {
-    background-color: #15803d;
-    transform: scale(1.06);
-    box-shadow: 0 8px 16px rgba(22, 163, 74, 0.35);
-  }
-  
-  /* 🔵 BOTÓN GUARDAR EN MODAL */
-  form button[type="submit"] {
-    background-color: #3b82f6;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 20px;
-    font-weight: bold;
-    transition: transform 0.2s, box-shadow 0.3s ease;
-    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2);
-  }
-  
-  form button[type="submit"]:hover {
-    background-color: #2563eb;
-    transform: scale(1.05);
-    box-shadow: 0 8px 18px rgba(59, 130, 246, 0.35);
-  }
   
   /* ⚪ BOTÓN CANCELAR */
   #btnCancelModal {
@@ -69,28 +71,28 @@ body {
   }
   
   /* 🟦 BOTÓN EDITAR */
-  button.btnEdit {
+  table button.btn-editar {
     font-weight: 500;
     color: #2563eb;
     transition: color 0.3s ease, transform 0.2s ease;
   }
-  
-  button.btnEdit:hover {
+
+  table button.btn-editar:hover {
     color: #1d4ed8;
     transform: scale(1.03);
   }
   
   /* 🔴 BOTÓN ELIMINAR */
-  a.text-red-600 {
+  form button[type="submit"] {
     color: #dc2626;
     transition: color 0.3s ease, transform 0.2s ease;
   }
-  
-  a.text-red-600:hover {
+
+  form button[type="submit"]:hover {
     color: #b91c1c;
     transform: scale(1.03);
   }
-  
+
   /* TABLA */
   table {
     border-collapse: collapse;
@@ -259,4 +261,5 @@ body {
   @keyframes fadeOut {
     to { opacity: 0; transform: scale(0.95); }
   }
+  
   

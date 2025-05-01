@@ -1,150 +1,166 @@
-@import url('../botones.css');
-@import url('../darkmode.css');
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap');
-
+/* Estilos globales para el body */
 body {
   font-family: 'Rubik', sans-serif;
-  background-color: var(--color-fondo);
-  color: var(--color-texto);
+  background-color: #f4f7fb;
+  color: #333;
   transition: all 0.3s ease-in-out;
 }
 
-/* 🧾 Título */
-h2 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  color: var(--color-texto);
-  text-shadow: 0 1px 0 rgba(0,0,0,0.04);
-}
-
-/* 📅 Formulario fechas */
-form {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-input[type="date"] {
-  padding: 10px 16px;
+.tomar-pedido-btn {
+  background-color: #5c6bc0; /* Azul suave */
+  color: white !important; /* Aseguramos que el texto sea blanco con !important */
+  border: none;
   border-radius: 10px;
-  border: 1px solid #d1d5db;
-  font-weight: 500;
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
-}
-input[type="date"]:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.4);
-  border-color: #60a5fa;
-}
-html.dark input[type="date"] {
-  background-color: #374151;
-  color: #f3f4f6;
-  border-color: #4b5563;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.3s, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(92, 107, 192, 0.3); /* Sombra sutil */
 }
 
-/* 📥 Botón Exportar */
-form button {
-  background: linear-gradient(to right, #3b82f6, #2563eb);
-  color: white;
-  padding: 10px 20px;
+.tomar-pedido-btn:hover {
+  background-color: #3f51b5; /* Azul más oscuro al pasar el ratón */
+  transform: translateY(-3px); /* Ligera elevación */
+  box-shadow: 0 6px 12px rgba(92, 107, 192, 0.4); /* Sombra más pronunciada */
+}
+
+/* Estilo para el modal */
+.modal {
+  display: none; /* Ocultado por defecto */
+  position: fixed;
+  z-index: 1; /* Asegurarse de que esté por encima de otros elementos */
+  left: 0;
+  top: 0;
+  width: 100%; /* Ancho completo */
+  height: 100%; /* Alto completo */
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+  padding-top: 60px; /* Espacio desde la parte superior de la pantalla */
+}
+
+/* Animación para que el modal aparezca de manera suave */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Estilo para el contenido del modal */
+.modal-contenido {
+  background-color: #fff;
+  margin: 5% auto; /* Centrado en la pantalla */
+  padding: 20px;
   border-radius: 10px;
+  width: 80%; /* O el tamaño que desees */
+  position: relative; /* Necesario para posicionar el botón de cierre */
+}
+
+/* Animación de escala para el contenido del modal */
+@keyframes scaleUp {
+  from { transform: scale(0.8); opacity: 0.5; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Estilo del título dentro del modal */
+.titulo-seccion {
+  font-size: 1.8rem;
   font-weight: 600;
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2);
-}
-form button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: 'Rubik', sans-serif;
 }
 
-/* 📦 Caja flotante para cada pedido */
-.space-y-4 > div {
-  background: linear-gradient(145deg, #ffffff, #f3f4f6);
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: 
-    0 12px 30px rgba(0, 0, 0, 0.08),
-    0 0 20px rgba(147, 197, 253, 0.15),
-    inset 0 0 10px rgba(255, 255, 255, 0.25);
-  transition: all 0.3s ease;
-  backdrop-filter: blur(4px);
-}
-.space-y-4 > div:hover {
-  transform: translateY(-6px);
-  box-shadow: 
-    0 18px 35px rgba(0, 0, 0, 0.1),
-    0 0 24px rgba(96, 165, 250, 0.2);
-}
-
-html.dark .space-y-4 > div {
-  background: linear-gradient(145deg, #1f2937, #111827);
-  box-shadow: 
-    0 12px 30px rgba(255, 255, 255, 0.04),
-    0 0 20px rgba(96, 165, 250, 0.2),
-    inset 0 0 6px rgba(255, 255, 255, 0.05);
-  color: #f3f4f6;
-}
-
-/* Texto */
-.space-y-4 p,
-.space-y-4 li {
-  color: inherit;
-  font-size: 0.95rem;
-}
-.space-y-4 strong {
-  font-weight: 600;
-}
-.space-y-4 ul {
-  margin-top: 0.5rem;
-  margin-left: 1.5rem;
-}
-
-/* 💲 Total */
-.space-y-4 .text-right {
-  color: #111827;
-  font-size: 1.15rem;
+/* Estilo para el botón de cerrar */
+.cerrar {
+  color: #aaa;
+  font-size: 28px;
   font-weight: bold;
-}
-html.dark .text-right {
-  color: #e5e7eb;
+  position: absolute; /* Posicionarlo dentro del modal */
+  top: 10px;
+  right: 10px; /* Colocarlo en la esquina superior derecha */
+  cursor: pointer;
 }
 
-/* ✅ Botón pagar */
-a.inline-block {
-  margin-top: 1.2rem;
-  background: linear-gradient(to right, #22c55e, #16a34a);
+.cerrar:hover,
+.cerrar:focus {
+    color: black;
+    text-decoration: none;
+}
+/* Estilo de los inputs y selects dentro del modal */
+input[type="number"], select, .input-texto, .input-select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="number"]:focus, select:focus {
+  border: 1px solid #3498db;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+/* Estilo de los botones dentro del modal */
+.btn-agregar, .btn-guardar {
+  background: #3498db;
   color: white;
-  padding: 10px 20px;
-  border-radius: 12px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
-  display: inline-block;
-}
-a.inline-block:hover {
-  background: #15803d;
-  transform: scale(1.05);
-  box-shadow: 0 6px 18px rgba(21, 128, 61, 0.4);
+  padding: 12px 25px;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
 }
 
-/* ✏️ Editar */
-a.text-blue-600 {
-  display: inline-block;
-  margin-top: 0.5rem;
-  color: #2563eb;
-  font-weight: 500;
-  transition: color 0.3s ease;
+.btn-agregar:hover, .btn-guardar:hover {
+  background: #2980b9;
+  transform: scale(1.05);
 }
-a.text-blue-600:hover {
-  color: #1d4ed8;
-  text-decoration: underline;
+
+.btn-guardar {
+  background: #2ecc71;
 }
-html.dark a.text-blue-600 {
-  color: #60a5fa;
+
+.btn-guardar:hover {
+  background: #27ae60;
 }
-html.dark a.text-blue-600:hover {
-  color: #3b82f6;
+
+/* Botón "Agregar producto" */
+.btn-agregar {
+  background: #f39c12;
 }
+
+.btn-agregar:hover {
+  background: #e67e22;
+}
+
+/* Estilos de la lista de productos dentro del modal */
+#productos-container {
+  margin-top: 20px;
+}
+
+.grupo-producto {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.grupo-producto select, .grupo-producto input {
+  flex: 1;
+}
+
+/* Efectos de hover en el modal */
+.modal-contenido:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+  .modal-contenido {
+    width: 90%;
+  }
+
+  .grupo-producto {
+    flex-direction: column;
+  }
+}
+
