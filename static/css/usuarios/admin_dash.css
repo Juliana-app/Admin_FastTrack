@@ -1,8 +1,9 @@
+/* base_estilos.css */
 @import url('./base.css');
 @import url('./navbar.css');
 @import url('./botones.css');
-@import url('./animaciones.css');
 @import url('./darkmode.css');
+@import url('./animaciones.css');
 
 body {
     font-family: 'Rubik', sans-serif;

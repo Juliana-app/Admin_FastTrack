@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Informe de Ventas{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/informes/listar_informes.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="contenedor-informes">
+  <h2 class="text-2xl font-bold mb-4">📊 Informe de Ventas</h2>
+
+  <div class="flex justify-between mb-4">
+    <!-- Formulario de filtro -->
+    <form method="get" action="{% url 'informe_producto' %}" class="flex space-x-4">
+      <input type="date" name="fecha_inicio" id="fecha_inicio" class="input-text" placeholder="Fecha Inicio">
+      <input type="date" name="fecha_fin" id="fecha_fin" class="input-text" placeholder="Fecha Fin">
+      <button type="submit" class="btn-filtrar custom-btn-filtrar">Filtrar</button>
+    </form>
+  
+    <!-- Botón de exportar -->
+    <form method="get" action="{% url 'exportar_csv' %}">
+      <input type="hidden" name="fecha_inicio" value="{{ request.GET.fecha_inicio }}">
+      <input type="hidden" name="fecha_fin" value="{{ request.GET.fecha_fin }}">
+      <button type="submit" class="btn-filtrar custom-btn-filtrar">📥 Exportar CSV</button>
+    </form>
+  </div>
+  
+  <table>
+    <thead>
+        <tr>
+            <th>Id Producto</th>
+            <th>Producto</th>
+            <th>Cantidad Vendida</th>
+            <th>Sede</th>
+            <th>Precio Compra</th>
+            <th>Precio Venta</th>
+            <th>Ganancia</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for informe in informes %}
+        <tr>
+            <td>{{ informe.producto_id }}</td>
+            <td>{{ informe.producto_nombre }}</td>
+            <td>{{ informe.cantidad_vendida }}</td>
+            <td>{{ informe.sede_nombre }}</td>
+            <td>${{ informe.precio_compra }}</td>
+            <td>${{ informe.precio_venta }}</td>
+            <td>${{ informe.ganancia }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</div>
+
+{% endblock %}

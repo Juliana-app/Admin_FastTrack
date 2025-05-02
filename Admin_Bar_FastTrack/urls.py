@@ -8,7 +8,6 @@ from usuarios.views import redireccion_por_rol
 
 urlpatterns = [
     path('', redireccion_por_rol, name='inicio'),
-    
     path('admin/', admin.site.urls),
     path('api/usuarios/', include('usuarios.urls')),
     path('api/inventario/', include('inventario.urls')),
@@ -17,6 +16,7 @@ urlpatterns = [
     path('api/sede/', include('sede.urls')),
     path('precios/', include('historial.urls')),
     path('mesas/', include('mesa.urls')),
+    path('informe/', include('informe.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
   + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

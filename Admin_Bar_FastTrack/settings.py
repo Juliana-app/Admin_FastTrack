@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'productos',
     'historial',
     'mesa',
+    'informe',
 ]
 
 MIDDLEWARE = [
