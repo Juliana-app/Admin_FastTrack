@@ -13,12 +13,10 @@
   <h2>🤵 {{ user.first_name }}, este es tu panel de Mesero</h2>
   <p>Gestiona pedidos, actualízalos en tiempo real y libera mesas con eficiencia.</p>
 
-  <div class="acciones-mesero grid gap-4 mt-4">
-    <a href="{% url 'tomar_pedido' %}" class="btn-mesero tomar-pedido">➕ Tomar Pedido</a>
-    <a href="{% url 'ver_pedidos' %}" class="btn-mesero ver-pedidos">👁️ Ver Pedidos</a>
-    <a href="{% url 'ver_mesas' %}" class="btn-mesero ver-mesas">🪑 Ver mesas</a>
-    <a href="{% url 'dashboard_general' %}" class="btn-mesero panel-general">📊 Ver Panel General</a>
-</div>
-
+  <div class="acciones-mesero grid grid-cols-2 gap-4 mt-4">
+    <a href="{% url 'ver_pedidos' %}" class="btn-mesero tomar">📋 Pedidos</a>
+    <a href="{% url 'ver_mesas' %}" class="btn-mesero ver-mesa">🪑 Mesas</a>
+    <a href="{% url 'panel_general' %}" class="btn-mesero general">📊 Ver Panel General</a>
+  </div>
 </div>
 {% endblock %}

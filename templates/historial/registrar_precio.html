@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block content %}
-<h2>💵 Registrar Precio de Producto</h2>
+<h2 class="text-2xl font-bold mb-4">💵 Registrar Precio de Producto</h2>
 
 <form method="post" class="mb-6">
   {% csrf_token %}
@@ -29,7 +29,7 @@
   <button type="submit">Guardar</button>
 </form>
 
-<h3>📜 Historial Reciente</h3>
+<h3 class="text-xl font-semibold mt-6 mb-4">📜 Historial Reciente</h3>
 <div class="overflow-x-auto">
   <table class="historial-table">
     <thead>

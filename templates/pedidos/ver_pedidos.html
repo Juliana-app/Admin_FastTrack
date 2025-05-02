@@ -2,7 +2,7 @@
 {% load custom_filters %}
 {% load static %}
 
-{% block title %}Pedidos Pendientes{% endblock %}
+{% block title %}Pedidos{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/pedidos/ver_pedidos.css' %}">
@@ -10,30 +10,34 @@
 {% endblock %}
 
 {% block content %}
-<h2 class="text-2xl font-bold mb-4">Pedidos Pendientes</h2>
+<h2 class="text-2xl font-bold mb-6">Pedidos</h2>
 
-<form method="get" action="{% url 'exportar_csv' %}" class="flex gap-2 mb-4">
-    <input type="date" name="fecha_inicio" required class="border rounded px-2 py-1">
-    <input type="date" name="fecha_fin" required class="border rounded px-2 py-1">
-    <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">
-        📥 Exportar CSV
-    </button>
+<!-- Filtro de estado -->
+<form method="GET" action="{% url 'ver_pedidos' %}" class="mb-6">
+    <label for="estado" class="mr-2">Filtrar por estado:</label>
+    <select name="estado" id="estado" onchange="this.form.submit()">
+        <option value="todos" {% if estado == 'todos' %}selected{% endif %}>Todos</option>
+        <option value="pendiente" {% if estado == 'pendiente' %}selected{% endif %}>Pendientes</option>
+        <option value="pagado" {% if estado == 'pagado' %}selected{% endif %}>Pagados</option>
+    </select>
 </form>
 
-<!-- Botón para abrir el modal de tomar pedido -->
-<button id="abrirModal" class="tomar-pedido-btn">
-    ➕ Tomar Pedido
-</button>
+<!-- Botón tomar pedido con margen para separación -->
+<div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+    <button id="abrirModal" class="tomar-pedido-btn">
+        ➕ Tomar Pedido
+    </button>
+</div>
 
-<!-- Tabla para mostrar los pedidos -->
-<h3 class="text-xl font-semibold mt-6 mb-4">Pedidos Pendientes</h3>
-<table class="min-w-full table-auto border-collapse">
+<!-- Tabla de pedidos -->
+<table class="min-w-full table-auto border-collapse mb-8">
     <thead>
         <tr>
             <th class="border px-4 py-2">ID</th>
             <th class="border px-4 py-2">Mesa</th>
             <th class="border px-4 py-2">Productos</th>
             <th class="border px-4 py-2">Fecha</th>
+            <th class="border px-4 py-2">Estado</th>
             <th class="border px-4 py-2">Acciones</th>
         </tr>
     </thead>
@@ -43,105 +47,216 @@
             <td class="border px-4 py-2">{{ pedido.id }}</td>
             <td class="border px-4 py-2">{{ pedido.mesa.numeroMesa }} - {{ pedido.mesa.sede.nombre }}</td>
             <td class="border px-4 py-2">
-                {% for producto in pedido.productos.all %}
-                    {{ producto.nombre }} ({{ producto.cantidad }})<br>
+                <ul class="list-disc pl-5">
+                {% for item in pedido.productos.all %}
+                    <li>{{ item.producto.nombre }} - Cantidad: {{ item.cantidad }}</li>
                 {% endfor %}
+                </ul>
             </td>
-            <td class="border px-4 py-2">{{ pedido.creado|date:"d M Y H:i"  }}</td>
+            <td class="border px-4 py-2">{{ pedido.creado|date:"d M Y H:i" }}</td>
             <td class="border px-4 py-2">
-                <a href="{% url 'editar_pedido' pedido.id %}" class="text-yellow-500">Editar</a> |
+                {% if pedido.estado == 'pendiente' %}
+                    <span class="text-yellow-500">Pendiente</span>
+                {% else %}
+                    <span class="text-green-500">Pagado</span>
+                {% endif %}
+            </td>
+            <td class="border px-4 py-2 text-center">
+              <button class="btn-editar" onclick="abrirModalEditar(this)" 
+                data-id="{{ pedido.id }}" 
+                data-estado="{{ pedido.estado }}">
+                ✏️ Editar
+              </button>
             </td>
         </tr>
         {% empty %}
         <tr>
-            <td colspan="5" class="border px-4 py-2 text-center">No hay pedidos pendientes.</td>
+            <td colspan="6" class="border px-4 py-2 text-center">No hay pedidos para mostrar.</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
-<!-- Modal de tomar pedido -->
+<!-- Modal Tomar Pedido -->
 <div id="modalTomarPedido" class="modal">
-    <div class="modal-contenido">
-        <!-- Botón para cerrar el modal -->
-        <span id="cerrarModal" class="cerrar">&times;</span>
-        <h2 class="titulo-seccion">Tomar Pedido</h2>
-        <form method="post" class="formulario-pedido">
-            {% csrf_token %}
-            <label>Mesa:</label>
-            <select name="mesa_id" class="input-select" required>
-                <option value="">-- Selecciona una mesa --</option>
-                {% for mesa in mesas %}
-                    <option value="{{ mesa.id }}">Mesa {{ mesa.numeroMesa }} - {{ mesa.sede.nombre }}</option>
+    <div class="modal-contenido p-6 bg-white rounded-xl shadow-lg max-w-lg mx-auto relative">
+      <span id="cerrarModal" class="absolute top-4 right-4 text-xl cursor-pointer text-gray-500 hover:text-red-500">&times;</span>
+      
+      <h2 class="text-2xl font-bold mb-6 text-center text-gray-800 flex items-center justify-center gap-2">
+        ✏️ <span>Tomar Pedido</span>
+      </h2>
+  
+      <form method="post" action="{% url 'ver_pedidos' %}" class="flex flex-col gap-5">
+        {% csrf_token %}
+  
+        <!-- Campo Mesa -->
+        <div>
+          <label class="block mb-1 font-semibold text-gray-700">Mesa:</label>
+          <select name="mesa_id" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-400" required>
+            <option value="">-- Selecciona una mesa --</option>
+            {% for mesa in mesas %}
+              <option value="{{ mesa.id }}">Mesa {{ mesa.numeroMesa }} - {{ mesa.sede.nombre }}</option>
+            {% endfor %}
+          </select>
+        </div>
+  
+        <!-- Productos -->
+        <div>
+          <label class="block mb-1 font-semibold text-gray-700">Productos:</label>
+          <div id="productos-container" class="flex flex-col gap-3">
+            <div class="grupo-producto flex flex-col sm:flex-row gap-3">
+              <select name="producto[]" class="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-400" required>
+                <option value="">-- Selecciona un producto --</option>
+                {% for inventario in productos %}
+                  <option value="{{ inventario.producto.id }}">{{ inventario.producto.nombre }} (Stock: {{ inventario.cantidad }})</option>
                 {% endfor %}
-            </select>            
-            <label>Productos:</label>
-            <div id="productos-container">
-                <div class="grupo-producto">
-                    <select name="producto_id_1" class="input-select" required>
-                        <option value="">-- Selecciona un producto --</option>
-                        {% for inventario in productos %}
-                        <option value="{{ inventario.producto.id }}">
-                                {{ inventario.producto.nombre }} (Stock: {{ inventario.cantidad }})
-                            </option>
-                        {% endfor %}
-                    </select>
-                    <input type="number" name="cantidad_1" placeholder="Cantidad" class="input-texto" min="1" required>
-                </div>
+              </select>
+              <input type="number" name="cantidad[]" class="w-full sm:w-32 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-400" placeholder="Cantidad" min="1" required>
             </div>
-
-            <button type="button" onclick="agregarProducto()" class="btn-agregar">➕ Agregar producto</button>
-            <button type="submit" class="btn-guardar">Guardar Pedido</button>
-        </form>
+          </div>
+        </div>
+  
+        <input type="hidden" id="contador_productos" name="contador_productos" value="1">
+  
+        <!-- Botones -->
+        <div class="flex flex-col sm:flex-row gap-3 justify-between mt-4">
+          <button type="button" onclick="agregarProducto()" class="btn-agregar">
+            ➕ Agregar producto
+          </button>
+          <button type="submit" class="btn-guardar">
+            💾 Guardar Pedido
+          </button>
+        </div>
+      </form>
     </div>
-</div>
-
+  </div>
+    
+<!-- Modal Editar Pedido -->
+<div id="modalEditarPedido" class="modal">
+    <div class="modal-contenido p-6 bg-white rounded-xl shadow-lg max-w-lg mx-auto relative">
+      <span id="cerrarModalEditar" class="absolute top-4 right-4 text-xl cursor-pointer text-gray-500 hover:text-red-500">&times;</span>
+  
+      <h2 class="text-2xl font-bold mb-6 text-center text-gray-800 flex items-center justify-center gap-2">
+        ✏️ <span>Editar Pedido</span>
+      </h2>
+  
+      <form id="formEditarPedido" method="POST" class="flex flex-col gap-5">
+        {% csrf_token %}
+        <input type="hidden" name="pedido_id" id="pedido_id_input">
+  
+        <!-- Etiqueta -->
+        <label class="block mb-1 font-semibold text-gray-700">Agregar Productos:</label>
+  
+        <!-- Contenedor de productos -->
+        <div id="editar-productos-container" class="flex flex-col gap-3">
+          <div class="grupo-producto flex flex-col sm:flex-row gap-3">
+            <select name="producto[]" class="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-400" required>
+              <option value="">-- Selecciona un producto --</option>
+              {% for inventario in productos %}
+                <option value="{{ inventario.producto.id }}">{{ inventario.producto.nombre }} (Stock: {{ inventario.cantidad }})</option>
+              {% endfor %}
+            </select>
+            <input type="number" name="cantidad[]" class="w-full sm:w-32 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-400" placeholder="Cantidad" min="1" required>
+          </div>
+        </div>
+  
+        <!-- Botones -->
+        <div class="flex flex-col sm:flex-row gap-3 justify-between mt-4">
+          <button type="button" onclick="agregarProductoEditar()" class="btn-agregar">
+            ➕ Agregar producto
+          </button>
+          <button type="submit" class="btn-guardar">
+            ✅ Actualizar Pedido
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
 {% endblock %}
 
 {% block extra_scripts %}
 <script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Abrir modal de tomar pedido
+    document.getElementById("abrirModal").addEventListener("click", function () {
+        const modal = document.getElementById("modalTomarPedido");
+        modal.style.display = "flex";  // Mostrar modal centrado
+    });
 
-// Mostrar el modal cuando se hace clic en el botón "Tomar Pedido"
-document.getElementById("abrirModal").addEventListener("click", function() {
-    const modal = document.getElementById("modalTomarPedido");
-    modal.style.display = "block"; // Asegúrate de que el modal se muestra
-    modal.classList.add("mostrar-modal"); // Agregar clase para más control
-});
+    // Cerrar modal de tomar pedido
+    document.getElementById("cerrarModal").addEventListener("click", function () {
+        const modal = document.getElementById("modalTomarPedido");
+        modal.style.display = "none";
+    });
 
-// Cerrar el modal cuando se hace clic en el botón de cierre
-document.getElementById("cerrarModal").addEventListener("click", function() {
-    const modal = document.getElementById("modalTomarPedido");
-    modal.style.display = "none";  // Ocultar el modal
-    modal.classList.remove("mostrar-modal"); // Eliminar la clase que muestra el modal
-});
+    window.abrirModalEditar = function (btn) {
+      const pedidoId = btn.getAttribute("data-id");
+      const estado = btn.getAttribute("data-estado");
+  
+      if (estado === "pendiente") {
+          const modal = document.getElementById("modalEditarPedido");
+          document.getElementById("pedido_id_input").value = pedidoId;
+          document.getElementById("formEditarPedido").action = `/api/pedidos/editar/${pedidoId}/`;
+          modal.style.display = "flex";
+      } else {
+          alert("Solo se pueden editar pedidos en estado pendiente.");
+      }
+  };
+  
 
-let contador = 2;
-const productosOptions = 
-    `<option value="">-- Selecciona un producto --</option>` +
-    `{% for inventario in productos %}` +
-        `<option value="{{ inventario.producto.id }}">{{ inventario.producto.nombre }} (Stock: {{ inventario.cantidad }})</option>` +
-    `{% endfor %}`;
+    // Cerrar modal de editar pedido
+    document.getElementById("cerrarModalEditar").addEventListener("click", function () {
+        const modal = document.getElementById("modalEditarPedido");
+        modal.style.display = "none";
+    });
 
-function agregarProducto() {
-    const container = document.getElementById('productos-container');
-    const div = document.createElement('div');
-    div.classList.add('grupo-producto');
-    div.innerHTML = 
-        `<select name="producto_id_${contador}" class="input-select" required>` +
-            `${productosOptions}` +
-        `</select>` +
-        `<input type="number" name="cantidad_${contador}" placeholder="Cantidad" class="input-texto" min="1" required>`;
-    container.appendChild(div);
-    contador++;
-}
+    // Opciones para selects (productos disponibles)
+    let contador = 2;
+    const productosOptions =
+        `{% for inventario in productos %}
+            <option value="{{ inventario.producto.id }}">{{ inventario.producto.nombre }} (Stock: {{ inventario.cantidad }})</option>
+        {% endfor %}`;
 
-document.querySelector("form").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const confirmed = confirm("¿Estás seguro de guardar este pedido?");
-    if (confirmed) {
-        this.submit();
+    // Agregar producto en el formulario principal
+    window.agregarProducto = function () {
+        const container = document.getElementById('productos-container');
+        const div = document.createElement('div');
+        div.classList.add('grupo-producto', 'flex', 'flex-col', 'sm:flex-row', 'gap-3');
+        div.innerHTML = `
+            <select name="producto[]" class="flex-1 p-2 border border-gray-300 rounded-md" required>
+                <option value="">-- Selecciona un producto --</option>
+                ${productosOptions}
+            </select>
+            <input type="number" name="cantidad[]" class="w-full sm:w-32 p-2 border border-gray-300 rounded-md" placeholder="Cantidad" min="1" required>
+        `;
+        container.appendChild(div);
     }
-});
 
+    // Agregar producto en el modal de edición
+    window.agregarProductoEditar = function () {
+        const container = document.getElementById('editar-productos-container');
+        const div = document.createElement('div');
+        div.classList.add('grupo-producto');
+        div.innerHTML =
+            `<select name="producto" class="input-select" required>
+                <option value="">-- Selecciona un producto --</option>
+                ${productosOptions}
+            </select>
+            <input type="number" name="cantidad" placeholder="Cantidad" class="input-texto" min="1" required>`;
+        container.appendChild(div);
+    }
+
+    // Confirmación al enviar formularios
+    document.querySelectorAll("form").forEach(form => {
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const confirmed = confirm("¿Estás seguro?");
+            if (confirmed) {
+                this.submit();
+            }
+        });
+    });
+});
 </script>
 {% endblock %}

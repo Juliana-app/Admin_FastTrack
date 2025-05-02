@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Panel General{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/general.css' %}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Si necesitas gráficas -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Cargar Font Awesome -->
+{% endblock %}
+
+{% block content %}
+<div class="panel-general-container">
+  <div class="panel-header">
+    <h1 class="panel-title">📊 Panel General</h1>
+    <p class="panel-subtitle">Información en tiempo real sobre mesas y pedidos</p>
+  </div>
+
+  <div class="panel-statistics grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+    <!-- Mesas Vacías -->
+    <div class="stat-card mesas-vacias">
+      <h3 class="stat-title">Mesas Vacías</h3>
+      <p class="stat-count">{{ mesas_vacias_count }}</p>
+    </div>
+
+    <!-- Mesas Ocupadas -->
+    <div class="stat-card mesas-ocupadas">
+      <h3 class="stat-title">Mesas Ocupadas</h3>
+      <p class="stat-count">{{ mesas_ocupadas_count }}</p>
+    </div>
+
+    <!-- Pedidos Pendientes -->
+    <div class="stat-card pedidos-pendientes">
+      <h3 class="stat-title">Pedidos Pendientes</h3>
+      <p class="stat-count">{{ pedidos_pendientes_count }}</p>
+    </div>
+
+    <!-- Pedidos Pagados -->
+    <div class="stat-card pedidos-pagados">
+      <h3 class="stat-title">Pedidos Pagados</h3>
+      <p class="stat-count">{{ pedidos_pagados_count }}</p>
+    </div>
+  </div>
+
+  <div class="panel-mesas mt-8">
+    <h2 class="section-title">Mesas</h2>
+    <div class="mesas-container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-4">
+      {% for mesa in mesas %}
+        <div class="mesa {% if mesa.ocupada %}ocupada{% else %}vacia{% endif %}">
+            <div class="mesa-icon">
+                {% if mesa.ocupada %}
+                  <i class="fa-solid fa-champagne-glasses ocupada"></i> <!-- Icono para mesa ocupada -->
+                {% else %}
+                  <i class="fa-solid fa-wine-glass vacia"></i><!-- Icono para mesa vacía -->
+                {% endif %}
+            </div>            
+          <p class="mesa-label">Mesa {{ mesa.numeroMesa }}</p>
+          <p class="mesa-status">{% if mesa.ocupada %}Ocupada{% else %}Vacía{% endif %}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

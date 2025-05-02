@@ -14,6 +14,10 @@ def crear_producto_general(request):
         form = ProductoForm()
     return render(request, 'productos/crear_producto.html', {'form': form, 'productos': productos})
 
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Producto
+from .forms import ProductoForm
+
 def editar_producto_general(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
 
@@ -21,14 +25,13 @@ def editar_producto_general(request, pk):
         form = ProductoForm(request.POST, instance=producto)
         if form.is_valid():
             form.save()
-            return JsonResponse({'success': True})
-        return JsonResponse({'success': False, 'errors': form.errors})
-    
-    # Para petición GET (opcional, si quisieras usarlo con AJAX también)
-    return JsonResponse({
-        'id': producto.id,
-        'nombre': producto.nombre,
-        'descripcion': producto.descripcion
+            return redirect('lista_productos')  
+    else:
+        form = ProductoForm(instance=producto)
+
+    return render(request, 'productos/editar_producto.html', {
+        'form': form,
+        'producto': producto
     })
 
 def eliminar_producto_general(request, pk):

@@ -7,6 +7,8 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.hashers import make_password
 
+from mesa.models import Mesa
+from pedidos.models import Pedido
 from sede.models import Sede
 from .models import Usuario
 from .forms import CrearUsuarioForm, LoginForm
@@ -154,3 +156,24 @@ def eliminar_usuario(request, usuario_id):
     usuario.delete()
     messages.success(request, 'Usuario eliminado correctamente.')
     return redirect('listar_usuarios')
+
+def panel_general(request):
+    # Obtener todas las mesas
+    mesas = Mesa.objects.all()
+    
+    # Contar las mesas vacías y ocupadas
+    mesas_vacias_count = mesas.filter(ocupada=False).count()
+    mesas_ocupadas_count = mesas.filter(ocupada=True).count()
+    
+    # Obtener el conteo de pedidos pendientes y pagados (en lugar de cerrados)
+    pedidos_pendientes_count = Pedido.objects.filter(estado="pendiente").count()
+    pedidos_pagados_count = Pedido.objects.filter(estado="pagado").count()  # Cambié 'cerrado' por 'pagado'
+    
+    # Pasar la información al template
+    return render(request, 'general.html', {
+        'mesas': mesas,
+        'mesas_vacias_count': mesas_vacias_count,
+        'mesas_ocupadas_count': mesas_ocupadas_count,
+        'pedidos_pendientes_count': pedidos_pendientes_count,
+        'pedidos_pagados_count': pedidos_pagados_count,  # Cambié la variable aquí también
+    })

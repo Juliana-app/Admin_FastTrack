@@ -120,17 +120,24 @@ html.dark .acciones-caja {
 
 /* 🎯 Variantes */
 .btn-caja.export {
-    background-color: #1abc9c;
+    background-color: #00bcd4;
 }
 .btn-caja.export:hover {
-    background-color: #16a085;
+    background-color: #0097a7;
+}
+
+.btn-caja.pagos {
+    background-color: #607d8b;
+}
+.btn-caja.pagos:hover {
+    background-color: #455a64;
 }
 
 .btn-caja.secondary {
-    background-color: #9b59b6;
+    background-color: #4caf50;
 }
 .btn-caja.secondary:hover {
-    background-color: #8e44ad;
+    background-color: #388e3c;
 }
 
 .btn-caja.general {
@@ -143,10 +150,10 @@ html.dark .acciones-caja {
 }
 
 .btn-caja.producto {
-    background-color: #f39c12;
+    background-color: #e91e63;
 }
 .btn-caja.producto:hover {
-    background-color: #e67e22;
+    background-color: #c2185b;
 }
 
 .btn-caja.precios {
@@ -154,6 +161,13 @@ html.dark .acciones-caja {
 }
 .btn-caja.precios:hover {
     background-color: #27ae60;
+}
+
+.btn-caja.inventario {
+    background-color: #f39c12;
+}
+.btn-caja.inventario:hover {
+    background-color: #e67e22;
 }
 
 /* ✨ Animación entrada */

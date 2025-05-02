@@ -4,7 +4,7 @@ from Admin_Bar_FastTrack import views
 from .views import (
     PedidoListCreateView, PedidoDetailView, editar_pedido, 
     exportar_csv_pedidos,
-    pedidos_por_pagar, tomar_pedido, ver_pedidos, vista_cajero
+    pedidos_por_pagar,ver_pedidos, vista_cajero
 )
 
 from . import views
@@ -13,7 +13,6 @@ from . import views
 urlpatterns = [
     path('', PedidoListCreateView.as_view(), name='listar_crear_pedidos'),
     path('<int:pk>/', PedidoDetailView.as_view(), name='detalle_pedido'),
-    path('tomar/', tomar_pedido, name='tomar_pedido'),
     path('ver/', ver_pedidos, name='ver_pedidos'),
     path('ver/<int:id>/', views.ver_pedidos, name='ver_pedidos'),
     path('exportar/', exportar_csv_pedidos, name='exportar_csv'),       

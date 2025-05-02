@@ -118,31 +118,19 @@ html.dark .acciones-mesero {
 
 /* 🎯 Variantes específicas de color */
 
-/* Botón Tomar Pedido (Azul) */
 .btn-mesero.tomar {
-    background-color: #3498db; /* Azul */
+    background-color: #4caf50; 
 }
 .btn-mesero.tomar:hover {
-    background-color: #2980b9;
+    background-color: #388e3c;
     box-shadow: 0 6px 20px rgba(41, 128, 185, 0.3);
 }
 
-/* Botón Ver Pedidos (Morado) */
-.btn-mesero.ver-pedidos {
-    background-color: #9b59b6; /* Morado */
+.btn-mesero.ver-mesa {
+    background-color: #795548;
 }
-.btn-mesero.ver-pedidos:hover {
-    background-color: #8e44ad;
-    box-shadow: 0 6px 20px rgba(142, 68, 173, 0.3);
-}
-
-/* Botón Ver Mesas (Verde) */
-.btn-mesero.ver-mesas {
-    background-color: #27ae60; /* Verde */
-}
-.btn-mesero.ver-mesas:hover {
-    background-color: #1e8449;
-    box-shadow: 0 6px 20px rgba(30, 132, 73, 0.3);
+.btn-mesero.ver-mesa:hover {
+    background-color: #5d4037;
 }
 
 /* Botón Panel General (Naranja) */

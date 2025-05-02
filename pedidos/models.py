@@ -7,8 +7,7 @@ from usuarios.models import Usuario
 
 ESTADOS_PEDIDO = [
     ('pendiente', 'Pendiente'),
-    ('preparando', 'Preparando'),
-    ('servido', 'Servido'),
+
     ('pagado', 'Pagado'),
 ]
 
