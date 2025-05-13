@@ -2,7 +2,9 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Producto
 from .forms import ProductoForm
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def crear_producto_general(request):
     productos = Producto.objects.all()
     if request.method == 'POST':
@@ -14,10 +16,7 @@ def crear_producto_general(request):
         form = ProductoForm()
     return render(request, 'productos/crear_producto.html', {'form': form, 'productos': productos})
 
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Producto
-from .forms import ProductoForm
-
+@login_required
 def editar_producto_general(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
 
@@ -34,6 +33,7 @@ def editar_producto_general(request, pk):
         'producto': producto
     })
 
+@login_required
 def eliminar_producto_general(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
     producto.delete()

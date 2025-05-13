@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from django.db.models import Sum,F, ExpressionWrapper, DecimalField, OuterRef, Subquery
 from pedidos.models import PedidoProducto
+from django.contrib.auth.decorators import login_required
 from historial.models import HistorialPrecio
 import csv
 from datetime import datetime
 from django.http import HttpResponse
 
+@login_required
 def listar_informes(request):
     fecha_inicio = request.GET.get('fecha_inicio')
     fecha_fin = request.GET.get('fecha_fin')
@@ -58,6 +60,7 @@ def listar_informes(request):
 
     return render(request, 'informes/listar_informes.html', {'informes': informes})
 
+@login_required
 def exportar_csv(request):
     from django.db.models import Sum
     from pedidos.models import PedidoProducto

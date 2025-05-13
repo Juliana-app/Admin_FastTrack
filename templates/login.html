@@ -8,7 +8,11 @@
 </head>
 <body class="login-bg">
     <div class="container">
-        <h2>¡Bienvenido al Bar Conejo Blanco!</h2>
+        <!-- Icono circular con imagen -->
+        <div class="icon-circle">
+            <img src="{% static './img/mesero.png' %}" alt="Icono" />
+        </div>
+        <h2>¡Bienvenido al Bar Conejo Blanco!</h2>    
         
         {% if messages %}
             <ul class="messages">

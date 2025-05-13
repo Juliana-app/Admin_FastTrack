@@ -6,195 +6,148 @@
 @import url('./animaciones.css');
 
 body {
-    font-family: 'Rubik', sans-serif;
+  font-family: 'Rubik', sans-serif;
+  background-color: #111827;
+  color: #e5e7eb;
 }
 
-/* 🧊 Caja principal del dashboard */
 .dashboard-admin {
-    background: linear-gradient(135deg, #fdfbfb, #ebedee);
-    padding: 50px;
-    border-radius: 24px;
-    max-width: 850px;
-    margin: 50px auto;
-    box-shadow: 
-        0 20px 40px rgba(0, 0, 0, 0.1),
-        0 0 40px rgba(147, 197, 253, 0.25),
-        inset 0 0 10px rgba(255, 255, 255, 0.4);
-    text-align: center;
-    animation: fadeInAdmin 0.9s ease-in-out;
-    color: #1f2937;
-    position: relative;
-    backdrop-filter: blur(6px);
+  background: rgba(24, 74, 145, 0.5);
+  padding: 50px;
+  border-radius: 24px;
+  max-width: 850px;
+  margin: 50px auto;
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(59, 130, 246, 0.2),
+    inset 0 0 12px rgba(255, 255, 255, 0.05);
+  text-align: center;
+  animation: fadeInAdmin 0.9s ease-in-out;
+  color: #f3f4f6;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-html.dark .dashboard-admin {
-    background: linear-gradient(135deg, #1f2937, #111827);
-    box-shadow: 
-        0 20px 40px rgba(255, 255, 255, 0.04),
-        0 0 40px rgba(96, 165, 250, 0.2),
-        inset 0 0 10px rgba(255, 255, 255, 0.05);
-    color: #f3f4f6;
-}
-
-/* Título */
 .dashboard-admin h2 {
-    color: #2c3e50;
-    font-size: 32px;
-    margin-bottom: 15px;
-    font-weight: 600;
-}
-html.dark .dashboard-admin h2 {
-    color: #f9fafb;
+  color: #f9f9fa;
+  font-size: 32px;
+  margin-bottom: 15px;
+  font-weight: 600;
+  text-shadow:
+    0 0 10px rgba(5, 27, 87, 0.6),
+    0 0 20px rgba(20, 17, 221, 0.4),
+    0 0 30px rgba(190, 18, 60, 0.3);
 }
 
-/* Subtítulo */
 .dashboard-admin p {
-    color: #555;
-    font-size: 18px;
-    margin-bottom: 30px;
-}
-html.dark .dashboard-admin p {
-    color: #d1d5db;
+  color: #dbdbdd;
+  font-size: 18px;
+  margin-bottom: 30px;
+  text-shadow:
+    0 0 6px rgba(255, 255, 255, 0.15),
+    0 0 12px rgba(255, 255, 255, 0.1),
+    0 0 18px rgba(255, 0, 150, 0.08); 
 }
 
-/* 🎛 Contenedor de botones */
 .acciones-admin {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    background: #f9fafbcc;
-    padding: 30px;
-    border-radius: 16px;
-    backdrop-filter: blur(6px);
-    box-shadow: 
-        0 8px 20px rgba(173, 216, 230, 0.3),
-        0 0 18px rgba(255, 255, 255, 0.15);
-    transition: all 0.4s ease;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  background: rgba(37, 89, 141, 0.6);
+  padding: 30px;
+  border-radius: 16px;
+  backdrop-filter: blur(2px);
+  box-shadow:
+    0 12px 24px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(255, 255, 255, 0.05);
+  transition: all 0.4s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-html.dark .acciones-admin {
-    background: #1f2937cc;
-    box-shadow: 
-        0 8px 20px rgba(96, 165, 250, 0.25),
-        0 0 18px rgba(255, 255, 255, 0.08);
-}
-
-/* 🎨 Botones generales */
 .btn-admin {
-    color: white;
-    text-decoration: none;
-    padding: 14px 28px;
-    border-radius: 12px;
-    font-weight: 600;
-    transition: all 0.35s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    display: inline-block;
-    position: relative;
-    overflow: hidden;
+  color: #f9fafb;
+  text-decoration: none;
+  padding: 14px 28px;
+  border-radius: 16px;
+  font-weight: 600;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.4),
+    inset 0 0 10px rgba(255, 255, 255, 0.04),
+    0 0 12px rgba(255, 0, 150, 0.08);
 }
+
 .btn-admin:hover {
-    transform: translateY(-3px) scale(1.03);
+  transform: translateY(-3px) scale(1.04);
+  box-shadow:
+    0 14px 40px rgba(255, 0, 150, 0.15),
+    inset 0 0 12px rgba(255, 255, 255, 0.1),
+    0 0 20px rgba(59, 130, 246, 0.2);
+  background: rgba(255, 255, 255, 0.08);
 }
+
 .btn-admin::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 0%; height: 100%;
-    background: rgba(255,255,255,0.15);
-    transition: width 0.4s ease;
-    z-index: 0;
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 0%; height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  transition: width 0.4s ease;
+  z-index: 0;
 }
+
 .btn-admin:hover::after {
-    width: 100%;
+  width: 100%;
 }
+
 .btn-admin span {
-    position: relative;
-    z-index: 1;
+  position: relative;
+  z-index: 1;
 }
 
-/* 🎯 Variantes con colores únicos */
-.btn-admin.sedes {
-    background-color: #1abc9c;
-}
-.btn-admin.sedes:hover {
-    background-color: #16a085;
-}
+/* 🎯 Colores personalizados por orden con hover invertido */
 
-.btn-admin.usuarios {
-    background-color: #9b59b6;
-}
-.btn-admin.usuarios:hover {
-    background-color: #8e44ad;
-}
-
+.btn-admin.usuarios,
+.btn-admin.sedes,
+.btn-admin.mesas,
+.btn-admin.reportes,
 .btn-admin.general {
-    background-color: #e67e22;
-    width: 100%;
-    max-width: 300px;
+  background-color: rgba(190, 18, 60, 0.3);
 }
+
+.btn-admin.usuarios:hover,
+.btn-admin.sedes:hover,
+.btn-admin.mesas:hover,
+.btn-admin.reportes:hover,
 .btn-admin.general:hover {
-    background-color: #d35400;
+  background-color: rgba(209, 56, 95, 0.4);
 }
 
-.btn-admin.inventario {
-    background-color: #f39c12;
-}
-.btn-admin.inventario:hover {
-    background-color: #e67e22;
-}
-
-.btn-admin.productos {
-    background-color: #e91e63;
-}
-.btn-admin.productos:hover {
-    background-color: #c2185b;
-}
-
-.btn-admin.precios {
-    background-color: #3f51b5;
-}
-.btn-admin.precios:hover {
-    background-color: #303f9f;
-}
-
-.btn-admin.reportes {
-    background-color: #00bcd4;
-}
-.btn-admin.reportes:hover {
-    background-color: #0097a7;
-}
-
-.btn-admin.pedidos {
-    background-color: #4caf50;
-}
-.btn-admin.pedidos:hover {
-    background-color: #388e3c;
-}
-
-.btn-admin.mesas {
-    background-color: #795548;
-}
-.btn-admin.mesas:hover {
-    background-color: #5d4037;
-}
-
-.btn-admin.tomar-pedido {
-    background-color: #ff5722; /* naranja fuerte */
-}
-.btn-admin.tomar-pedido:hover {
-    background-color: #e64a19;
-}
-
+.btn-admin.inventario,
+.btn-admin.productos,
+.btn-admin.pedidos,
 .btn-admin.pendiente {
-    background-color: #607d8b; /* azul grisáceo */
+  background-color: rgba(209, 56, 95, 0.4);
 }
-.btn-admin.pendiente:hover {
-    background-color: #455a64;
+
+.btn-admin.inventario:hover,
+.btn-admin.sedes:hover,
+.btn-admin.pedidos:hover,
+.btn-admin.reportes:hover {
+  background-color: rgba(190, 18, 60, 0.3);
 }
 
 /* ✨ Animación entrada */
 @keyframes fadeInAdmin {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }

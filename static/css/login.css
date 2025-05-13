@@ -1,32 +1,37 @@
-
 body {
-    background: linear-gradient(to right, #fdfbfb, #ebedee);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    transition: background 0.4s ease;
+    font-family: 'Rubik', sans-serif;
 }
 
 .login-bg {
-    height: 100vh;
+    height: 100vh;           /* Utiliza el 100% de la altura de la ventana */
+    display: flex;
+    justify-content: center; /* Centrado horizontal */
+    align-items: center;     /* Centrado vertical */
+    padding: 20px;           /* Agrega un poco de espacio interno para evitar que sobrepase */
+    box-sizing: border-box;  /* Asegura que el padding no cause desbordamiento */
+}
+
+/* Círculo de icono */
+.icon-circle {
+    width: 95px;           /* Tamaño del círculo */
+    height: 95px;          /* Tamaño del círculo */
+    background-color: #d63384;
+    border-radius: 50%;     /* Hacerlo circular */
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0 auto 20px;    /* Centrado con margen inferior */
+    overflow: hidden;       /* Asegura que la imagen no sobresalga */
 }
 
-/* Color encima de la imagen */
-.login-bg::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 105, 180, 0.5); 
-    z-index: 0;
+/* Imagen dentro del círculo */
+.icon-circle img {
+    width: 100%;            /* La imagen ocupa todo el círculo */
+    height: 100%;           /* La imagen ocupa todo el círculo */
+    object-fit: cover;      /* Mantiene la imagen proporcionalmente dentro del círculo */
 }
 
-/* Contenido sobre el overlay */
+/* El formulario y su contenido */
 .container {
     position: relative;
     z-index: 1;
@@ -35,26 +40,16 @@ body {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
     max-width: 400px;
-    width: 90%;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-@keyframes fadeInUp {
-    0% {
-        opacity: 0;
-        transform: translateY(40px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
+/* Otros estilos */
 h2 {
     text-align: center;
     color: #d63384;
     margin-bottom: 20px;
     font-size: 28px;
-    transition: color 0.3s ease;
 }
 
 label {
@@ -63,7 +58,6 @@ label {
     font-weight: 600;
     color: #444;
     font-size: 14px;
-    transition: all 0.2s ease-in-out;
 }
 
 input {
@@ -73,13 +67,6 @@ input {
     border-radius: 10px;
     border: 1px solid #ccc;
     box-sizing: border-box;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-input:focus {
-    border-color: #d63384;
-    box-shadow: 0 0 5px rgba(214, 51, 132, 0.3);
-    outline: none;
 }
 
 button {
@@ -93,12 +80,10 @@ button {
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
 }
 
 button:hover {
     background: linear-gradient(135deg, #c2186a, #881c5d);
-    transform: scale(1.03);
 }
 
 button:active {
@@ -112,14 +97,4 @@ button:active {
     text-align: center;
     color: #d9534f;
     font-size: 14px;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
 }

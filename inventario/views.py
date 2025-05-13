@@ -47,6 +47,7 @@ def lista_productos(request):
         'form': form,
     })
 
+@login_required
 def editar_producto_modal(request, pk):
     producto = get_object_or_404(InventarioProducto, pk=pk)
     if request.method == 'POST':

@@ -28,15 +28,21 @@
   }
   
   .btn-filtrar {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 15px;
+    background-color: #5c6bc0; /* Azul suave */
+    color: white !important; /* Aseguramos que el texto sea blanco con !important */
     border: none;
-    cursor: pointer;
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(92, 107, 192, 0.3); /* Sombra sutil */
   }
   
   .btn-filtrar:hover {
-    background-color: #45a049;
+    background-color: #3f51b5; /* Azul más oscuro al pasar el ratón */
+    transform: translateY(-3px); /* Ligera elevación */
+    box-shadow: 0 6px 12px rgba(92, 107, 192, 0.4); /* Sombra más pronunciada */
   }
   
   .input-text {

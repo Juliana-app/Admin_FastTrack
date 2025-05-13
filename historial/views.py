@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 
 from inventario.models import InventarioProducto
+from django.contrib.auth.decorators import login_required
 from .forms import PrecioForm
 from .models import HistorialPrecio
 
+@login_required
 def registrar_precio(request):
     if request.method == 'POST':
         form = PrecioForm(request.POST)
