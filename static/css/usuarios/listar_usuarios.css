@@ -5,24 +5,25 @@
 @import url('./darkmode.css');
 
 body {
-    font-family: 'Rubik', sans-serif;
-    background-color: #f9fafb;
+  font-family: 'Rubik', sans-serif;
+  background-color: #121212; /* fondo oscuro mate */
+  color: #e0e0e0; /* texto claro */
 }
 
 /* TÍTULOS */
 h2 {
-    color: #1f2937;
-    font-size: 28px;
-    margin-bottom: 20px;
+  color: #a8d0a8; /* verde suave */
+  font-size: 28px;
+  margin-bottom: 20px;
 }
 
 /* Filtro: Agrupar inputs en una fila */
 .formulario-filtros {
   display: flex;
   justify-content: space-between;
-  gap: 12px; /* Espacio entre los elementos */
+  gap: 12px;
   align-items: center;
-  flex-wrap: wrap; /* Para permitir que se ajusten en pantallas pequeñas */
+  flex-wrap: wrap;
 }
 
 /* Inputs de texto y select */
@@ -30,179 +31,222 @@ h2 {
   padding: 10px 14px;
   border-radius: 6px;
   font-size: 14px;
-  border: 1px solid #d1d5db;
-  width: 200px; /* Limitar el ancho de los inputs y select */
+  border: 1px solid #39493c; /* borde verde oscuro */
+  background-color: #1e2a1f; /* input oscuro */
+  color: #cbd5b1; /* texto gris verdoso */
+  width: 200px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.filtro-input:focus {
+  border-color: #5ea35e;
+  box-shadow: 0 0 8px #5ea35e88;
+  outline: none;
 }
 
 /* 🟦 BOTÓN FILTRAR */
 .custom-btn-filtrar {
-  background-color: #5c6bc0; /* Azul suave */
-  color: white !important; /* Aseguramos que el texto sea blanco con !important */
+  background: linear-gradient(135deg, #3a5a3a, #1f3d1f);
+  color: #cbd5b1 !important;
   border: none;
   border-radius: 10px;
   padding: 12px 24px;
   font-size: 14px;
   font-weight: 600;
-  transition: background-color 0.3s, transform 0.2s ease;
-  box-shadow: 0 4px 8px rgba(92, 107, 192, 0.3); /* Sombra sutil */
+  box-shadow: 0 4px 8px #28482899;
+  transition: background 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
 }
 
 .custom-btn-filtrar:hover {
-  background-color: #3f51b5; /* Azul más oscuro al pasar el ratón */
-  transform: translateY(-3px); /* Ligera elevación */
-  box-shadow: 0 6px 12px rgba(92, 107, 192, 0.4); /* Sombra más pronunciada */
+  background: linear-gradient(135deg, #5ea35e, #3f7d3f);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px #3f7d3fbb;
 }
 
 /* 🟢 BOTÓN CREAR USUARIO */
 .custom-btn-crear-usuario {
-  background-color: #007BFF; /* Azul moderno */
-  color: white;
+  background: linear-gradient(135deg, #406740, #2a4f2a);
+  color: #d9e5d9;
   border: none;
   border-radius: 12px;
   padding: 12px 24px;
   font-size: 18px;
   font-weight: 600;
-  transition: background-color 0.3s, transform 0.2s ease, box-shadow 0.3s ease;
-  box-shadow: 0 6px 14px rgba(0, 123, 255, 0.3); /* Sombra suave */
+  box-shadow: 0 6px 14px #2a4f2a88;
+  transition: background 0.3s, transform 0.2s ease, box-shadow 0.3s ease;
+  cursor: pointer;
 }
 
 .custom-btn-crear-usuario:hover {
-  background-color: #0056b3; /* Azul más oscuro al pasar el ratón */
-  transform: translateY(-3px); /* Sutil efecto de elevación */
-  box-shadow: 0 8px 16px rgba(0, 123, 255, 0.5); /* Sombra más pronunciada */
+  background: linear-gradient(135deg, #5ea35e, #4c7d4c);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px #4c7d4cbb;
 }
-
 
 /* 🟦 BOTÓN EDITAR */
 button.btn-editar {
-    font-weight: 500;
-    color: #2563eb;
-    transition: color 0.3s ease, transform 0.2s ease;
+  font-weight: 500;
+  color: #8bc34a;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.2s ease;
 }
 
 button.btn-editar:hover {
-    color: #1d4ed8;
-    transform: scale(1.03);
+  color: #a5d65c;
+  transform: scale(1.03);
 }
 
 /* 🔴 BOTÓN ELIMINAR */
 button[type="submit"] {
-    color: #dc2626;
-    transition: color 0.3s ease, transform 0.2s ease;
+  color: #ef5350;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.2s ease;
 }
 
 button[type="submit"]:hover {
-    color: #b91c1c;
-    transform: scale(1.03);
+  color: #b71c1c;
+  transform: scale(1.03);
 }
 
 /* TABLA */
 table {
-    border-collapse: collapse;
-    width: 100%;
-    background-color: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border-collapse: collapse;
+  width: 100%;
+  background-color: #1e2a1f;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(10, 20, 10, 0.7);
 }
 
 thead {
-    background-color: #f3f4f6;
-    text-transform: uppercase;
-    font-size: 14px;
-    color: #374151;
+  background-color: #2a3a29;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #9ccc65;
 }
 
 th, td {
-    padding: 14px 16px;
-    text-align: left;
-    border-bottom: 1px solid #e5e7eb;
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid #39493c;
+  color: #cbd5b1;
 }
 
 /* CELDA CON IMAGEN */
 td img {
-    width: 48px;
-    height: 48px;
-    border-radius: 8px;
-    object-fit: cover;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 0 4px #2a4f2a88;
 }
 
 /* SIN IMAGEN */
 td span.italic {
-    color: #9ca3af;
+  color: #6b756b;
 }
 
 /* MODAL */
+
+/* Fondo transparente con blur, no blanco */
 #modal-crear-usuario {
-    backdrop-filter: blur(4px);
-    transition: all 0.3s ease-in-out;
+  backdrop-filter: blur(6px);
+  background-color: rgba(18, 18, 18, 0.7); /* semitransparente oscuro */
+  transition: all 0.3s ease-in-out;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+}
+
+/* Modal container */
+.modal {
+  background: transparent; /* transparente para que no se vea blanco */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Contenido modal con fondo oscuro semitransparente y bordes redondeados */
+.modal > div {
+  background-color: rgba(30, 42, 31, 0.95);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.9);
+  width: 100%;
+  max-width: 600px;
+  position: relative;
 }
 
 /* ANIMACIÓN DEL MODAL */
 .modal-anim {
-    animation: slideUpFade 0.4s ease-out;
+  animation: slideUpFade 0.4s ease-out;
 }
 
 @keyframes slideUpFade {
-    0% {
-        opacity: 0;
-        transform: translateY(50px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* FORMULARIO MODAL */
 form label {
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 6px;
-    display: block;
+  font-weight: 600;
+  color: #a8d0a8;
+  margin-bottom: 6px;
+  display: block;
 }
 
 form input,
 form select {
-    width: 100%;
-    padding: 10px 14px;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    font-size: 14px;
-    color: #111827;
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #39493c;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #cbd5b1;
+  background-color: #1e2a1f;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 form input:focus,
 form select:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 2px #2563eb33;
-    outline: none;
+  border-color: #5ea35e;
+  box-shadow: 0 0 8px #5ea35e88;
+  outline: none;
 }
 
 /* ANIMACIONES */
 @keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.2);
-        opacity: 0.6;
-    }
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.6;
+  }
 }
 
 @keyframes parpadeo-fondo {
-    0%, 100% { background-color: #fee2e2; }
-    50% { background-color: #fecaca; }
+  0%, 100% { background-color: #fee2e2; }
+  50% { background-color: #fecaca; }
 }
 
 .modal-hide {
-    animation: fadeOut 0.3s ease forwards;
+  animation: fadeOut 0.3s ease forwards;
 }
 
 @keyframes fadeOut {
-    to { opacity: 0; transform: scale(0.95); }
+  to { opacity: 0; transform: scale(0.95); }
 }
 
 /* Estilo para el fondo borroso */
@@ -212,13 +256,12 @@ form select:focus {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
   display: none;
-  z-index: 40; /* Se asegura de que esté debajo del modal pero encima del contenido */
+  z-index: 40;
 }
 
-/* Mostrar la capa de fondo cuando el modal está abierto */
 .backdrop.hidden {
   display: none;
 }
@@ -226,50 +269,62 @@ form select:focus {
   display: block;
 }
 
-  /* ⚪ BOTÓN CANCELAR */
-  #btnCancelModalEditar {
-    background-color: #f3f4f6;
-    color: #374151;
-    border: 1px solid #d1d5db;
-    font-weight: 600;
-    border-radius: 6px;
-    padding: 10px 20px;
-    transition: background-color 0.3s, transform 0.2s ease;
-  }
-  
-  #btnCancelModalEditar:hover {
-    background-color: #e5e7eb;
-    transform: scale(1.03);
-  }
+/* ⚪ BOTÓN CANCELAR */
+#btnCancelModalEditar,
+#btnCancelModalCrear {
+  background-color: #2a3a29;
+  color: #9ccc65;
+  border: 1px solid #5ea35e;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 10px 20px;
+  transition: background-color 0.3s, transform 0.2s ease;
+  cursor: pointer;
+}
 
-    /* ⚪ BOTÓN CANCELAR */
-  #btnCancelModalEditar {
-    background-color: #f3f4f6;
-    color: #374151;
-    border: 1px solid #d1d5db;
-    font-weight: 600;
-    border-radius: 6px;
-    padding: 10px 20px;
-    transition: background-color 0.3s, transform 0.2s ease;
-  }
-  
-  #btnCancelModalEditar:hover {
-    background-color: #e5e7eb;
-    transform: scale(1.03);
-  }
+#btnCancelModalEditar:hover,
+#btnCancelModalCrear:hover {
+  background-color: #5ea35e;
+  color: #1e2a1f;
+  transform: translateY(-2px);
+}
 
-    /* ⚪ BOTÓN CANCELAR */
-  #btnCancelModalCrear{
-    background-color: #f3f4f6;
-    color: #374151;
-    border: 1px solid #d1d5db;
-    font-weight: 600;
-    border-radius: 6px;
-    padding: 10px 20px;
-    transition: background-color 0.3s, transform 0.2s ease;
-  }
-  
-  #btnCancelModalCrear:hover {
-    background-color: #e5e7eb;
-    transform: scale(1.03);
-  }
+/* ⚪ BOTÓN GUARDAR */
+#btnGuardarCambios,
+#btnGuardarUsuario {
+  background-color: #4caf50;
+  color: white;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 12px 28px;
+  border: none;
+  box-shadow: 0 6px 12px #357a38aa;
+  transition: background-color 0.3s, transform 0.2s ease;
+  cursor: pointer;
+}
+
+#btnGuardarCambios:hover,
+#btnGuardarUsuario:hover {
+  background-color: #66bb6a;
+  transform: translateY(-2px);
+}
+
+/* Iconos SVG inline */
+.icon-svg {
+  fill: #9ccc65; /* verde suave */
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+  transition: fill 0.3s ease;
+}
+
+.icon-svg:hover {
+  fill: #c8e6c9; /* verde más claro al hover */
+  cursor: pointer;
+}
+
+/* Para iconos en botones editar/eliminar */
+button.btn-editar svg.icon-svg,
+button[type="submit"] svg.icon-svg {
+  pointer-events: none; /* evitar interacción directa con svg, para que el botón la reciba */
+}

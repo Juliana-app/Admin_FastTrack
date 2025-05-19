@@ -4,15 +4,42 @@
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/usuarios/listar_usuarios.css' %}">
+<!-- Corregí el link para cargar Font Awesome: agregar el atributo crossorigin="anonymous" -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
+<style>
+  /* Ajuste para reducir margen inferior del título */
+  .contenedor-usuarios > h2 {
+    margin-bottom: 0.5rem; /* antes mb-4, ahora menos */
+  }
+
+  /* Ajuste para dar más espacio entre botones y tabla */
+  .flex.justify-end.mb-4 {
+    margin-bottom: 1.5rem; /* un poco más de espacio */
+  }
+
+  /* Contenedor scroll para la tabla que ocupa toda la altura disponible menos header y botones */
+  .tabla-wrapper {
+    height: calc(100vh - 150px); /* ajusta según tu layout */
+    overflow-y: auto;
+  }
+
+  /* Para que la tabla ocupe 100% ancho del contenedor */
+  .tabla-usuarios {
+    width: 100%;
+    border-collapse: collapse;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
 <div class="contenedor-usuarios">
-  <h2 class="text-2xl font-bold mb-4">👥 Lista de Usuarios</h2>
+  <h2 class="text-2xl font-bold">
+    <i class="fa-solid fa-users" aria-hidden="true"></i> Lista de Usuarios
+  </h2>
 
-  <div class="flex justify-end mb-4">
+  <div class="flex justify-end mb-6">
     <button id="btnCrearUsuario" class="btn-filtrar custom-btn-filtrar">
-      ➕ Crear Usuario
+      Crear Usuario
     </button>
   </div>
 
@@ -25,54 +52,61 @@
           <option value="{{ sede.id }}" {% if sede.id|stringformat:"s" == sede_id %}selected{% endif %}>{{ sede.nombre }}</option>
         {% endfor %}
       </select>
-      <button type="submit" class="btn-filtrar custom-btn-filtrar">🔍 Filtrar</button>
+      <button type="submit" class="btn-filtrar custom-btn-filtrar">
+        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Filtrar
+      </button>
     </div>
   </form>
-  
 
-  <table class="tabla-usuarios">
-    <thead>
-      <tr>
-        <th>Usuario</th>
-        <th>Nombre</th>
-        <th>Apellido</th>
-        <th>Email</th>
-        <th>Rol</th>
-        <th>Sede</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for usuario in usuarios %}
-      <tr>
-        <td>{{ usuario.username }}</td>
-        <td>{{ usuario.first_name }}</td>
-        <td>{{ usuario.last_name }}</td>
-        <td>{{ usuario.email }}</td>
-        <td class="capitalize">{{ usuario.rol }}</td>
-        <td>{{ usuario.sede.nombre }}</td>
-        <td>
-          <button class="btn-editar" 
-                  data-id="{{ usuario.id }}"
-                  data-username="{{ usuario.username }}"
-                  data-first_name="{{ usuario.first_name }}"
-                  data-last_name="{{ usuario.last_name }}"
-                  data-email="{{ usuario.email }}"
-                  data-rol="{{ usuario.rol }}"
-                  data-sede="{{ usuario.sede.id }}">
-            ✏️ Editar
-          </button>
-          <form action="{% url 'eliminar_usuario' usuario.id %}" method="post" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit" onclick="return confirm('¿Estás seguro de eliminar este usuario?')">🗑 Eliminar</button>
-          </form>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <!-- Contenedor para que la tabla tenga scroll y ocupe espacio -->
+  <div class="tabla-wrapper mt-4">
+    <table class="tabla-usuarios">
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Email</th>
+          <th>Rol</th>
+          <th>Sede</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for usuario in usuarios %}
+        <tr>
+          <td>{{ usuario.username }}</td>
+          <td>{{ usuario.first_name }}</td>
+          <td>{{ usuario.last_name }}</td>
+          <td>{{ usuario.email }}</td>
+          <td class="capitalize">{{ usuario.rol }}</td>
+          <td>{{ usuario.sede.nombre }}</td>
+          <td>
+            <button class="btn-editar" 
+                    data-id="{{ usuario.id }}"
+                    data-username="{{ usuario.username }}"
+                    data-first_name="{{ usuario.first_name }}"
+                    data-last_name="{{ usuario.last_name }}"
+                    data-email="{{ usuario.email }}"
+                    data-rol="{{ usuario.rol }}"
+                    data-sede="{{ usuario.sede.id }}">
+              <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> Editar
+            </button>
+            <form action="{% url 'eliminar_usuario' usuario.id %}" method="post" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" onclick="return confirm('¿Estás seguro de eliminar este usuario?')">
+                <i class="fa-solid fa-trash" aria-hidden="true"></i> Eliminar
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
 
+<!-- El resto igual, no modificado -->
 <!-- Fondo Borroso al Abrir Modal -->
 <div id="backdrop" class="backdrop hidden"></div>
 
@@ -80,7 +114,9 @@
 <div id="modal-crear" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   <div class="bg-white p-6 rounded w-full max-w-lg relative">
     <button id="btnCerrarModalCrearUsuario" class="absolute top-2 right-2 text-gray-600 text-xl hover:text-red-600">&times;</button>
-    <h3 class="text-xl font-bold mb-4">➕ Crear Usuario</h3>
+    <h3 class="text-xl font-bold mb-4">
+      <i class="fa-solid fa-plus" aria-hidden="true"></i> Crear Usuario
+    </h3>
     <form method="post" id="formCrearUsuario" action="{% url 'crear_usuario' %}">
       {% csrf_token %}
       <div class="grid gap-4">
@@ -91,17 +127,17 @@
 
         <div class="relative">
           <input type="password" name="password" id="crear_password" class="input-text pr-10" placeholder="Contraseña" required>
-          <button type="button" class="toggle-password absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-500" onclick="togglePasswordCrear()">
-            👁️
+          <button type="button" class="toggle-password absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-500" onclick="togglePassword('crear_password')">
+            <i class="fa-solid fa-eye" aria-hidden="true"></i>
           </button>
         </div>
 
-        <select name="rol" id="crear_rol" class="select-sede">
+        <select name="rol" id="crear_rol" class="select-sede" required>
           <option value="mesero">Mesero</option>
           <option value="cajero">Cajero</option>
           <option value="administrador">Administrador</option>
         </select>
-        <select name="sede" id="crear_sede" class="select-sede">
+        <select name="sede" id="crear_sede" class="select-sede" required>
           {% for s in sedes %}
             <option value="{{ s.id }}">{{ s.nombre }}</option>
           {% endfor %}
@@ -119,7 +155,9 @@
 <div id="modal-editar" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   <div class="bg-white p-6 rounded w-full max-w-lg relative">
     <button id="btnCerrarModalEditarUsuario" class="absolute top-2 right-2 text-gray-600 text-xl hover:text-red-600">&times;</button>
-    <h3 class="text-xl font-bold mb-4">✏️ Editar Usuario</h3>
+    <h3 class="text-xl font-bold mb-4">
+      <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> Editar Usuario
+    </h3>
     <form method="post" id="formEditarUsuario" action="">
       {% csrf_token %}
       <input type="hidden" name="usuario_id" id="edit_usuario_id">
@@ -131,8 +169,8 @@
 
         <div class="relative">
           <input type="password" name="password" id="edit_password" class="input-text pr-10" placeholder="Nueva contraseña (opcional)">
-          <button type="button" class="toggle-password absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-500" onclick="togglePassword()">
-            👁️
+          <button type="button" class="toggle-password absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-500" onclick="togglePassword('edit_password')">
+            <i class="fa-solid fa-eye" aria-hidden="true"></i>
           </button>
         </div>
 
@@ -156,49 +194,66 @@
 </div>
 
 <script>
-  // Modal Crear Usuario
-  document.getElementById('btnCrearUsuario').addEventListener('click', function() {
+  // Función para mostrar/ocultar contraseña
+  function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    const type = input.type === 'password' ? 'text' : 'password';
+    input.type = type;
+  }
+
+  // Lógica para abrir el modal de crear usuario
+  document.getElementById('btnCrearUsuario').addEventListener('click', () => {
     document.getElementById('modal-crear').classList.remove('hidden');
     document.getElementById('backdrop').classList.remove('hidden');
   });
 
-  document.getElementById('btnCerrarModalCrearUsuario').addEventListener('click', function() {
+  // Cerrar modal crear
+  document.getElementById('btnCerrarModalCrearUsuario').addEventListener('click', () => {
     document.getElementById('modal-crear').classList.add('hidden');
     document.getElementById('backdrop').classList.add('hidden');
   });
 
-  document.getElementById('btnCancelModalCrear').addEventListener('click', function() {
+  document.getElementById('btnCancelModalCrear').addEventListener('click', () => {
     document.getElementById('modal-crear').classList.add('hidden');
     document.getElementById('backdrop').classList.add('hidden');
   });
 
-  // Modal Editar Usuario
+  // Abrir modal editar con datos del usuario
   document.querySelectorAll('.btn-editar').forEach(btn => {
-    btn.addEventListener('click', function () {
-      document.getElementById('edit_usuario_id').value = this.dataset.id;
-      document.getElementById('edit_username').value = this.dataset.username;
-      document.getElementById('edit_first_name').value = this.dataset.first_name;
-      document.getElementById('edit_last_name').value = this.dataset.last_name;
-      document.getElementById('edit_email').value = this.dataset.email;
-      document.getElementById('edit_rol').value = this.dataset.rol;
-      document.getElementById('edit_sede').value = this.dataset.sede;
-      document.getElementById('edit_password').value = "";
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.id;
+      const username = btn.dataset.username;
+      const first_name = btn.dataset.first_name;
+      const last_name = btn.dataset.last_name;
+      const email = btn.dataset.email;
+      const rol = btn.dataset.rol;
+      const sede = btn.dataset.sede;
 
-      document.getElementById('formEditarUsuario').action = '/api/usuarios/editar/' + this.dataset.id + '/';
+      document.getElementById('edit_usuario_id').value = id;
+      document.getElementById('edit_username').value = username;
+      document.getElementById('edit_first_name').value = first_name;
+      document.getElementById('edit_last_name').value = last_name;
+      document.getElementById('edit_email').value = email;
+      document.getElementById('edit_rol').value = rol;
+      document.getElementById('edit_sede').value = sede;
+
+      // Actualizar action del form a la URL correspondiente (ajusta a tu url)
+      document.getElementById('formEditarUsuario').action = `/usuarios/editar/${id}/`;
+
       document.getElementById('modal-editar').classList.remove('hidden');
       document.getElementById('backdrop').classList.remove('hidden');
     });
   });
 
-  document.getElementById('btnCerrarModalEditarUsuario').addEventListener('click', function () {
+  // Cerrar modal editar
+  document.getElementById('btnCerrarModalEditarUsuario').addEventListener('click', () => {
     document.getElementById('modal-editar').classList.add('hidden');
     document.getElementById('backdrop').classList.add('hidden');
   });
 
-  document.getElementById('btnCancelModalEditar').addEventListener('click', function() {
+  document.getElementById('btnCancelModalEditar').addEventListener('click', () => {
     document.getElementById('modal-editar').classList.add('hidden');
     document.getElementById('backdrop').classList.add('hidden');
   });
 </script>
-
 {% endblock %}

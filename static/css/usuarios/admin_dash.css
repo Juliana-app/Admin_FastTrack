@@ -1,4 +1,3 @@
-/* base_estilos.css */
 @import url('./base.css');
 @import url('./navbar.css');
 @import url('./botones.css');
@@ -7,47 +6,47 @@
 
 body {
   font-family: 'Rubik', sans-serif;
-  background-color: #111827;
-  color: #e5e7eb;
+  background-color: #121212; /* Fondo oscuro neutro */
+  color: #E0E0E0; /* Texto claro pero suave */
+  margin: 0;
+  padding: 0;
 }
 
 .dashboard-admin {
-  background: rgba(24, 74, 145, 0.5);
+  background: rgba(30, 30, 30, 0.85);
   padding: 50px;
   border-radius: 24px;
   max-width: 850px;
   margin: 50px auto;
   box-shadow:
-    0 25px 50px rgba(0, 0, 0, 0.6),
-    0 0 40px rgba(59, 130, 246, 0.2),
-    inset 0 0 12px rgba(255, 255, 255, 0.05);
+    0 10px 30px rgba(0, 0, 0, 0.8),
+    inset 0 0 8px rgba(255, 255, 255, 0.05);
   text-align: center;
   animation: fadeInAdmin 0.9s ease-in-out;
-  color: #f3f4f6;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@keyframes fadeInAdmin {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 .dashboard-admin h2 {
-  color: #f9f9fa;
   font-size: 32px;
+  color: #F5F5F5;
   margin-bottom: 15px;
   font-weight: 600;
   text-shadow:
-    0 0 10px rgba(5, 27, 87, 0.6),
-    0 0 20px rgba(20, 17, 221, 0.4),
-    0 0 30px rgba(190, 18, 60, 0.3);
+    0 0 4px rgba(0, 0, 0, 0.7);
 }
 
 .dashboard-admin p {
-  color: #dbdbdd;
+  color: #B0B0B0;
   font-size: 18px;
   margin-bottom: 30px;
-  text-shadow:
-    0 0 6px rgba(255, 255, 255, 0.15),
-    0 0 12px rgba(255, 255, 255, 0.1),
-    0 0 18px rgba(255, 0, 150, 0.08); 
+  text-shadow: none;
 }
 
 .acciones-admin {
@@ -55,99 +54,46 @@ body {
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
-  background: rgba(37, 89, 141, 0.6);
+  background: rgba(40, 40, 40, 0.8);
   padding: 30px;
   border-radius: 16px;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(6px);
   box-shadow:
-    0 12px 24px rgba(0, 0, 0, 0.3),
-    0 0 20px rgba(255, 255, 255, 0.05);
-  transition: all 0.4s ease;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+    0 10px 20px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .btn-admin {
-  color: #f9fafb;
+  color: #E0E0E0;
   text-decoration: none;
   padding: 14px 28px;
   border-radius: 16px;
   font-weight: 600;
-  display: inline-block;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.4s ease;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(60, 60, 60, 0.9);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.4),
-    inset 0 0 10px rgba(255, 255, 255, 0.04),
-    0 0 12px rgba(255, 0, 150, 0.08);
+    0 6px 18px rgba(0, 0, 0, 0.6),
+    inset 0 0 4px rgba(255, 255, 255, 0.07);
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
-
 .btn-admin:hover {
-  transform: translateY(-3px) scale(1.04);
-  box-shadow:
-    0 14px 40px rgba(255, 0, 150, 0.15),
-    inset 0 0 12px rgba(255, 255, 255, 0.1),
-    0 0 20px rgba(59, 130, 246, 0.2);
-  background: rgba(255, 255, 255, 0.08);
+  transform: scale(1.05);
+  background: rgba(80, 80, 80, 0.95);
+  color: #a0e0ff;
+  border-color: #a0e0ff;
 }
 
-.btn-admin::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 0%; height: 100%;
-  background: rgba(255, 255, 255, 0.1);
-  transition: width 0.4s ease;
-  z-index: 0;
+.btn-admin svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  transition: transform 0.3s ease;
 }
-
-.btn-admin:hover::after {
-  width: 100%;
-}
-
-.btn-admin span {
-  position: relative;
-  z-index: 1;
-}
-
-/* 🎯 Colores personalizados por orden con hover invertido */
-
-.btn-admin.usuarios,
-.btn-admin.sedes,
-.btn-admin.mesas,
-.btn-admin.reportes,
-.btn-admin.general {
-  background-color: rgba(190, 18, 60, 0.3);
-}
-
-.btn-admin.usuarios:hover,
-.btn-admin.sedes:hover,
-.btn-admin.mesas:hover,
-.btn-admin.reportes:hover,
-.btn-admin.general:hover {
-  background-color: rgba(209, 56, 95, 0.4);
-}
-
-.btn-admin.inventario,
-.btn-admin.productos,
-.btn-admin.pedidos,
-.btn-admin.pendiente {
-  background-color: rgba(209, 56, 95, 0.4);
-}
-
-.btn-admin.inventario:hover,
-.btn-admin.sedes:hover,
-.btn-admin.pedidos:hover,
-.btn-admin.reportes:hover {
-  background-color: rgba(190, 18, 60, 0.3);
-}
-
-/* ✨ Animación entrada */
-@keyframes fadeInAdmin {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+.btn-admin:hover svg {
+  transform: scale(1.15) rotate(3deg);
 }
