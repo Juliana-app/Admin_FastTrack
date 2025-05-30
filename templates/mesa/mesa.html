@@ -17,32 +17,38 @@
     </h2>
 
     <form method="get" action="{% url 'listar_mesas' %}" class="mb-4 flex items-center gap-2">
-        <label for="sede" class="text-white font-semibold">Filtrar por sede:</label>
-        <select name="sede" id="sede" class="campo-texto">
-            <option value="">Todas las sedes</option>
-            {% for sede in sedes %}
-                <option value="{{ sede.id }}" {% if sede.id|stringformat:"s" == sede_id %}selected{% endif %}>
-                    {{ sede.nombre }}
-                </option>
-            {% endfor %}
-        </select>
+        {% if es_administrador %}
+            <label for="sede" class="text-white font-semibold">Filtrar por sede:</label>
+            <select name="sede" id="sede" class="campo-texto">
+                <option value="">Todas las sedes</option>
+                {% for sede in sedes %}
+                    <option value="{{ sede.id }}" {% if sede.id|stringformat:"s" == sede_id %}selected{% endif %}>
+                        {{ sede.nombre }}
+                    </option>
+                {% endfor %}
+            </select>
+        {% else %}
+            <input type="hidden" name="sede" value="{{ sedes.0.id }}">
+        {% endif %}
 
         <label for="orden" class="text-white font-semibold">Ordenar por:</label>
         <select name="orden" id="orden" class="campo-texto">
             <option value="">Por número</option>
             <option value="capacidad" {% if request.GET.orden == "capacidad" %}selected{% endif %}>Por capacidad</option>
             <option value="ubicacion" {% if request.GET.orden == "ubicacion" %}selected{% endif %}>Por ubicación</option>
-            <option value="-ocupada" {% if request.GET.orden == "-ocupada" %}selected{% endif %}>Por estado (libres primero)</option>
+            <option value="ocupada" {% if request.GET.orden == "ocupada" %}selected{% endif %}>Por estado (libres primero)</option>
         </select>
 
         <button type="submit" class="custom-btn-filtrar">Filtrar</button>
     </form>
 
-    <div class="flex justify-end gap-4 mb-4">
-        <button id="btnAbrirCrearMesa" class="custom-btn-filtrar flex items-center gap-1">
-          <i data-feather="plus-circle" class="w-5 h-5"></i> Crear Mesa
-        </button>
-    </div>
+    {% if es_administrador %}
+        <div class="flex justify-end gap-4 mb-4">
+            <button id="btnAbrirCrearMesa" class="custom-btn-filtrar flex items-center gap-1" type="button">
+              <i data-feather="plus-circle" class="w-5 h-5"></i> Crear Mesa
+            </button>
+        </div>
+    {% endif %}
 
     {% if mesas %}
         <table class="w-full table-auto border-collapse rounded overflow-hidden shadow-sm">
@@ -77,23 +83,24 @@
                         </td>
                         <td class="px-4 py-2">{{ mesa.capacidad }}</td>
                         <td class="px-4 py-2 text-center">
-                            <button
-                                class="btn-editar flex items-center gap-1 text-blue-600 hover:underline mr-3"
-                                data-id="{{ mesa.id }}"
-                                data-numeroMesa="{{ mesa.numeroMesa }}"
-                                data-sede="{{ mesa.sede.id }}"
-                                data-ubicacion="{{ mesa.ubicacion }}"
-                                data-capacidad="{{ mesa.capacidad }}"
-                            >
-                              <i data-feather="edit-3" class="w-4 h-4"></i> Editar
-                            </button>
-                            <form action="{% url 'eliminar_mesa' mesa.id %}" method="post" style="display:inline;">
-                              {% csrf_token %}
-                              <button type="submit" class="flex items-center gap-1 text-red-600 hover:text-red-800"
-                                      onclick="return confirm('¿Seguro que quieres eliminar esta mesa?')">
-                                <i data-feather="trash-2" class="w-4 h-4"></i> Eliminar
-                              </button>
-                            </form>
+                            {% if es_administrador %}
+                                <button class="btn-editar flex items-center gap-1 text-blue-600 hover:underline mr-3"
+                                        data-id="{{ mesa.id }}"
+                                        data-numeroMesa="{{ mesa.numeroMesa }}"
+                                        data-sede="{{ mesa.sede.id }}"
+                                        data-ubicacion="{{ mesa.ubicacion }}"
+                                        data-capacidad="{{ mesa.capacidad }}"
+                                        type="button">
+                                    <i data-feather="edit-3" class="w-4 h-4"></i> Editar
+                                </button>
+                                <form action="{% url 'eliminar_mesa' mesa.id %}" method="post" style="display:inline;">
+                                  {% csrf_token %}
+                                  <button type="submit" class="flex items-center gap-1 text-red-600 hover:text-red-800"
+                                          onclick="return confirm('¿Seguro que quieres eliminar esta mesa?')">
+                                    <i data-feather="trash-2" class="w-4 h-4"></i> Eliminar
+                                  </button>
+                                </form>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
@@ -121,7 +128,7 @@
 
             <div class="mb-4">
                 <label for="capacidad" class="block font-semibold mb-1">Capacidad:</label>
-                <input type="number" id="capacidad" name="capacidad" class="input-text w-full" required>
+                <input type="number" id="capacidad" name="capacidad" class="input-text w-full" required min="1">
             </div>
 
             <div class="mb-4">
@@ -134,7 +141,7 @@
 
             <div class="mb-4">
                 <label for="sede" class="block font-semibold mb-1">Sede:</label>
-                <select id="sede" name="sede" class="select-sede w-full">
+                <select id="sede" name="sede" class="select-sede w-full" required>
                     {% for sede in sedes %}
                         <option value="{{ sede.id }}">{{ sede.nombre }}</option>
                     {% endfor %}
@@ -170,18 +177,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectUbicacion = document.getElementById('ubicacion');
     const selectSede = document.getElementById('sede');
 
-    // Abrir modal para crear mesa
-    btnAbrirCrear.addEventListener('click', () => {
-        modalTitulo.textContent = 'Crear Mesa';
-        form.action = "{% url 'crear_mesa' %}";
-        inputMesaId.value = '';
-        inputNumeroMesa.value = '';
-        inputCapacidad.value = '';
-        selectUbicacion.value = '1';
-        selectSede.value = '';
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-    });
+    // Sólo si el botón existe (es administrador)
+    if (btnAbrirCrear) {
+        btnAbrirCrear.addEventListener('click', () => {
+            modalTitulo.textContent = 'Crear Mesa';
+            form.action = "{% url 'crear_mesa' %}";
+            inputMesaId.value = '';
+            inputNumeroMesa.value = '';
+            inputCapacidad.value = '';
+            selectUbicacion.value = '1';
+            selectSede.value = selectSede.options.length > 0 ? selectSede.options[0].value : '';
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        });
+    }
 
     // Cerrar modal
     btnCerrar.addEventListener('click', () => {

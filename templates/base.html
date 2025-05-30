@@ -35,12 +35,15 @@
                     <a href="{% url 'pedidos_por_pagar' %}"><i data-lucide="credit-card"></i> Por Pagar</a>
                     <a href="{% url 'informe_producto' %}"><i data-lucide="bar-chart"></i> Informes</a>
                 {% elif user.rol == 'cajero' %}
-                    <a href="{% url 'dashboard_caja' %}"><i data-lucide="dollar-sign"></i> Caja</a>
+                    <a href="{% url 'panel_general' %}"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+                    <a href="{% url 'lista_productos' %}"><i data-lucide="box"></i> Inventario</a>
                     <a href="{% url 'ver_pedidos' %}"><i data-lucide="clipboard-list"></i> Pedidos</a>
                     <a href="{% url 'pedidos_por_pagar' %}"><i data-lucide="credit-card"></i> Por Pagar</a>
+                    <a href="{% url 'informe_producto' %}"><i data-lucide="bar-chart"></i> Informes</a>
                 {% elif user.rol == 'mesero' %}
-                    <a href="{% url 'dashboard_mesero' %}"><i data-lucide="concierge-bell"></i> Mis Pedidos</a>
+                    <a href="{% url 'panel_general' %}"><i data-lucide="layout-dashboard"></i> Dashboard</a>
                     <a href="{% url 'ver_mesas' %}"><i data-lucide="table"></i> Mesas</a>
+                    <a href="{% url 'ver_pedidos' %}"><i data-lucide="clipboard-list"></i> Pedidos</a>
                 {% endif %}
             {% endif %}
         </nav>

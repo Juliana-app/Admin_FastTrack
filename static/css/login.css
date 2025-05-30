@@ -1,62 +1,64 @@
 body {
     font-family: 'Rubik', sans-serif;
+    background-color: #0e0b1f;
+    margin: 0;
 }
 
 .login-bg {
-    height: 100vh;           /* Utiliza el 100% de la altura de la ventana */
-    display: flex;
-    justify-content: center; /* Centrado horizontal */
-    align-items: center;     /* Centrado vertical */
-    padding: 20px;           /* Agrega un poco de espacio interno para evitar que sobrepase */
-    box-sizing: border-box;  /* Asegura que el padding no cause desbordamiento */
-}
-
-/* Círculo de icono */
-.icon-circle {
-    width: 95px;           /* Tamaño del círculo */
-    height: 95px;          /* Tamaño del círculo */
-    background-color: #d63384;
-    border-radius: 50%;     /* Hacerlo circular */
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 auto 20px;    /* Centrado con margen inferior */
-    overflow: hidden;       /* Asegura que la imagen no sobresalga */
+    padding: 20px;
+    box-sizing: border-box;
+    background: radial-gradient(circle at center, #1a1536, #0e0b1f);
 }
 
-/* Imagen dentro del círculo */
+.icon-circle {
+    width: 95px;
+    height: 95px;
+    background-color: #7e6fc1;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px;
+    overflow: hidden;
+    box-shadow: 0 0 12px #7e6fc1;
+}
+
 .icon-circle img {
-    width: 100%;            /* La imagen ocupa todo el círculo */
-    height: 100%;           /* La imagen ocupa todo el círculo */
-    object-fit: cover;      /* Mantiene la imagen proporcionalmente dentro del círculo */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-/* El formulario y su contenido */
 .container {
-    position: relative;
-    z-index: 1;
-    background-color: rgba(255, 255, 255, 0.92);
-    padding: 2rem 3rem;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    background-color: #121024;
+    padding: 2rem 2.5rem;
+    border-radius: 1rem;
+    border: 1px solid #3a3a3a;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85);
     max-width: 400px;
     width: 100%;
     box-sizing: border-box;
+    color: #b0b0b0;
 }
 
-/* Otros estilos */
 h2 {
     text-align: center;
-    color: #d63384;
+    color: #c0c0c0;
     margin-bottom: 20px;
-    font-size: 28px;
+    font-size: 24px;
+    text-shadow: 0 0 6px #7e6fc1;
+    letter-spacing: 1.2px;
 }
 
 label {
     display: block;
     margin-top: 15px;
     font-weight: 600;
-    color: #444;
+    color: #d1d1d1;
     font-size: 14px;
 }
 
@@ -65,25 +67,34 @@ input {
     padding: 12px 15px;
     margin-top: 6px;
     border-radius: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #555;
+    background-color: #1e1b33;
+    color: #c4c4c4;
     box-sizing: border-box;
+}
+
+input::placeholder {
+    color: #999;
 }
 
 button {
     width: 100%;
     margin-top: 25px;
-    background: linear-gradient(135deg, #d63384, #a7226e);
-    color: white;
+    background: linear-gradient(135deg, #4b2979, #2b1645);
+    color: #b0aee3;
     padding: 14px;
     border: none;
     border-radius: 10px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.65);
+    transition: background 0.3s ease, transform 0.15s ease;
 }
 
 button:hover {
-    background: linear-gradient(135deg, #c2186a, #881c5d);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85);
 }
 
 button:active {
@@ -95,6 +106,17 @@ button:active {
     padding: 0;
     margin-bottom: 10px;
     text-align: center;
-    color: #d9534f;
+    color: #e57373;
     font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+    .container {
+        padding: 1.5rem 1.75rem;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
 }

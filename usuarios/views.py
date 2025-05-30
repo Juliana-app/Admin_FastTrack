@@ -27,11 +27,11 @@ def vista_login(request):
 
             # Redirección por rol
             if user.rol == 'mesero':
-                return redirect('dashboard_mesero')
+                return redirect('panel_general')
             elif user.rol == 'cajero':
-                return redirect('dashboard_cajero')
+                return redirect('panel_general')
             elif user.rol == 'administrador':
-                return redirect('dashboard_admin')
+                return redirect('panel_general')
             return redirect('/')
         else:
             messages.error(request, 'Usuario o contraseña inválidos.')

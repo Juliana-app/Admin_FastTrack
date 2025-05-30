@@ -20,14 +20,23 @@
     <div>
       {{ form.producto.label_tag }} 
       {{ form.producto }}
+      {% for error in form.producto.errors %}
+        <p class="text-red-600 text-sm">{{ error }}</p>
+      {% endfor %}
     </div>
     <div>
       {{ form.precio_compra.label_tag }} 
       {{ form.precio_compra }}
+      {% for error in form.precio_compra.errors %}
+        <p class="text-red-600 text-sm">{{ error }}</p>
+      {% endfor %}
     </div>
     <div>
       {{ form.precio_venta.label_tag }} 
       {{ form.precio_venta }}
+      {% for error in form.precio_venta.errors %}
+        <p class="text-red-600 text-sm">{{ error }}</p>
+      {% endfor %}
     </div>
   </div>
   <button type="submit" class="btn-filtrar custom-btn-filtrar">

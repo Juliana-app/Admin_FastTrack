@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Inventario{% endblock %}
 
 {% block head %}
-  {% load static %}
   <link rel="stylesheet" href="{% static 'css/productos/lista_productos.css' %}">
 {% endblock %}
 
@@ -12,6 +12,23 @@
     <i data-feather="box" class="w-6 h-6"></i> Inventario de Productos
   </h2>
 
+  {% if request.user.is_authenticated and request.user.rol == 'administrador' %}
+  <form method="get" class="mb-4 flex items-center gap-2">
+    <label for="sede" class="text-white">Filtrar por sede:</label>
+    <select name="sede" id="sede" class="p-2 rounded bg-gray-800 text-white border border-gray-600">
+      <option value="">Todas</option>
+      {% for sede in sedes %}
+        <option value="{{ sede.id }}" {% if sede_id|stringformat:"s" == sede.id|stringformat:"s" %}selected{% endif %}>
+          {{ sede.nombre }}
+        </option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn-filtrar flex items-center gap-1">
+      <i data-feather="search" class="w-4 h-4"></i> Buscar
+    </button>
+  </form>
+  {% endif %}
+
   <div class="flex justify-end mb-4">
     <button id="btnOpenModal" class="btn-filtrar custom-btn-filtrar flex items-center gap-2">
       <i data-feather="plus-circle" class="w-5 h-5"></i> Agregar Producto
@@ -19,7 +36,7 @@
   </div>
 
   <table class="table-auto w-full min-w-max">
-    <thead class=" text-white sticky top-0 z-10">
+    <thead class=" text-white sticky top-0 z-10 bg-gray-900">
       <tr>
         <th class="py-2 px-4 border-b text-left">Imagen</th>
         <th class="py-2 px-4 border-b text-left">Producto</th>
@@ -52,7 +69,7 @@
         </td>                
         <td class="py-2 px-4 border-b">${{ producto.precio_venta }}</td>
         <td class="py-2 px-4 border-b">{{ producto.sede.nombre }}</td>
-        <td class="py-2 px-4 border-b text-center">
+        <td class="py-2 px-4 border-b text-center whitespace-nowrap">
           <button class="btn-editar flex items-center gap-1"
             data-id="{{ producto.id }}"
             data-producto="{{ producto.producto.id }}"
@@ -91,7 +108,7 @@
 
       <div class="mb-4">
         <label for="id_producto" class="block text-sm font-medium text-gray-200">Producto</label>
-        <select name="producto" id="id_producto" class="w-full border-gray-300 rounded">
+        <select name="producto" id="id_producto" class="w-full border-gray-300 rounded" required>
           {% for p in form.fields.producto.queryset %}
           <option value="{{ p.id }}">{{ p.nombre }}</option>
           {% endfor %}
@@ -100,18 +117,29 @@
 
       <div class="mb-4">
         <label for="id_cantidad" class="block text-sm font-medium text-gray-200">Cantidad</label>
-        <input type="number" name="cantidad" id="id_cantidad" class="w-full border-gray-300 rounded">
+        <input type="number" name="cantidad" id="id_cantidad" class="w-full border-gray-300 rounded" min="0" required>
       </div>
 
       <div class="mb-4">
         <label for="id_stock_minimo" class="block text-sm font-medium text-gray-200">Stock mínimo</label>
-        <input type="number" name="stock_minimo" id="id_stock_minimo" class="w-full border-gray-300 rounded" value="5">
+        <input type="number" name="stock_minimo" id="id_stock_minimo" class="w-full border-gray-300 rounded" value="5" min="0" required>
       </div>
 
       <div class="mb-4">
         <label for="id_imagen" class="block text-sm font-medium text-gray-200">Imagen</label>
-        <input type="file" name="imagen" id="id_imagen" class="w-full border-gray-300 rounded">
+        <input type="file" name="imagen" id="id_imagen" class="w-full border-gray-300 rounded" accept="image/*">
       </div>
+
+      {% if request.user.is_authenticated and request.user.rol == 'administrador' %}
+      <div class="mb-4">
+        <label for="id_sede" class="block text-sm font-medium text-gray-200">Sede</label>
+        <select name="sede" id="id_sede" class="w-full border-gray-300 rounded" required>
+          {% for sede in sedes %}
+            <option value="{{ sede.id }}">{{ sede.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endif %}
 
       <div class="mt-4 flex justify-end">
         <button type="submit" class="btn-filtrar custom-btn-filtrar">Guardar</button>
@@ -144,13 +172,16 @@
       modal.classList.remove('flex');
       form.action = "{% url 'crear_inventario' %}";
       modalTitle.textContent = "Agregar Producto al Inventario";
+      // limpiar inputs
+      form.reset();
+      document.getElementById('edit_producto_id').value = "";
     }
 
     openBtn?.addEventListener('click', () => {
-      document.getElementById('id_producto').value = "";
-      document.getElementById('id_cantidad').value = "";
-      document.getElementById('id_stock_minimo').value = "5";
+      form.reset();
       document.getElementById('edit_producto_id').value = "";
+      modalTitle.textContent = "Agregar Producto al Inventario";
+      form.action = "{% url 'crear_inventario' %}";
       showModal();
     });
 

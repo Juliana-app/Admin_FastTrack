@@ -9,14 +9,19 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 @login_required
 def listar_mesas(request):
-    sedes = Sede.objects.all()
     sede_id = request.GET.get('sede')
-    ordenar_por = request.GET.get('orden') 
+    ordenar_por = request.GET.get('orden')
 
-    mesas = Mesa.objects.all()
-    
-    if sede_id:
-        mesas = mesas.filter(sede_id=sede_id)
+    # Si el usuario es administrador, puede ver todas las sedes y mesas
+    if request.user.rol == 'administrador':
+        mesas = Mesa.objects.all()
+        sedes = Sede.objects.all()
+        if sede_id:
+            mesas = mesas.filter(sede_id=sede_id)
+    else:
+        # Usuario común: solo ve las mesas de su sede
+        mesas = Mesa.objects.filter(sede=request.user.sede)
+        sedes = [request.user.sede]  # Mostrar solo su sede
 
     if ordenar_por:
         mesas = mesas.order_by(ordenar_por)
@@ -26,9 +31,9 @@ def listar_mesas(request):
     return render(request, 'mesa/mesa.html', {
         'mesas': mesas,
         'sedes': sedes,
-        'sede_id': sede_id
+        'sede_id': sede_id,
+        'es_administrador': request.user.rol == 'administrador'
     })
-
 
 @require_POST
 @login_required
@@ -67,7 +72,8 @@ def crear_mesa(request):
     return render(request, 'mesa/mesa.html', {
         'form': form,
         'mesas': mesas,
-        'sedes': sedes 
+        'sedes': sedes,
+         'es_administrador': request.user.rol == 'administrador'
     })
 
 @login_required
@@ -75,16 +81,26 @@ def ver_mesas(request):
     sede_id = request.GET.get('sede')
     ordenar_por = request.GET.get('orden')
 
-    mesas = Mesa.objects.select_related('sede').all()
-
-    if sede_id:
-        mesas = mesas.filter(sede_id=sede_id)
+    if request.user.rol == 'administrador':
+        mesas = Mesa.objects.select_related('sede').all()
+        sedes = Sede.objects.all()
+        if sede_id:
+            mesas = mesas.filter(sede_id=sede_id)
+    else:
+        # Solo las mesas de su sede
+        mesas = Mesa.objects.select_related('sede').filter(sede=request.user.sede)
+        sedes = [request.user.sede]
 
     if ordenar_por:
         mesas = mesas.order_by(ordenar_por)
 
-    sedes = Sede.objects.all()
-    return render(request, 'mesa/mesa.html', {'mesas': mesas, 'sedes': sedes, 'sede_id': sede_id})
+    return render(request, 'mesa/mesa.html', {
+        'mesas': mesas,
+        'sedes': sedes,
+        'sede_id': sede_id,
+        'es_administrador': request.user.rol == 'administrador'
+    })
+
 
 @login_required
 @user_passes_test(es_admin)
@@ -103,7 +119,8 @@ def editar_mesa(request, mesa_id):
     return render(request, 'mesa/editar_mesa.html', {
         'form': form,
         'sedes': sedes, 
-        'mesa': mesa     
+        'mesa': mesa,
+        'es_administrador': request.user.rol == 'administrador'
     })
 
 
@@ -134,4 +151,5 @@ def mesas_registradas_view(request):
         'mesas': mesas,
         'sedes': sedes,
         'sede_id': sede_id,
+        'es_administrador': request.user.rol == 'administrador'
     })

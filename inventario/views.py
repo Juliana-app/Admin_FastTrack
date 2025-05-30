@@ -2,6 +2,7 @@ from pyexpat.errors import messages
 from rest_framework import generics
 
 from historial.models import HistorialPrecio
+from sede.models import Sede
 from .models import Producto, InventarioProducto
 from .serializers import ProductoSerializer
 from django.contrib.auth.decorators import login_required 
@@ -47,19 +48,37 @@ def dashboard_general(request):
 
 @login_required
 def lista_productos(request):
-    if request.user.rol not in ['administrador', 'cajero']:
-        return redirect('dashboard')
+    form = ProductoInventarioForm(user=request.user) 
+    # Si es administrador, puede filtrar por sede
+    if request.user.rol == 'administrador':
+        sede_id = request.GET.get('sede')
+        sedes = Sede.objects.all()
 
-    sede_usuario = request.user.sede
+        if sede_id:
+            productos = InventarioProducto.objects.select_related('producto', 'sede') \
+                                                  .filter(sede_id=sede_id) \
+                                                  .order_by('producto__nombre')
+        else:
+            productos = InventarioProducto.objects.select_related('producto', 'sede') \
+                                                  .order_by('producto__nombre')
+
+        return render(request, 'productos/lista_productos.html', {
+    'productos': productos,
+    'form': form,
+    'sedes': sedes,
+    'sede_id': sede_id if request.user.rol == 'administrador' else None,
+})
+    
+    # Si NO es administrador, solo ve su sede
     productos = InventarioProducto.objects.select_related('producto', 'sede') \
-                                          .filter(sede=sede_usuario) \
+                                          .filter(sede=request.user.sede) \
                                           .order_by('producto__nombre')
 
-    form = ProductoInventarioForm()
     return render(request, 'productos/lista_productos.html', {
         'productos': productos,
         'form': form,
     })
+
 
 @login_required
 def editar_producto_modal(request, pk):
@@ -82,19 +101,22 @@ def eliminar_producto(request, producto_id):
 @require_POST
 @login_required
 def crear_producto_inventario(request):
-    form = ProductoInventarioForm(request.POST, request.FILES)
+    form = ProductoInventarioForm(request.POST, request.FILES, user=request.user)
     if form.is_valid():
         inventario = form.save(commit=False)
 
-        # Asignar la sede automáticamente desde el usuario
-        inventario.sede = request.user.sede
+        if request.user.rol == 'administrador':
+            # Si es admin, asignar la sede elegida en el formulario
+            inventario.sede = form.cleaned_data.get('sede')
+        else:
+            # Si no, asignar la sede automáticamente del usuario
+            inventario.sede = request.user.sede
 
-        # Asignar el precio desde el historial
         ultimo_precio = HistorialPrecio.objects.filter(producto=inventario.producto).order_by('-fecha').first()
         if ultimo_precio:
             inventario.precio_venta = ultimo_precio.precio_venta
 
         inventario.save()
     else:
-        print("Errores:", form.errors)  # Debug
+        print("Errores:", form.errors)
     return redirect('lista_productos')
