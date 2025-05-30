@@ -22,14 +22,28 @@ def dashboard_general(request):
     if request.user.rol not in ['admin', 'cajero']:
         return redirect('dashboard')
 
-    productos = Producto.objects.all().order_by('cantidad')
-    pedidos = Pedido.objects.filter(estado='pendiente').order_by('-creado')[:5]  # últimos 5
+    sede = request.user.sede
 
-    return render(request, 'usuarios/dashboard_general.html', {
+    productos = InventarioProducto.objects.select_related('producto') \
+                                          .filter(sede=sede) \
+                                          .order_by('cantidad')
+
+    pedidos = Pedido.objects.filter(estado='pendiente').order_by('-creado')[:5]
+    mesas = sede.mesas.all()
+    mesas_vacias_count = mesas.filter(ocupada=False).count()
+    mesas_ocupadas_count = mesas.filter(ocupada=True).count()
+    pedidos_pendientes_count = pedidos.count()
+    pedidos_pagados_count = Pedido.objects.filter(estado='pagado').count()
+
+    return render(request, 'general.html', {
         'productos': productos,
-        'pedidos': pedidos
+        'pedidos': pedidos,
+        'mesas': mesas,
+        'mesas_vacias_count': mesas_vacias_count,
+        'mesas_ocupadas_count': mesas_ocupadas_count,
+        'pedidos_pendientes_count': pedidos_pendientes_count,
+        'pedidos_pagados_count': pedidos_pagados_count,
     })
-    
 
 @login_required
 def lista_productos(request):

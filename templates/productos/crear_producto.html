@@ -4,18 +4,22 @@
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/productos/productos_crear.css' %}">
+<!-- Feather Icons -->
+<script src="https://unpkg.com/feather-icons"></script>
 {% endblock %}
 
 {% block content %}
 <div class="contenedor-productos">
-  <h2 class="text-2xl font-bold mb-4">🛠 Gestión de Productos</h2>
+  <h2 class="text-2xl font-bold mb-4">
+    <i data-feather="tool" class="inline-block w-6 h-6 mr-2"></i>Gestión de Productos
+  </h2>
 
   <div class="flex justify-end gap-4 mb-4">
     <button id="btnCrearProducto" class="btn-filtrar custom-btn-filtrar">
-      ➕ Crear Producto
+      <i data-feather="plus" class="inline-block w-5 h-5 mr-1"></i> Crear Producto
     </button>
     <a href="{% url 'registrar_precio' %}" class="btn-filtrar custom-btn-filtrar">
-      💰 Asignar precio
+      <i data-feather="dollar-sign" class="inline-block w-5 h-5 mr-1"></i> Asignar precio
     </a>
   </div>  
 
@@ -37,11 +41,13 @@
                   data-id="{{ producto.id }}"
                   data-nombre="{{ producto.nombre }}"
                   data-descripcion="{{ producto.descripcion }}">
-            ✏️ Editar
+            <i data-feather="edit" class="inline-block w-4 h-4 mr-1"></i> Editar
           </button>
           <form action="{% url 'eliminar_producto' producto.id %}" method="post" style="display:inline;">
             {% csrf_token %}
-            <button type="submit" onclick="return confirm('¿Estás seguro de eliminar este producto?')">🗑 Eliminar</button>
+            <button type="submit" onclick="return confirm('¿Estás seguro de eliminar este producto?')">
+              <i data-feather="trash-2" class="inline-block w-4 h-4 mr-1"></i> Eliminar
+            </button>
           </form>
         </td>
       </tr>
@@ -57,7 +63,9 @@
 <div id="modal-crear" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   <div class="bg-white p-6 rounded w-full max-w-lg relative">
     <button id="btnCerrarModalCrearProducto" class="absolute top-2 right-2 text-gray-600 text-xl hover:text-red-600">&times;</button>
-    <h3 class="text-xl font-bold mb-4">➕ Crear Producto</h3>
+    <h3 class="text-xl font-bold mb-4">
+      <i data-feather="plus" class="inline-block w-5 h-5 mr-1"></i> Crear Producto
+    </h3>
     <form method="post" id="formCrearProducto" action="{% url 'crear_producto' %}">
       {% csrf_token %}
       <div class="grid gap-4">
@@ -74,9 +82,11 @@
 
 <!-- Modal de Edición -->
 <div id="modal-editar" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-white p-6 rounded w-full max-w-lg relative">
+  <div class="p-6 rounded w-full max-w-lg relative">
     <button id="btnCerrarModalEditarProducto" class="absolute top-2 right-2 text-gray-600 text-xl hover:text-red-600">&times;</button>
-    <h3 class="text-xl font-bold mb-4">✏️ Editar Producto</h3>
+    <h3 class="text-xl font-bold mb-4">
+      <i data-feather="edit" class="inline-block w-5 h-5 mr-1"></i> Editar Producto
+    </h3>
     <form method="post" id="formEditarProducto" action="">
       {% csrf_token %}
       <div class="grid gap-4">
@@ -92,6 +102,9 @@
 </div>
 
 <script>
+  // Inicializar Feather Icons
+  feather.replace();
+
   // Modal Crear Producto
   document.getElementById('btnCrearProducto').addEventListener('click', function() {
     document.getElementById('modal-crear').classList.remove('hidden');

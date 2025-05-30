@@ -4,42 +4,18 @@
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/usuarios/listar_usuarios.css' %}">
-<!-- Corregí el link para cargar Font Awesome: agregar el atributo crossorigin="anonymous" -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
-<style>
-  /* Ajuste para reducir margen inferior del título */
-  .contenedor-usuarios > h2 {
-    margin-bottom: 0.5rem; /* antes mb-4, ahora menos */
-  }
-
-  /* Ajuste para dar más espacio entre botones y tabla */
-  .flex.justify-end.mb-4 {
-    margin-bottom: 1.5rem; /* un poco más de espacio */
-  }
-
-  /* Contenedor scroll para la tabla que ocupa toda la altura disponible menos header y botones */
-  .tabla-wrapper {
-    height: calc(100vh - 150px); /* ajusta según tu layout */
-    overflow-y: auto;
-  }
-
-  /* Para que la tabla ocupe 100% ancho del contenedor */
-  .tabla-usuarios {
-    width: 100%;
-    border-collapse: collapse;
-  }
-</style>
 {% endblock %}
 
 {% block content %}
 <div class="contenedor-usuarios">
   <h2 class="text-2xl font-bold">
-    <i class="fa-solid fa-users" aria-hidden="true"></i> Lista de Usuarios
+    <i data-feather="user"></i> Lista de Usuarios
   </h2>
 
   <div class="flex justify-end mb-6">
     <button id="btnCrearUsuario" class="btn-filtrar custom-btn-filtrar">
-      Crear Usuario
+      <i class="fa-solid fa-user-plus"></i> Crear Usuario
     </button>
   </div>
 
@@ -53,12 +29,11 @@
         {% endfor %}
       </select>
       <button type="submit" class="btn-filtrar custom-btn-filtrar">
-        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Filtrar
+        <i class="fa-solid fa-magnifying-glass"></i> Filtrar
       </button>
     </div>
   </form>
 
-  <!-- Contenedor para que la tabla tenga scroll y ocupe espacio -->
   <div class="tabla-wrapper mt-4">
     <table class="tabla-usuarios">
       <thead>
@@ -82,7 +57,7 @@
           <td class="capitalize">{{ usuario.rol }}</td>
           <td>{{ usuario.sede.nombre }}</td>
           <td>
-            <button class="btn-editar" 
+            <button class="btn-editar"
                     data-id="{{ usuario.id }}"
                     data-username="{{ usuario.username }}"
                     data-first_name="{{ usuario.first_name }}"
@@ -90,12 +65,12 @@
                     data-email="{{ usuario.email }}"
                     data-rol="{{ usuario.rol }}"
                     data-sede="{{ usuario.sede.id }}">
-              <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> Editar
+              <i data-feather="edit-3" class="w-4 h-4"></i> Editar
             </button>
             <form action="{% url 'eliminar_usuario' usuario.id %}" method="post" style="display:inline;">
               {% csrf_token %}
               <button type="submit" onclick="return confirm('¿Estás seguro de eliminar este usuario?')">
-                <i class="fa-solid fa-trash" aria-hidden="true"></i> Eliminar
+                <i data-feather="trash-2" class="w-4 h-4"></i> Eliminar
               </button>
             </form>
           </td>
@@ -106,16 +81,16 @@
   </div>
 </div>
 
-<!-- El resto igual, no modificado -->
-<!-- Fondo Borroso al Abrir Modal -->
 <div id="backdrop" class="backdrop hidden"></div>
 
-<!-- Modal de Crear Usuario -->
+<!-- Modal Crear -->
 <div id="modal-crear" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   <div class="bg-white p-6 rounded w-full max-w-lg relative">
-    <button id="btnCerrarModalCrearUsuario" class="absolute top-2 right-2 text-gray-600 text-xl hover:text-red-600">&times;</button>
+    <button id="btnCerrarModalCrearUsuario" class="absolute top-2 right-2 text-gray-600 text-xl hover:text-red-600">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
     <h3 class="text-xl font-bold mb-4">
-      <i class="fa-solid fa-plus" aria-hidden="true"></i> Crear Usuario
+      <i class="fa-solid fa-user-plus"></i> Crear Usuario
     </h3>
     <form method="post" id="formCrearUsuario" action="{% url 'crear_usuario' %}">
       {% csrf_token %}
@@ -128,7 +103,7 @@
         <div class="relative">
           <input type="password" name="password" id="crear_password" class="input-text pr-10" placeholder="Contraseña" required>
           <button type="button" class="toggle-password absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-500" onclick="togglePassword('crear_password')">
-            <i class="fa-solid fa-eye" aria-hidden="true"></i>
+            <i class="fa-solid fa-eye"></i>
           </button>
         </div>
 
@@ -144,19 +119,23 @@
         </select>
       </div>
       <div class="flex justify-end mt-4">
-        <button type="submit" class="btn-filtrar custom-btn-filtrar">Crear Usuario</button>
-        <button type="button" id="btnCancelModalCrear" class="ml-2 px-4 py-2 border rounded hover:bg-gray-100">Cancelar</button>
+        <button type="submit" class="btn-filtrar custom-btn-filtrar"><i class="fa-solid fa-check"></i> Crear Usuario</button>
+        <button type="button" id="btnCancelModalCrear" class="ml-2 px-4 py-2 border rounded hover:bg-gray-100">
+          <i class="fa-solid fa-ban"></i> Cancelar
+        </button>
       </div>
     </form>
   </div>
 </div>
 
-<!-- Modal de Edición -->
+<!-- Modal Editar -->
 <div id="modal-editar" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   <div class="bg-white p-6 rounded w-full max-w-lg relative">
-    <button id="btnCerrarModalEditarUsuario" class="absolute top-2 right-2 text-gray-600 text-xl hover:text-red-600">&times;</button>
+    <button id="btnCerrarModalEditarUsuario" class="absolute top-2 right-2 text-gray-600 text-xl hover:text-red-600">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
     <h3 class="text-xl font-bold mb-4">
-      <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> Editar Usuario
+      <i class="fa-solid fa-pen-to-square"></i> Editar Usuario
     </h3>
     <form method="post" id="formEditarUsuario" action="">
       {% csrf_token %}
@@ -170,7 +149,7 @@
         <div class="relative">
           <input type="password" name="password" id="edit_password" class="input-text pr-10" placeholder="Nueva contraseña (opcional)">
           <button type="button" class="toggle-password absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-500" onclick="togglePassword('edit_password')">
-            <i class="fa-solid fa-eye" aria-hidden="true"></i>
+            <i class="fa-solid fa-eye"></i>
           </button>
         </div>
 
@@ -186,28 +165,26 @@
         </select>
       </div>
       <div class="flex justify-end mt-4">
-        <button type="submit" class="btn-filtrar custom-btn-filtrar">Guardar cambios</button>
-        <button type="button" id="btnCancelModalEditar" class="ml-2 px-4 py-2 border rounded hover:bg-gray-100">Cancelar</button>
+        <button type="submit" class="btn-filtrar custom-btn-filtrar"><i class="fa-solid fa-floppy-disk"></i> Guardar cambios</button>
+        <button type="button" id="btnCancelModalEditar" class="ml-2 px-4 py-2 border rounded hover:bg-gray-100">
+          <i class="fa-solid fa-ban"></i> Cancelar
+        </button>
       </div>
     </form>
   </div>
 </div>
 
 <script>
-  // Función para mostrar/ocultar contraseña
   function togglePassword(inputId) {
     const input = document.getElementById(inputId);
-    const type = input.type === 'password' ? 'text' : 'password';
-    input.type = type;
+    input.type = input.type === 'password' ? 'text' : 'password';
   }
 
-  // Lógica para abrir el modal de crear usuario
   document.getElementById('btnCrearUsuario').addEventListener('click', () => {
     document.getElementById('modal-crear').classList.remove('hidden');
     document.getElementById('backdrop').classList.remove('hidden');
   });
 
-  // Cerrar modal crear
   document.getElementById('btnCerrarModalCrearUsuario').addEventListener('click', () => {
     document.getElementById('modal-crear').classList.add('hidden');
     document.getElementById('backdrop').classList.add('hidden');
@@ -218,7 +195,6 @@
     document.getElementById('backdrop').classList.add('hidden');
   });
 
-  // Abrir modal editar con datos del usuario
   document.querySelectorAll('.btn-editar').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = btn.dataset.id;
@@ -237,7 +213,6 @@
       document.getElementById('edit_rol').value = rol;
       document.getElementById('edit_sede').value = sede;
 
-      // Actualizar action del form a la URL correspondiente (ajusta a tu url)
       document.getElementById('formEditarUsuario').action = `/usuarios/editar/${id}/`;
 
       document.getElementById('modal-editar').classList.remove('hidden');
@@ -245,7 +220,6 @@
     });
   });
 
-  // Cerrar modal editar
   document.getElementById('btnCerrarModalEditarUsuario').addEventListener('click', () => {
     document.getElementById('modal-editar').classList.add('hidden');
     document.getElementById('backdrop').classList.add('hidden');

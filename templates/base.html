@@ -5,54 +5,81 @@
     <meta charset="UTF-8">
     <title>Conejo Blanco | {% block title %}{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
     <link rel="stylesheet" href="{% static 'css/base_estilos.css' %}">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
 
     {% block head %}{% endblock %}
 </head>
 
-<body class="bg-gray-100 text-gray-800">
-    <nav class="navbar">
-        {% if user.is_authenticated %}
-            {% if user.rol == 'administrador' %}
-                <a href="{% url 'dashboard_admin' %}" class="logo">🍷 Conejo Blanco</a>
-            {% elif user.rol == 'cajero' %}
-                <a href="{% url 'dashboard_caja' %}" class="logo">🍷 Conejo Blanco</a>
-            {% elif user.rol == 'mesero' %}
-                <a href="{% url 'dashboard_mesero' %}" class="logo">🍷 Conejo Blanco</a>
-            {% else %}
-                <span class="logo">🍷 Conejo Blanco</span>
+<body class="flex bg-gray-900 text-white min-h-screen">
+
+    <!-- Sidebar fija -->
+    <aside class="sidebar">
+        <!-- Logo -->
+        <div class="sidebar-header">
+            <h1 class="text-lg font-bold text-red-500 text-center">🍷 Conejo Blanco</h1>
+        </div>
+
+        <!-- Navegación -->
+        <nav class="sidebar-nav">
+            {% if user.is_authenticated %}
+                {% if user.rol == 'administrador' %}
+                    <a href="{% url 'panel_general' %}"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+                    <a href="{% url 'listar_usuarios' %}"><i data-lucide="users"></i> Usuarios</a>
+                    <a href="{% url 'lista_productos' %}"><i data-lucide="box"></i> Inventario</a>
+                    <a href="{% url 'crear_producto' %}"><i data-lucide="plus-square"></i> Productos</a>
+                    <a href="{% url 'listar_sedes' %}"><i data-lucide="map-pin"></i> Sedes</a>
+                    <a href="{% url 'ver_mesas' %}"><i data-lucide="table"></i> Mesas</a>
+                    <a href="{% url 'ver_pedidos' %}"><i data-lucide="clipboard-list"></i> Pedidos</a>
+                    <a href="{% url 'pedidos_por_pagar' %}"><i data-lucide="credit-card"></i> Por Pagar</a>
+                    <a href="{% url 'informe_producto' %}"><i data-lucide="bar-chart"></i> Informes</a>
+                {% elif user.rol == 'cajero' %}
+                    <a href="{% url 'dashboard_caja' %}"><i data-lucide="dollar-sign"></i> Caja</a>
+                    <a href="{% url 'ver_pedidos' %}"><i data-lucide="clipboard-list"></i> Pedidos</a>
+                    <a href="{% url 'pedidos_por_pagar' %}"><i data-lucide="credit-card"></i> Por Pagar</a>
+                {% elif user.rol == 'mesero' %}
+                    <a href="{% url 'dashboard_mesero' %}"><i data-lucide="concierge-bell"></i> Mis Pedidos</a>
+                    <a href="{% url 'ver_mesas' %}"><i data-lucide="table"></i> Mesas</a>
+                {% endif %}
             {% endif %}
-        {% else %}
-            <a href="{% url 'login' %}" class="logo">🍷 Conejo Blanco</a>
-        {% endif %}
-    
+        </nav>
+
+        <!-- Usuario -->
         {% if user.is_authenticated %}
-        <div class="user-info">
-            <span class="greeting">Hola, {{ user.first_name }}</span>
-            <span class="badge-sede"> {{ user.sede.nombre|default:"Sin sede" }}</span>
-            <a href="{% url 'logout' %}" class="logout-btn">Cerrar sesión</a>
+        <div class="sidebar-user">
+            <p class="font-medium truncate">{{ user.first_name }}</p>
+            <p class="text-xs text-gray-400 capitalize">{{ user.rol }}</p>
+            <p class="text-xs text-gray-400 truncate">{{ user.sede.nombre|default:"Sin sede" }}</p>
+            <a href="{% url 'logout' %}" class="logout-link">Cerrar sesión</a>
         </div>
         {% endif %}
-    </nav>    
+    </aside>
 
-    <main class="p-6">
+    <!-- Contenido principal -->
+    <main class="main-content">
         {% block content %}{% endblock %}
+
+        {% if messages %}
+        <div class="mt-4 space-y-2">
+            {% for message in messages %}
+            <div class="p-3 rounded text-white {{ message.tags }} 
+                        {% if message.tags == 'error' %}bg-red-600
+                        {% elif message.tags == 'success' %}bg-green-600
+                        {% elif message.tags == 'warning' %}bg-yellow-600
+                        {% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
     </main>
 
-    {% if messages %}
-    <div class="mb-4">
-        {% for message in messages %}
-        <div class="p-3 rounded text-white {{ message.tags }} 
-                    {% if message.tags == 'error' %}bg-red-600
-                    {% elif message.tags == 'success' %}bg-green-600
-                    {% elif message.tags == 'warning' %}bg-yellow-600
-                    {% endif %}">
-            {{ message }}
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
+<script>feather.replace()</script>
+
 </html>
 {% block extra_scripts %}{% endblock %}

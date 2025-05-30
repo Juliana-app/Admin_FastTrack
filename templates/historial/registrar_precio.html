@@ -5,10 +5,14 @@
 
 {% block head %}
   <link rel="stylesheet" href="{% static 'css/historial/precio_historial.css' %}">
+  <!-- Feather Icons -->
+  <script src="https://unpkg.com/feather-icons"></script>
 {% endblock %}
 
 {% block content %}
-<h2 class="text-2xl font-bold mb-4">💵 Registrar Precio de Producto</h2>
+<h2 class="text-2xl font-bold mb-4">
+  <i data-feather="dollar-sign" class="inline-block w-6 h-6 mr-2"></i>Registrar Precio de Producto
+</h2>
 
 <form method="post" class="mb-6">
   {% csrf_token %}
@@ -26,10 +30,14 @@
       {{ form.precio_venta }}
     </div>
   </div>
-  <button type="submit">Guardar</button>
+  <button type="submit" class="btn-filtrar custom-btn-filtrar">
+    <i data-feather="save" class="inline-block w-5 h-5 mr-1"></i> Guardar
+  </button>
 </form>
 
-<h3 class="text-xl font-semibold mt-6 mb-4">📜 Historial Reciente</h3>
+<h3 class="text-xl font-semibold mt-6 mb-4">
+  <i data-feather="file-text" class="inline-block w-5 h-5 mr-2"></i>Historial Reciente
+</h3>
 <div class="overflow-x-auto">
   <table class="historial-table">
     <thead>
@@ -56,4 +64,8 @@
     </tbody>
   </table>
 </div>
+
+<script>
+  feather.replace();
+</script>
 {% endblock %}

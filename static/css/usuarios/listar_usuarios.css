@@ -4,327 +4,357 @@
 @import url('./animaciones.css');
 @import url('./darkmode.css');
 
+/* body con estilos del inspo */
 body {
-  font-family: 'Rubik', sans-serif;
-  background-color: #121212; /* fondo oscuro mate */
-  color: #e0e0e0; /* texto claro */
+    background-color: #0b0a1a !important;
+    color: #c0c0c0 !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-/* TÍTULOS */
+/* Títulos h2 con color del inspo */
 h2 {
-  color: #a8d0a8; /* verde suave */
-  font-size: 28px;
-  margin-bottom: 20px;
+    color: #d0d0d0 !important;
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-weight: 700;
 }
 
-/* Filtro: Agrupar inputs en una fila */
+/* formulario-filtros (flex y espaciado queda igual, solo color) */
 .formulario-filtros {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  align-items: center;
-  flex-wrap: wrap;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
-/* Inputs de texto y select */
+/* Inputs */
 .filtro-input {
-  padding: 10px 14px;
-  border-radius: 6px;
-  font-size: 14px;
-  border: 1px solid #39493c; /* borde verde oscuro */
-  background-color: #1e2a1f; /* input oscuro */
-  color: #cbd5b1; /* texto gris verdoso */
-  width: 200px;
-  transition: border-color 0.3s, box-shadow 0.3s;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    border: 1px solid #3a3a3a !important; /* borde oscuro del inspo */
+    background-color: transparent !important; /* del inspo */
+    color: #b0b0b0 !important;
+    width: 180px;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .filtro-input:focus {
-  border-color: #5ea35e;
-  box-shadow: 0 0 8px #5ea35e88;
-  outline: none;
+    border-color: #5ea35e;
+    box-shadow: 0 0 6px #5ea35e88;
+    outline: none;
 }
 
-/* 🟦 BOTÓN FILTRAR */
+/* Botón filtrar */
 .custom-btn-filtrar {
-  background: linear-gradient(135deg, #3a5a3a, #1f3d1f);
-  color: #cbd5b1 !important;
-  border: none;
-  border-radius: 10px;
-  padding: 12px 24px;
-  font-size: 14px;
-  font-weight: 600;
-  box-shadow: 0 4px 8px #28482899;
-  transition: background 0.3s ease, transform 0.2s ease;
-  cursor: pointer;
+    background: linear-gradient(135deg, #4b2979, #2b1645) !important; /* bg-purple-gradient inspo */
+    color: #b0aee3 !important;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.65) !important;
+    transition: background 0.3s ease, transform 0.15s ease;
+    cursor: pointer;
 }
 
 .custom-btn-filtrar:hover {
-  background: linear-gradient(135deg, #5ea35e, #3f7d3f);
-  transform: translateY(-3px);
-  box-shadow: 0 6px 12px #3f7d3fbb;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85) !important;
+    cursor: pointer;
 }
 
-/* 🟢 BOTÓN CREAR USUARIO */
+/* Botón crear usuario */
 .custom-btn-crear-usuario {
-  background: linear-gradient(135deg, #406740, #2a4f2a);
-  color: #d9e5d9;
-  border: none;
-  border-radius: 12px;
-  padding: 12px 24px;
-  font-size: 18px;
-  font-weight: 600;
-  box-shadow: 0 6px 14px #2a4f2a88;
-  transition: background 0.3s, transform 0.2s ease, box-shadow 0.3s ease;
-  cursor: pointer;
+    background: linear-gradient(135deg, #0b372a, #052116) !important; /* bg-green-gradient-dark inspo */
+    color: #8fcab8 !important;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 700;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.65) !important;
+    transition: background 0.3s ease, transform 0.15s ease;
+    cursor: pointer;
 }
 
 .custom-btn-crear-usuario:hover {
-  background: linear-gradient(135deg, #5ea35e, #4c7d4c);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 16px #4c7d4cbb;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
-/* 🟦 BOTÓN EDITAR */
+/* Botón editar */
 button.btn-editar {
-  font-weight: 500;
-  color: #8bc34a;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: color 0.3s ease, transform 0.2s ease;
+    font-weight: 700;
+    color: #b0b0b0 !important;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.15s ease;
+    font-size: 14px;
 }
 
 button.btn-editar:hover {
-  color: #a5d65c;
-  transform: scale(1.03);
+    color: #d0d0d0 !important;
+    transform: translateY(-2px);
 }
 
-/* 🔴 BOTÓN ELIMINAR */
+/* Botón eliminar */
 button[type="submit"] {
-  color: #ef5350;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: color 0.3s ease, transform 0.2s ease;
+    color: #9c3164 !important; /* borde-pink-600 */
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.15s ease;
+    font-size: 14px;
 }
 
 button[type="submit"]:hover {
-  color: #b71c1c;
-  transform: scale(1.03);
+    color: #a72e64 !important; /* fa-champagne-glasses */
+    transform: translateY(-2px);
 }
 
-/* TABLA */
+/* Tabla */
 table {
-  border-collapse: collapse;
-  width: 100%;
-  background-color: #1e2a1f;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(10, 20, 10, 0.7);
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #121024 !important;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7) !important;
+    color: #b0b0b0 !important;
 }
 
 thead {
-  background-color: #2a3a29;
-  text-transform: uppercase;
-  font-size: 14px;
-  color: #9ccc65;
+    background-color: #121024 !important;
+    text-transform: uppercase;
+    font-size: 14px;
+    color: #999999 !important; /* text-gray-300 */
 }
 
 th, td {
-  padding: 14px 16px;
-  text-align: left;
-  border-bottom: 1px solid #39493c;
-  color: #cbd5b1;
+    padding: 0.4rem 0.6rem !important;
+    text-align: left;
+    border-bottom: 1px solid #333 !important;
+    border-color: #333 !important;
+    color: #b0b0b0 !important;
+    font-size: 14px;
 }
 
-/* CELDA CON IMAGEN */
+/* Celda con imagen */
 td img {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
-  object-fit: cover;
-  box-shadow: 0 0 4px #2a4f2a88;
+    width: 40px;
+    height: 40px;
+    border-radius: 1rem;
+    object-fit: cover;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
 }
 
-/* SIN IMAGEN */
+/* Sin imagen */
 td span.italic {
-  color: #6b756b;
+    color: #7f7f7f !important; /* text-gray-400 */
 }
 
-/* MODAL */
-
-/* Fondo transparente con blur, no blanco */
+/* Modal fondo */
 #modal-crear-usuario {
-  backdrop-filter: blur(6px);
-  background-color: rgba(18, 18, 18, 0.7); /* semitransparente oscuro */
-  transition: all 0.3s ease-in-out;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(6px);
+    background-color: rgba(18, 16, 36, 0.85) !important;
+    transition: all 0.3s ease-in-out;
+    border-radius: 1rem !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7) !important;
 }
 
 /* Modal container */
 .modal {
-  background: transparent; /* transparente para que no se vea blanco */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    background: transparent !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Contenido modal con fondo oscuro semitransparente y bordes redondeados */
+/* Contenido modal */
 .modal > div {
-  background-color: rgba(30, 42, 31, 0.95);
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.9);
-  width: 100%;
-  max-width: 600px;
-  position: relative;
+    background-color: #121024 !important;
+    border-radius: 1rem !important;
+    padding: 1rem 1.25rem !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7) !important;
+    width: 100%;          
+    max-width: 600px;    /* reducido de 550 */
+    max-height: 80vh;    /* reducido de 80vh */
+    overflow-y: auto;    
+    box-sizing: border-box;
+    position: relative;
 }
 
-/* ANIMACIÓN DEL MODAL */
+/* Animación del modal */
 .modal-anim {
-  animation: slideUpFade 0.4s ease-out;
+    animation: slideUpFade 0.4s ease-out;
 }
 
 @keyframes slideUpFade {
-  0% {
-    opacity: 0;
-    transform: translateY(50px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* FORMULARIO MODAL */
+/* Formulario modal */
 form label {
-  font-weight: 600;
-  color: #a8d0a8;
-  margin-bottom: 6px;
-  display: block;
+    font-weight: 700;
+    color: #b0b0b0 !important;
+    margin-bottom: 6px;
+    display: block;
+    font-size: 14px;
 }
 
 form input,
 form select {
-  width: 100%;
-  padding: 10px 14px;
-  border: 1px solid #39493c;
-  border-radius: 6px;
-  font-size: 14px;
-  color: #cbd5b1;
-  background-color: #1e2a1f;
-  transition: border-color 0.3s, box-shadow 0.3s;
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #3a3a3a !important;
+    border-radius: 0.6rem !important; /* 1rem a 0.6rem para menos volumen */
+    font-size: 14px;
+    color: #b0b0b0 !important;
+    background-color: transparent !important;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 form input:focus,
 form select:focus {
-  border-color: #5ea35e;
-  box-shadow: 0 0 8px #5ea35e88;
-  outline: none;
+    border-color: #5ea35e;
+    box-shadow: 0 0 6px #5ea35e88;
+    outline: none;
 }
 
-/* ANIMACIONES */
+/* Animaciones pulse y fade out */
 @keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.2);
-    opacity: 0.6;
-  }
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);  /* menos exagerado */
+        opacity: 0.7;
+    }
 }
 
 @keyframes parpadeo-fondo {
-  0%, 100% { background-color: #fee2e2; }
-  50% { background-color: #fecaca; }
+    0%, 100% {
+        background-color: #fee2e2;
+    }
+    50% {
+        background-color: #fecaca;
+    }
 }
 
 .modal-hide {
-  animation: fadeOut 0.3s ease forwards;
+    animation: fadeOut 0.3s ease forwards;
 }
 
 @keyframes fadeOut {
-  to { opacity: 0; transform: scale(0.95); }
+    to {
+        opacity: 0;
+        transform: scale(0.95);
+    }
 }
 
-/* Estilo para el fondo borroso */
+/* Fondo borroso modal */
 .backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
-  display: none;
-  z-index: 40;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: none;
+    z-index: 40;
 }
 
 .backdrop.hidden {
-  display: none;
+    display: none;
 }
 .backdrop:not(.hidden) {
-  display: block;
+    display: block;
 }
 
-/* ⚪ BOTÓN CANCELAR */
+/* Botón cancelar */
 #btnCancelModalEditar,
 #btnCancelModalCrear {
-  background-color: #2a3a29;
-  color: #9ccc65;
-  border: 1px solid #5ea35e;
-  font-weight: 600;
-  border-radius: 6px;
-  padding: 10px 20px;
-  transition: background-color 0.3s, transform 0.2s ease;
-  cursor: pointer;
+    background-color: #121024 !important;
+    color: #b0b0b0 !important;
+    border: 2px solid #4a2e7e !important; /* border-purple-700 */
+    font-weight: 700;
+    border-radius: 0.8rem !important; /* menos grande */
+    padding: 8px 18px !important; /* menos padding */
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.15s ease;
+    cursor: pointer;
 }
 
 #btnCancelModalEditar:hover,
 #btnCancelModalCrear:hover {
-  background-color: #5ea35e;
-  color: #1e2a1f;
-  transform: translateY(-2px);
+    background-color: #4a2e7e !important;
+    color: #b0b0b0 !important;
+    transform: translateY(-2px);
 }
 
-/* ⚪ BOTÓN GUARDAR */
+/* Botón guardar */
 #btnGuardarCambios,
 #btnGuardarUsuario {
-  background-color: #4caf50;
-  color: white;
-  font-weight: 700;
-  border-radius: 8px;
-  padding: 12px 28px;
-  border: none;
-  box-shadow: 0 6px 12px #357a38aa;
-  transition: background-color 0.3s, transform 0.2s ease;
-  cursor: pointer;
+    background-color: #7e5100 !important; /* bg-orange-gradient-dark */
+    color: #d9b86b !important;
+    font-weight: 700;
+    border-radius: 0.8rem !important;
+    padding: 8px 18px !important;
+    font-size: 14px;
+    border: none;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.7) !important;
+    transition: background-color 0.3s, transform 0.15s ease;
+    cursor: pointer;
 }
 
 #btnGuardarCambios:hover,
 #btnGuardarUsuario:hover {
-  background-color: #66bb6a;
-  transform: translateY(-2px);
+    background-color: #3f2800 !important;
+    transform: translateY(-2px);
 }
 
-/* Iconos SVG inline */
+/* Iconos svg */
 .icon-svg {
-  fill: #9ccc65; /* verde suave */
-  width: 18px;
-  height: 18px;
-  vertical-align: middle;
-  transition: fill 0.3s ease;
+    fill: #b0b0b0 !important;
+    cursor: pointer;
+    transition: fill 0.3s ease;
+    font-size: 20px;
 }
 
 .icon-svg:hover {
-  fill: #c8e6c9; /* verde más claro al hover */
-  cursor: pointer;
+    fill: #d0d0d0 !important;
+    transform: translateY(-2px);
 }
 
-/* Para iconos en botones editar/eliminar */
-button.btn-editar svg.icon-svg,
-button[type="submit"] svg.icon-svg {
-  pointer-events: none; /* evitar interacción directa con svg, para que el botón la reciba */
+/* Fondo card */
+.card {
+    background-color: #121024 !important;
+    border-radius: 1rem !important;
+    padding: 1rem !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7) !important;
+    margin-bottom: 1.5rem;
+}
+
+/* Animaciones generales */
+.animacion-pulse {
+    animation: pulse 1.5s infinite;
+}
+
+.animacion-fadeOut {
+    animation: fadeOut 0.4s ease forwards;
 }

@@ -1,0 +1,158 @@
+/* Fondo general oscuro absoluto */
+body {
+    background-color: #0b0a1a !important;  /* Negro azulado oscuro */
+    color: #c0c0c0 !important;  /* Gris claro medio, no blanco puro */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Títulos */
+h1, h2, h3, h4, h5, h6 {
+    color: #d0d0d0 !important; /* Gris claro, nada de blanco puro */
+    font-weight: 700;
+}
+
+/* Todos los textos que no sean títulos */
+p, span, label, a, li, td, th {
+    color: #b0b0b0 !important;
+}
+
+/* Tarjetas resumen con degradados muy oscuros */
+.card-gradient {
+    padding: 1.5rem;
+    border-radius: 1rem;
+    font-weight: 700;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.75) !important;
+    transition: transform 0.2s ease;
+    color: #b0b0b0 !important;
+    background-clip: padding-box;
+}
+
+.card-gradient:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.9) !important;
+    cursor: pointer;
+}
+
+/* Gradientes oscuros definidos */
+
+.bg-purple-gradient {
+    background: linear-gradient(135deg, #4b2979, #2b1645) !important;
+    color: #b0aee3 !important;
+}
+
+.bg-pink-gradient {
+    background: linear-gradient(135deg, #802342, #460d25) !important;
+    color: #d19bb7 !important;
+}
+
+.bg-orange-gradient-dark {
+    background: linear-gradient(135deg, #7e5100, #3f2800) !important;
+    color: #d9b86b !important;
+}
+
+.bg-green-gradient-dark {
+    background: linear-gradient(135deg, #0b372a, #052116) !important;
+    color: #8fcab8 !important;
+}
+
+/* Panel para mesas */
+.bg-panel {
+    background-color: #121024 !important;
+    padding: 1.5rem !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7) !important;
+    color: #b0b0b0 !important;
+}
+
+/* Mesas ocupadas y libres con borde oscuro y sólido */
+.border-pink-600 {
+    border: 2px solid #9c3164 !important;
+}
+
+.border-purple-700 {
+    border: 2px solid #4a2e7e !important;
+}
+
+/* Fondo para las tarjetas de mesa */
+.bg-gray-900 {
+    background-color: #1a1a2a !important;
+}
+
+/* Texto gris para estados */
+.text-gray-400 {
+    color: #7f7f7f !important;
+}
+
+/* Texto gris para descripciones y secundarios */
+.text-gray-300 {
+    color: #999999 !important;
+}
+
+/* Botones, iconos y textos en color consistente */
+.mesa-label, .mesa-status, .mesa-icon i {
+    color: #b0b0b0 !important;
+}
+
+/* Iconos ocupados y libres con colores oscuros saturados */
+.fa-champagne-glasses {
+    color: #a72e64 !important;
+}
+
+.fa-wine-glass {
+    color: #4b2979 !important;
+}
+
+/* Contenedor general */
+.panel-general-container {
+    padding: 1rem 2rem !important;
+}
+
+/* Sombras generales */
+.shadow {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Para eliminar posibles blancos por defecto */
+* {
+    background-color: transparent !important;
+    border-color: #3a3a3a !important;
+}
+
+/* Tablas (si usas tablas en el panel) */
+table {
+    width: 100% !important;
+    color: #b0b0b0 !important;
+    background-color: #121024 !important;
+}
+
+table th, table td {
+    padding: 0.5rem !important;
+    border-bottom: 1px solid #333 !important;
+    border-color: #333 !important;
+}
+
+/* Panel de Inventario */
+.bg-inventory-card {
+    background-color:  #121024 !important;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+    color: #c0c0c0;
+}
+
+.inventory-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a1a2a !important;
+    border: 1px solid #3d3b5e;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+}
+
+.inventory-list li span {
+    color: #c0c0c0;
+}

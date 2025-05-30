@@ -1,300 +1,268 @@
-/* Estilos globales para el body */
+/* ============ BODY ============ */
 body {
   font-family: 'Rubik', sans-serif;
-  background-color: #f4f7fb;
-  color: #333;
-  transition: all 0.3s ease-in-out;
+  background-color: #0b0a1a !important;
+  color: #c0c0c0 !important;
+  margin: 0;
+  padding: 0;
 }
 
+/* BOTÓN FILTRAR con estilos adaptados del inspo */
+.custom-btn-filtrar {
+  background: linear-gradient(135deg, #4b2979, #2b1645) !important;
+  color: #b0aee3 !important;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.65) !important;
+  transition: background 0.3s ease, transform 0.15s ease;
+  cursor: pointer;
+}
+
+.custom-btn-filtrar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85) !important;
+}
+
+/* ============ BOTÓN PRINCIPAL TOMAR PEDIDO ============ */
 .tomar-pedido-btn {
-  background-color: #5c6bc0; /* Azul suave */
-  color: white !important; /* Aseguramos que el texto sea blanco con !important */
+  background: linear-gradient(135deg, #0b372a, #052116) !important;
+  color: #8fcab8 !important;
   border: none;
   border-radius: 10px;
-  padding: 12px 24px;
-  font-size: 14px;
-  font-weight: 600;
-  transition: background-color 0.3s, transform 0.2s ease;
-  box-shadow: 0 4px 8px rgba(92, 107, 192, 0.3); /* Sombra sutil */
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.65) !important;
+  transition: background 0.3s ease, transform 0.15s ease;
+  cursor: pointer;
 }
 
 .tomar-pedido-btn:hover {
-  background-color: #3f51b5; /* Azul más oscuro al pasar el ratón */
-  transform: translateY(-3px); /* Ligera elevación */
-  box-shadow: 0 6px 12px rgba(92, 107, 192, 0.4); /* Sombra más pronunciada */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
-/* 🟦 BOTÓN EDITAR */
+/* ============ BOTÓN EDITAR ============ */
 button.btn-editar {
-  font-weight: 500;
-  color: #2563eb;
-  transition: color 0.3s ease, transform 0.2s ease;
+  font-weight: 700;
+  color: #b0b0b0 !important;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.15s ease;
+  font-size: 14px;
 }
 
 button.btn-editar:hover {
-  color: #1d4ed8;
-  transform: scale(1.03);
+  color: #d0d0d0 !important;
+  transform: translateY(-2px);
 }
 
+/* ============ MODAL BACKDROP ============ */
 .modal {
   display: none;
   position: fixed;
-  z-index: 50;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(18, 16, 36, 0.85);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   justify-content: center;
   align-items: center;
+  transition: opacity 0.3s ease;
 }
 
+/* Mostrar el modal con clase .mostrar */
 .modal.mostrar {
   display: flex;
   animation: fadeIn 0.3s ease-in-out;
 }
 
-#modalTomarPedido {
-  backdrop-filter: blur(4px);
-  transition: all 0.3s ease-in-out;
+/* ============ MODAL CONTENIDO ============ */
+.modal-contenido {
+  background-color: #121024 !important;
+  padding: 1rem 1.25rem !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7) !important;
+  width: 100%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  animation: slideUpFade 0.4s ease-out;
+  box-sizing: border-box;
 }
 
-/* Animaciones */
+/* ANIMACIONES MODAL */
+@keyframes slideUpFade {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-@keyframes slideUp {
-  from { transform: translateY(50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
 }
 
-.modal-contenido {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 600px;
-  width: 90%;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  position: relative;
+/* ============ FORMULARIO MODAL ============ */
+form label {
+  font-weight: 700;
+  color: #b0b0b0 !important;
+  margin-bottom: 6px;
+  display: block;
+  font-size: 14px;
 }
 
-/* Animación de escala para el contenido del modal */
-@keyframes scaleUp {
-  from { transform: scale(0.8); opacity: 0.5; }
-  to { transform: scale(1); opacity: 1; }
+form input,
+form select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #3a3a3a !important;
+  border-radius: 0.6rem !important;
+  font-size: 14px;
+  color: #b0b0b0 !important;
+  background-color: transparent !important;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-/* Estilo del título dentro del modal */
-.titulo-seccion {
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 20px;
-  text-align: center;
-  font-family: 'Rubik', sans-serif;
+form input:focus,
+form select:focus {
+  border-color: #5ea35e;
+  box-shadow: 0 0 6px #5ea35e88;
+  outline: none;
 }
 
+/* ============ BOTÓN CANCELAR MODAL ============ */
+#btnCancelModalEditar,
+#btnCancelModalCrear {
+  background-color: #121024 !important;
+  color: #b0b0b0 !important;
+  border: 2px solid #4a2e7e !important;
+  font-weight: 700;
+  border-radius: 0.8rem !important;
+  padding: 8px 18px !important;
+  font-size: 14px;
+  transition: background-color 0.3s, transform 0.15s ease;
+  cursor: pointer;
+}
+
+#btnCancelModalEditar:hover,
+#btnCancelModalCrear:hover {
+  background-color: #4a2e7e !important;
+  color: #b0b0b0 !important;
+  transform: translateY(-2px);
+}
+
+/* ============ BOTÓN GUARDAR MODAL ============ */
+#btnGuardarCambios,
+#btnGuardarUsuario {
+  background-color: #7e5100 !important;
+  color: #d9b86b !important;
+  font-weight: 700;
+  border-radius: 0.8rem !important;
+  padding: 8px 18px !important;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.15s ease;
+  box-shadow: 0 3px 10px #b9911f88;
+}
+
+#btnGuardarCambios:hover,
+#btnGuardarUsuario:hover {
+  background-color: #a97900 !important;
+  transform: translateY(-2px);
+}
+
+/* ============ CERRAR MODAL (X) ============ */
 .cerrar {
   position: absolute;
   right: 15px;
   top: 10px;
   font-size: 1.5rem;
+  color: #c0c0c0;
   cursor: pointer;
 }
 
+.cerrar:hover {
+  color: #ffffff;
+}
+
+/* ============ RESPONSIVE ============ */
 @media (max-width: 600px) {
   .modal-contenido {
-      width: 95%;
+    width: 95%;
   }
 }
-.cerrar:hover {
-  color: #333;
-}
 
-/* Estilo de los inputs y selects dentro del modal */
-input[type="number"], select, .input-texto, .input-select {
+/* ====== TABLA DE PEDIDOS ====== */
+.tabla-pedidos {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  transition: border 0.3s ease, box-shadow 0.3s ease;
-}
-
-input[type="number"]:focus, select:focus {
-  border: 1px solid #3498db;
-  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
-}
-
-/* Estilo de los botones dentro del modal */
-.btn-agregar, .btn-guardar {
-  background: #3498db;
-  color: white;
-  padding: 12px 25px;
-  border-radius: 8px;
-  border: none;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease;
-}
-
-.btn-agregar:hover, .btn-guardar:hover {
-  background: #2980b9;
-  transform: scale(1.05);
-}
-
-.btn-guardar {
-  background-color: #5c6bc0; /* Azul suave */
-  color: white !important; /* Aseguramos que el texto sea blanco con !important */
-  border: none;
-  border-radius: 10px;
-  padding: 12px 24px;
+  color: #ccc;
   font-size: 14px;
+}
+
+.tabla-pedidos th {
+  background-color: #161529;
+  padding: 12px 16px;
   font-weight: 600;
-  transition: background-color 0.3s, transform 0.2s ease;
-  box-shadow: 0 4px 8px rgba(92, 107, 192, 0.3); /* Sombra sutil */
-}
-
-.btn-guardar:hover {
-  background-color: #3f51b5; /* Azul más oscuro al pasar el ratón */
-  transform: translateY(-3px); /* Ligera elevación */
-  box-shadow: 0 6px 12px rgba(92, 107, 192, 0.4); /* Sombra más pronunciada */
-}
-
-/* Botón "Agregar producto" */
-.btn-agregar {
-  background-color: #4696e0; /* Azul suave */
-  color: white !important; /* Aseguramos que el texto sea blanco con !important */
-  border: none;
-  border-radius: 10px;
-  padding: 12px 24px;
-  font-size: 14px;
-  font-weight: 600;
-  transition: background-color 0.3s, transform 0.2s ease;
-  box-shadow: 0 4px 8px rgba(92, 107, 192, 0.3); /* Sombra sutil */
-}
-
-.btn-agregar:hover {
-  background-color: #5aa5ec; /* Azul más oscuro al pasar el ratón */
-  transform: translateY(-3px); /* Ligera elevación */
-  box-shadow: 0 6px 12px rgba(92, 107, 192, 0.4); /* Sombra más pronunciada */
-}
-
-/* Estilos de la lista de productos dentro del modal */
-#productos-container {
-  margin-top: 20px;
-}
-
-.grupo-producto {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 10px;
-}
-
-.grupo-producto select, .grupo-producto input {
-  flex: 1;
-}
-
-/* Efectos de hover en el modal */
-.modal-contenido:hover {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-@media (max-width: 768px) {
-  .modal-contenido {
-    width: 90%;
-  }
-
-  .grupo-producto {
-    flex-direction: column;
-  }
-}
-
-/* TABLA */
-table {
-  border-collapse: collapse;
-  width: 100%;
-  background-color: white;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-}
-
-thead {
-  background-color: #f3f4f6;
   text-transform: uppercase;
-  font-size: 14px;
-  color: #374151;
+  font-size: 13px;
+  border-bottom: 2px solid #282741;
 }
 
-th, td {
-  padding: 14px 16px;
-  text-align: left;
-  border-bottom: 1px solid #e5e7eb;
+.tabla-pedidos td {
+  background-color: #1a1929;
+  padding: 12px 16px;
+  border-radius: 0.5rem;
+  vertical-align: top;
 }
 
-/* Estilos generales para el formulario */
-form {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  margin-bottom: 20px;
+.tabla-pedidos tr:hover td {
+  background-color: #232138;
 }
 
-/* Estilos para el label */
-form label {
-  font-family: 'Rubik', sans-serif;
-  font-size: 16px;
-  color: #333;
-  font-weight: 600;
+/* Estados visuales */
+.estado-pendiente {
+  background-color: #facc15;
+  color: #1a1a1a;
+  padding: 4px 10px;
+  font-weight: bold;
+  border-radius: 20px;
+  font-size: 12px;
+  display: inline-block;
 }
 
-/* Estilos para el select (campo de selección) */
-form select {
-  padding: 8px 12px;
-  font-size: 14px;
-  font-family: 'Rubik', sans-serif;
-  border: 2px solid #4CAF50; /* Color verde */
-  border-radius: 5px;
-  background-color: #f4f4f4;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.estado-pagado {
+  background-color: #22c55e;
+  color: #fff;
+  padding: 4px 10px;
+  font-weight: bold;
+  border-radius: 20px;
+  font-size: 12px;
+  display: inline-block;
 }
 
-/* Estilo cuando el select está enfocado */
-form select:focus {
-  border-color: #28a745; /* Color verde más brillante */
-  background-color: #e9f7e7; /* Fondo suave */
-  outline: none;
-}
-
-/* Opciones del select */
-form option {
-  padding: 8px;
-  font-family: 'Rubik', sans-serif;
-}
-
-/* Efecto de hover para opciones */
-form select:hover {
-  border-color: #45a049; /* Un poco más brillante */
-}
-
-/* Estilos para el contenedor */
-.container-filtro {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  justify-content: flex-start;
-}
-
-/* Agregar algo de margen entre los elementos si es necesario */
-.container-filtro select {
-  margin-right: 15px;
-}
-
-.select-mesa {
-  width: 200px; /* ajusta el valor según sea necesario */
+.tabla-pedidos thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }

@@ -1,54 +1,71 @@
 .contenedor-informes {
     width: 100%;
-    max-width: 1200px;
+    max-width: 720px; /* igual que .contenedor-pedidos inspo */
     margin: 0 auto;
-    padding: 20px;
-  }
+    padding: 0 1rem 2rem;
+}
 
-  table {
+table {
     border-collapse: collapse;
     width: 100%;
-    background-color: white;
-    border-radius: 10px;
+    background-color: #121024 !important; /* fondo oscuro, igual que .pedido-card */
+    border-radius: 1rem;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  }
-  
-  thead {
-    background-color: #f3f4f6;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85) !important;
+    color: #b0b0b0 !important;
+    font-family: 'Rubik', sans-serif;
+    font-size: 0.95rem;
+}
+
+thead {
+    background-color: #2b1645; /* tono morado oscuro como botón */
     text-transform: uppercase;
     font-size: 14px;
-    color: #374151;
-  }
-  
-  th, td {
+    color: #b0aee3 !important; /* color del botón */
+    letter-spacing: 1.2px;
+}
+
+th, td {
     padding: 14px 16px;
     text-align: left;
-    border-bottom: 1px solid #e5e7eb;
-  }
-  
-  .btn-filtrar {
-    background-color: #5c6bc0; /* Azul suave */
-    color: white !important; /* Aseguramos que el texto sea blanco con !important */
+    border-bottom: 1px solid #3a3a3a; /* borde suave oscuro */
+}
+
+.btn-filtrar {
+    background: linear-gradient(135deg, #4b2979, #2b1645) !important; /* gradiente morado igual botón */
+    color: #b0aee3 !important;
     border: none;
-    border-radius: 10px;
-    padding: 12px 24px;
+    border-radius: 8px;
+    padding: 10px 20px;
     font-size: 14px;
-    font-weight: 600;
-    transition: background-color 0.3s, transform 0.2s ease;
-    box-shadow: 0 4px 8px rgba(92, 107, 192, 0.3); /* Sombra sutil */
-  }
-  
-  .btn-filtrar:hover {
-    background-color: #3f51b5; /* Azul más oscuro al pasar el ratón */
-    transform: translateY(-3px); /* Ligera elevación */
-    box-shadow: 0 6px 12px rgba(92, 107, 192, 0.4); /* Sombra más pronunciada */
-  }
-  
-  .input-text {
+    font-weight: 700;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.65) !important;
+    transition: background 0.3s ease, transform 0.15s ease;
+    cursor: pointer;
+}
+
+.btn-filtrar:hover {
+    background: linear-gradient(135deg, #6b3aa3, #442c79) !important; /* gradiente más claro al hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85) !important;
+}
+
+.input-text {
     padding: 8px;
     margin-right: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-  
+    border: 1px solid #7e6fc1; /* borde morado suave */
+    border-radius: 6px;
+    background-color: #1a1830; /* fondo input oscuro */
+    color: #c0c0c0 !important;
+    font-family: 'Rubik', sans-serif;
+    font-size: 0.95rem;
+    transition: border-color 0.3s ease;
+}
+
+.input-text:focus {
+    outline: none;
+    border-color: #b4912e; /* dorado foco igual total-pedido */
+    box-shadow: 0 0 8px #b4912e;
+    background-color: #1a1830;
+    color: #fff;
+}

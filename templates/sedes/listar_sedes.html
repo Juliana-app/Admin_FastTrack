@@ -4,15 +4,19 @@
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/sedes/listar_sedes.css' %}">
+<!-- Feather Icons -->
+<script src="https://unpkg.com/feather-icons"></script>
 {% endblock %}
 
 {% block content %}
 <div class="contenedor-sedes">
-  <h2 class="text-2xl font-bold mb-4">📍 Lista de Sedes</h2>
+  <h2 class="text-2xl font-bold mb-4">
+    <i data-feather="map-pin" class="inline-block w-6 h-6 mr-2"></i>Lista de Sedes
+  </h2>
 
   <div class="flex justify-end mb-4">
     <button id="btnCrearSede" class="btn-filtrar custom-btn-filtrar">
-      ➕ Crear Sede
+      <i data-feather="plus" class="inline-block w-5 h-5 mr-1"></i> Crear Sede
     </button>
   </div>
 
@@ -40,11 +44,13 @@
                   data-direccion="{{ sede.direccion }}"
                   data-telefono="{{ sede.telefono }}"
                   data-email="{{ sede.email }}">
-            ✏️ Editar
+            <i data-feather="edit-2" class="inline-block w-4 h-4 mr-1"></i>Editar
           </button>
           <form action="{% url 'eliminar_sede' sede.id %}" method="post" style="display:inline;">
             {% csrf_token %}
-            <button type="submit" onclick="return confirm('¿Estás seguro de eliminar esta sede?')">🗑 Eliminar</button>
+            <button type="submit" onclick="return confirm('¿Estás seguro de eliminar esta sede?')">
+              <i data-feather="trash-2" class="inline-block w-4 h-4 mr-1"></i>Eliminar
+            </button>
           </form>
         </td>
       </tr>
@@ -60,7 +66,9 @@
 <div id="modal-crear" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   <div class="bg-white p-6 rounded w-full max-w-lg relative">
     <button id="btnCerrarModalCrearSede" class="absolute top-2 right-2 text-gray-600 text-xl hover:text-red-600">&times;</button>
-    <h3 class="text-xl font-bold mb-4">➕ Crear Sede</h3>
+    <h3 class="text-xl font-bold mb-4">
+      <i data-feather="plus" class="inline-block w-5 h-5 mr-1"></i>Crear Sede
+    </h3>
     <form method="post" id="formCrearSede" action="{% url 'crear_sede' %}">
       {% csrf_token %}
       <div class="grid gap-4">
@@ -81,7 +89,9 @@
 <div id="modal-editar" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   <div class="bg-white p-6 rounded w-full max-w-lg relative">
     <button id="btnCerrarModalEditarSede" class="absolute top-2 right-2 text-gray-600 text-xl hover:text-red-600">&times;</button>
-    <h3 class="text-xl font-bold mb-4">✏️ Editar Sede</h3>
+    <h3 class="text-xl font-bold mb-4">
+      <i data-feather="edit-2" class="inline-block w-5 h-5 mr-1"></i>Editar Sede
+    </h3>
     <form method="post" id="formEditarSede" action="">
       {% csrf_token %}
       <div class="grid gap-4">
@@ -138,6 +148,10 @@
     document.getElementById('modal-editar').classList.add('hidden');
     document.getElementById('backdrop').classList.add('hidden');
   });
+</script>
+
+<script>
+  feather.replace();
 </script>
 
 {% endblock %}

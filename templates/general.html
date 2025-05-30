@@ -4,62 +4,85 @@
 {% block title %}Panel General{% endblock %}
 
 {% block head %}
-  <link rel="stylesheet" href="{% static 'css/general.css' %}">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Si necesitas gráficas -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Cargar Font Awesome -->
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 {% endblock %}
 
 {% block content %}
 <div class="panel-general-container">
-  <div class="panel-header">
-    <h1 class="panel-title">📊 Panel General</h1>
-    <p class="panel-subtitle">Información en tiempo real sobre mesas y pedidos</p>
+
+  <div class="panel-header text-center mb-6">
+    <h1 class="text-2xl font-bold mb-1 text-white">Visión en Tiempo Real</h1>
+    <p class="text-gray-400 text-sm">Estado actual de las mesas y pedidos en operación</p>
   </div>
 
-  <div class="panel-statistics grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
     <!-- Mesas Vacías -->
-    <div class="stat-card mesas-vacias">
-      <h3 class="stat-title">Mesas Vacías</h3>
-      <p class="stat-count">{{ mesas_vacias_count }}</p>
+    <div class="card-gradient bg-purple-gradient p-4 rounded-lg shadow">
+      <h3 class="text-xl font-semibold mb-2 text-white">Mesas Vacías</h3>
+      <p class="text-3xl font-bold text-white">{{ mesas_vacias_count }}</p>
     </div>
 
     <!-- Mesas Ocupadas -->
-    <div class="stat-card mesas-ocupadas">
-      <h3 class="stat-title">Mesas Ocupadas</h3>
-      <p class="stat-count">{{ mesas_ocupadas_count }}</p>
+    <div class="card-gradient bg-pink-gradient p-4 rounded-lg shadow">
+      <h3 class="text-xl font-semibold mb-2 text-white">Mesas Ocupadas</h3>
+      <p class="text-3xl font-bold text-white">{{ mesas_ocupadas_count }}</p>
     </div>
 
     <!-- Pedidos Pendientes -->
-    <div class="stat-card pedidos-pendientes">
-      <h3 class="stat-title">Pedidos Pendientes</h3>
-      <p class="stat-count">{{ pedidos_pendientes_count }}</p>
+    <div class="card-gradient bg-orange-gradient-dark p-4 rounded-lg shadow">
+      <h3 class="text-xl font-semibold mb-2 text-gray-300">Pedidos Pendientes</h3>
+      <p class="text-3xl font-bold text-gray-300">{{ pedidos_pendientes_count }}</p>
     </div>
 
     <!-- Pedidos Pagados -->
-    <div class="stat-card pedidos-pagados">
-      <h3 class="stat-title">Pedidos Pagados</h3>
-      <p class="stat-count">{{ pedidos_pagados_count }}</p>
+    <div class="card-gradient bg-green-gradient-dark p-4 rounded-lg shadow">
+      <h3 class="text-xl font-semibold mb-2 text-white">Pedidos Pagados</h3>
+      <p class="text-3xl font-bold text-white">{{ pedidos_pagados_count }}</p>
     </div>
   </div>
 
-  <div class="panel-mesas mt-8">
-    <h2 class="section-title">Mesas</h2>
-    <div class="mesas-container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-4">
-      {% for mesa in mesas %}
-        <div class="mesa {% if mesa.ocupada %}ocupada{% else %}vacia{% endif %}">
-            <div class="mesa-icon">
-                {% if mesa.ocupada %}
-                  <i class="fa-solid fa-champagne-glasses ocupada"></i> <!-- Icono para mesa ocupada -->
-                {% else %}
-                  <i class="fa-solid fa-wine-glass vacia"></i><!-- Icono para mesa vacía -->
-                {% endif %}
-            </div>            
-          <p class="mesa-label">Mesa {{ mesa.numeroMesa }}</p>
-          <p class="mesa-status">{% if mesa.ocupada %}Ocupada{% else %}Vacía{% endif %}</p>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Sección Mesas -->
+    <div class="bg-panel p-6 rounded-lg shadow lg:col-span-2">
+      <h2 class="text-xl font-semibold mb-4 text-white">Mesas</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+        {% for mesa in mesas %}
+        <div class="bg-gray-900 rounded-lg p-4 flex flex-col items-center justify-center
+                    {% if mesa.ocupada %}border-2 border-pink-600{% else %}border-2 border-purple-700{% endif %}">
+          <div class="mesa-icon mb-2">
+            {% if mesa.ocupada %}
+              <i class="fa-solid fa-champagne-glasses text-pink-600 text-3xl"></i>
+            {% else %}
+              <i class="fa-solid fa-wine-glass text-purple-700 text-3xl"></i>
+            {% endif %}
+          </div>
+          <p class="mesa-label text-white font-semibold">Mesa {{ mesa.numeroMesa }}</p>
+          <p class="mesa-status text-sm text-gray-400">{% if mesa.ocupada %}Ocupada{% else %}Vacía{% endif %}</p>
         </div>
-      {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Estado actual de inventario -->
+    <div class="lg:col-span-1">
+      <div class="bg-inventory-card p-6 rounded-lg shadow">
+        <h2 class="text-xl font-semibold mb-4 text-white">Estado actual de inventario</h2>
+        <ul class="inventory-list space-y-3">
+  {% for inventario in productos %}
+    <li class="flex justify-between items-center bg-gray-800 px-4 py-2 rounded-md">
+      <span class="text-sm font-medium text-gray-300">{{ inventario.producto.nombre }}</span>
+      <span class="text-sm font-bold text-white">{{ inventario.cantidad }}</span>
+    </li>
+  {% empty %}
+    <li>No hay productos disponibles.</li>
+  {% endfor %}
+</ul>
+
+      </div>
     </div>
   </div>
-</div>
 
+</div>
 {% endblock %}

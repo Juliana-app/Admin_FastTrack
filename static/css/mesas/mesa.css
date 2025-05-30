@@ -1,182 +1,296 @@
+@import url('./base.css');
+@import url('./navbar.css');
+@import url('./botones.css');
+@import url('./animaciones.css');
+@import url('./darkmode.css');
+
+/* BODY */
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #f9f9f9;
+  font-family: 'Rubik', sans-serif;
+  background-color: #0b0a1a !important;
+  color: #c0c0c0 !important;
+  margin: 0;
+  padding: 0;
 }
 
-/* General form layout */
-form {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-  }
-  
-  .campo-texto {
-    appearance: none; /* Oculta la flecha nativa del navegador */
-    padding: 0.6rem 2.5rem 0.6rem 1rem;
-    background-color: #f9fafb;
-    border: 1px solid #d1d5db;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    font-family: 'Segoe UI', sans-serif;
-    color: #111827;
-    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='%236B7280' d='M7 7l3 3 3-3'%3E%3C/path%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
-    background-size: 1rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  
-  .campo-texto:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
-  }  
-
-.mesa-container {
-    padding: 2rem;
-    text-align: center;
+/* TÍTULOS */
+h2, .titulo{
+  color: #d0d0d0 !important;
+  font-size: 28px;
+  margin-bottom: 20px;
+  font-weight: 700;
 }
+
+/* BOTONES */
 
 /* 🟦 BOTÓN FILTRAR */
 .custom-btn-filtrar {
-    background-color: #5c6bc0; /* Azul suave */
-    color: white !important; /* Aseguramos que el texto sea blanco con !important */
-    border: none;
-    border-radius: 10px;
-    padding: 12px 24px;
-    font-size: 14px;
-    font-weight: 600;
-    transition: background-color 0.3s, transform 0.2s ease;
-    box-shadow: 0 4px 8px rgba(92, 107, 192, 0.3); /* Sombra sutil */
+  background: linear-gradient(135deg, #4b2979, #2b1645) !important;
+  color: #b0aee3 !important;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.65) !important;
+  transition: background 0.3s ease, transform 0.15s ease;
+  cursor: pointer;
 }
 
 .custom-btn-filtrar:hover {
-    background-color: #3f51b5; /* Azul más oscuro al pasar el ratón */
-    transform: translateY(-3px); /* Ligera elevación */
-    box-shadow: 0 6px 12px rgba(92, 107, 192, 0.4); /* Sombra más pronunciada */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85) !important;
+  background: linear-gradient(135deg, #5c3a99, #3a255d) !important;
 }
 
-.titulo {
-    font-size: 2.2rem;
-    color: #333;
-    margin-bottom: 1.5rem;
-    animation: fadeIn 1s ease-out;
+/* 🟢 BOTÓN CREAR PRODUCTO */
+.custom-btn-crear-producto {
+  background: linear-gradient(135deg, #0b372a, #052116) !important;
+  color: #8fcab8 !important;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.65) !important;
+  transition: background 0.3s ease, transform 0.15s ease;
+  cursor: pointer;
 }
 
-.grid-mesas {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: 1.5rem;
+.custom-btn-crear-producto:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85) !important;
+  background: linear-gradient(135deg, #0e4b37, #063023) !important;
 }
 
-.mesa-card {
-    border-radius: 15px;
-    padding: 1rem;
-    background-color: white;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-    animation: slideUp 0.5s ease forwards;
-    opacity: 0;
+/* 🟦 BOTÓN EDITAR */
+button.btn-editar {
+  font-weight: 700;
+  color: #b0b0b0 !important;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.15s ease;
+  font-size: 14px;
 }
 
-.mesa-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+button.btn-editar:hover {
+  color: #d0d0d0 !important;
+  transform: translateY(-2px);
 }
 
-.mesa-card.ocupada {
-    background: linear-gradient(to right, #e74c3c, #c0392b);
-    color: white;
+/* 🔴 ENLACE ELIMINAR */
+a.text-red-600 {
+  font-weight: 700;
+  color: #9c3164 !important;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.15s ease;
+  font-size: 14px;
+  text-decoration: none;
 }
 
-.mesa-card.libre {
-    background: linear-gradient(to right, #2ecc71, #27ae60);
-    color: white;
+a.text-red-600:hover {
+  color: #a72e64 !important;
+  text-decoration: underline;
+  transform: translateY(-2px);
 }
 
-.boton {
-    border: none;
-    padding: 0.7rem 1.2rem;
-    margin-top: 0.8rem;
-    font-size: 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    color: white;
+/* TABLA */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  background-color: #121024 !important;
+  border-radius: 1rem !important;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7) !important;
+  color: #b0b0b0 !important;
+  font-size: 14px;
+  table-layout: fixed;
 }
 
-.boton:hover {
-    background-color: #34495e;
+thead {
+  background-color: #121024 !important;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999 !important;
 }
 
-/* Animaciones */
-@keyframes slideUp {
-    0% {
-        transform: translateY(40px);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
+/* Filas de encabezado */
+thead tr th {
+  padding: 12px 16px !important;
+  text-align: left;
+  font-weight: 700;
+  border-bottom: 2px solid #3a3a3a;
 }
 
-
-input[type="text"], select {
-    width: 100%;
-    padding: 0.8rem;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    font-size: 1rem;
+/* Celdas */
+th, td {
+  padding: 12px 16px !important;
+  border-bottom: 1px solid #2e2c46 !important;
+  color: #b0b0b0 !important;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-input[type="text"]:focus, select:focus {
-    border-color: #3498db;
-    outline: none;
+/* Filas */
+tbody tr {
+  transition: background-color 0.3s ease;
+  cursor: default;
+}
+
+tbody tr:hover {
+  background-color: #292746 !important;
+}
+
+/* Estados ocupada y libre */
+tbody tr.bg-red-100 {
+  background-color: #4a1a1a !important;
+  color: #f7b1b1 !important;
+}
+
+tbody tr.bg-red-100:hover {
+  background-color: #5c1f1f !important;
+}
+
+tbody tr.bg-green-100 {
+  background-color: #1a4a1a !important;
+  color: #a8d5a8 !important;
+}
+
+tbody tr.bg-green-100:hover {
+  background-color: #206620 !important;
+}
+
+/* Iconos dentro de estado */
+td span.inline-flex svg {
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+/* Scroll horizontal para pantallas pequeñas */
+@media (max-width: 768px) {
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+/* Select y inputs dentro de filtro */
+.campo-texto {
+  background-color: #121024;
+  border: 1px solid #33354a;
+  color: #c0c0c0;
+  font-size: 1rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.campo-texto:focus {
+  border-color: #5ea35e;
+  box-shadow: 0 0 8px #5ea35e88;
+  outline: none;
+}
+
+/* Contenedor general */
+.container {
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1.5rem;
+  background-color: #121024;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px #2b2656cc;
+  color: #c0c0c0;
+}
+
+/* Scroll para select en modal */
+select.select-sede {
+  background-color: #121024 !important;
+  border: 1px solid #33354a !important;
+  color: #c0c0c0 !important;
+  border-radius: 8px !important;
+  padding: 10px 14px !important;
+  font-size: 1rem !important;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+select.select-sede:focus {
+  border-color: #5ea35e !important;
+  box-shadow: 0 0 8px #5ea35e88 !important;
+  outline: none !important;
+}
+
+/* Inputs en modal */
+.input-text {
+  background-color: #121024;
+  border: 1px solid #33354a;
+  color: #c0c0c0;
+  font-size: 1rem;
+  padding: 10px 14px;
+  border-radius: 8px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-text:focus {
+  border-color: #5ea35e;
+  box-shadow: 0 0 8px #5ea35e88;
+  outline: none;
+}
+
+/* Mensajes de tabla vacía */
+p {
+  font-size: 1rem;
+  color: #999999;
+  text-align: center;
+  margin-top: 2rem;
 }
 
 /* Modal */
-.modalCrearMesa {
-    display: none; /* Se oculta por defecto */
-    background: rgba(0, 0, 0, 0.6);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
+#modalMesa {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
 }
 
-.modalCrearMesa .form-container {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    max-width: 500px;
-    width: 100%;
-    position: relative;
+#modalMesa.flex {
+  display: flex;
 }
 
-#modalCrearMesa .close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 1.5rem;
-    color: #333;
-    cursor: pointer;
+#modalMesa > div {
+  background-color: #121024;
+  border-radius: 1rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 0 20px #3a2e7a;
+  position: relative;
+  color: #c0c0c0;
 }
 
-#modalCrearMesa.show {
-    display: flex; /* Se muestra cuando se añade la clase show */
+/* Botón cerrar modal */
+#btnCerrarModalMesa {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: #c0c0c0;
+  cursor: pointer;
+  transition: color 0.3s ease;
 }
 
-.show {
-    display: flex;
+#btnCerrarModalMesa:hover {
+  color: #a07aff;
 }
-
-.hidden {
-    display: none;
-}
-

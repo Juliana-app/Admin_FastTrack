@@ -1,73 +1,143 @@
 .titulo-seccion {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    color: #1f2937;
-  }
-  
-  .contenedor-pedidos {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #c0c0c0 !important;
+  text-shadow: 0 0 6px #7e6fc1;
+  letter-spacing: 1.2px;
+}
+
+.contenedor-pedidos {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.pedido-card {
+  background-color: #121024 !important;
+  padding: 2rem 2.5rem;
+  border-radius: 1rem;
+  border: 1px solid #3a3a3a !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85) !important;
+  color: #b0b0b0 !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: default;
+}
+
+.pedido-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.9) !important;
+}
+
+.pedido-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.pedido-header > div:first-child p {
+  margin: 0.15rem 0;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #d1d1d1;
+}
+
+.lista-productos {
+  margin-left: 2rem;
+  font-size: 0.95rem;
+  color: #c4c4c4 !important;
+  list-style-type: disc;
+  max-height: 180px;
+  overflow-y: auto;
+  padding-right: 1rem;
+  border-left: 3px solid #7e6fc1;
+  scrollbar-width: thin;
+  scrollbar-color: #7e6fc1 transparent;
+}
+
+.lista-productos::-webkit-scrollbar {
+  width: 8px;
+}
+
+.lista-productos::-webkit-scrollbar-thumb {
+  background-color: #7e6fc1;
+  border-radius: 4px;
+}
+
+.lista-productos li {
+  margin-bottom: 0.4rem;
+  line-height: 1.3;
+  letter-spacing: 0.03em;
+}
+
+.total-pedido {
+  margin-top: 1.8rem;
+  text-align: right;
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: #d9b86b !important;
+  text-shadow: 0 0 8px #b4912e;
+}
+
+.btn-pagar {
+  background: linear-gradient(135deg, #4b2979, #2b1645) !important;
+  color: #b0aee3 !important;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.65) !important;
+  transition: background 0.3s ease, transform 0.15s ease;
+  cursor: pointer;
+}
+
+.btn-pagar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85) !important;
+}
+
+.mensaje-vacio {
+  text-align: center;
+  color: #6b7280 !important;
+  font-size: 1.2rem;
+  font-style: italic;
+  letter-spacing: 0.03em;
+  padding: 3rem 1rem;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
   .pedido-card {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 0.5rem;
-    border: 1px solid #ddd;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    padding: 1.5rem 1.75rem;
   }
-  
+
   .pedido-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
   }
-  
-  .lista-productos {
-    margin-left: 1.5rem;
-    font-size: 0.9rem;
-  }
-  
+
   .total-pedido {
-    margin-top: 1rem;
-    text-align: right;
-    font-weight: bold;
     font-size: 1.2rem;
   }
-  
+
   .btn-pagar {
-    background: #16a34a;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 0.375rem;
-    transition: 0.3s;
-  }
-  
-  .btn-pagar:hover {
-    background: #15803d;
-  }
-  
-  .mensaje-vacio {
+    width: 100%;
     text-align: center;
-    color: #6b7280;
   }
-  
-  /* Modo oscuro */
-  body.dark .pedido-card {
-    background: #1f2937;
-    border-color: #374151;
-    color: #f3f4f6;
-  }
-  
-  body.dark .titulo-seccion {
-    color: #f3f4f6;
-  }
-  
-  body.dark .mensaje-vacio {
-    color: #9ca3af;
-  }
-  
+}
+
+.feather-icon {
+  vertical-align: middle;
+  margin-right: 6px;
+  stroke: currentColor;
+  stroke-width: 2;
+}

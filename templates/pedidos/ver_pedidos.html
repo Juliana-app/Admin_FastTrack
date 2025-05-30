@@ -7,6 +7,7 @@
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/pedidos/ver_pedidos.css' %}">
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/feather-icons"></script>
 {% endblock %}
 
 {% block content %}
@@ -24,54 +25,54 @@
 
 <!-- Botón tomar pedido con margen para separación -->
 <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
-    <button id="abrirModal" class="tomar-pedido-btn">
-        ➕ Tomar Pedido
+    <button id="abrirModal" class="btn-filtrar custom-btn-filtrar flex items-center gap-2">
+        <i data-feather="plus"></i> Tomar Pedido
     </button>
 </div>
 
 <!-- Tabla de pedidos -->
-<table class="min-w-full table-auto border-collapse mb-8">
-    <thead>
+<table class="tabla-pedidos w-full border-separate border-spacing-y-3">
+    <thead class="bg-[#121020] text-[#a0a0a0] text-left text-sm uppercase tracking-wide">
         <tr>
-            <th class="border px-4 py-2">ID</th>
-            <th class="border px-4 py-2">Mesa</th>
-            <th class="border px-4 py-2">Productos</th>
-            <th class="border px-4 py-2">Fecha</th>
-            <th class="border px-4 py-2">Estado</th>
-            <th class="border px-4 py-2">Acciones</th>
+            <th class="py-3 px-4 rounded-tl-lg">Mesa</th>
+            <th class="py-3 px-4">Productos</th>
+            <th class="py-3 px-4">Fecha</th>
+            <th class="py-3 px-4">Estado</th>
+            <th class="py-3 px-4 rounded-tr-lg">Acciones</th>
         </tr>
     </thead>
     <tbody>
         {% for pedido in pedidos %}
-        <tr>
-            <td class="border px-4 py-2">{{ pedido.id }}</td>
-            <td class="border px-4 py-2">{{ pedido.mesa.numeroMesa }} - {{ pedido.mesa.sede.nombre }}</td>
-            <td class="border px-4 py-2">
-                <ul class="list-disc pl-5">
-                {% for item in pedido.productos.all %}
-                    <li>{{ item.producto.nombre }} - Cantidad: {{ item.cantidad }}</li>
-                {% endfor %}
+        <tr class="bg-[#1a1929] hover:bg-[#232138] transition-colors rounded-lg shadow-sm">
+            <td class="py-3 px-4 rounded-l-lg border-l-4 border-green-400 font-semibold text-[#d0d0d0]">
+                {{ pedido.mesa.numeroMesa }} - {{ pedido.mesa.sede.nombre }}
+            </td>
+            <td class="py-3 px-4 text-sm text-[#c0c0c0]">
+                <ul class="list-disc pl-4 space-y-1">
+                    {% for item in pedido.productos.all %}
+                        <li>{{ item.producto.nombre }} (x{{ item.cantidad }})</li>
+                    {% endfor %}
                 </ul>
             </td>
-            <td class="border px-4 py-2">{{ pedido.creado|date:"d M Y H:i" }}</td>
-            <td class="border px-4 py-2">
+            <td class="py-3 px-4 text-[#aaaaaa] text-sm">{{ pedido.creado|date:"d M Y H:i" }}</td>
+            <td class="py-3 px-4 text-sm">
                 {% if pedido.estado == 'pendiente' %}
-                    <span class="text-yellow-500">Pendiente</span>
+                    <span class="estado-pendiente">Pendiente</span>
                 {% else %}
-                    <span class="text-green-500">Pagado</span>
+                    <span class="estado-pagado">Pagado</span>
                 {% endif %}
             </td>
-            <td class="border px-4 py-2 text-center">
-              <button class="btn-editar" onclick="abrirModalEditar(this)" 
-                data-id="{{ pedido.id }}" 
-                data-estado="{{ pedido.estado }}">
-                ✏️ Editar
-              </button>
+            <td class="py-3 px-4 text-center rounded-r-lg">
+                <button class="btn-editar flex items-center gap-1" onclick="abrirModalEditar(this)" 
+                    data-id="{{ pedido.id }}" 
+                    data-estado="{{ pedido.estado }}">
+                    <i data-feather="edit"></i> Editar
+                </button>
             </td>
         </tr>
         {% empty %}
         <tr>
-            <td colspan="6" class="border px-4 py-2 text-center">No hay pedidos para mostrar.</td>
+            <td colspan="5" class="text-center py-4 text-[#888]">No hay pedidos para mostrar.</td>
         </tr>
         {% endfor %}
     </tbody>
@@ -79,11 +80,11 @@
 
 <!-- Modal Tomar Pedido -->
 <div id="modalTomarPedido" class="modal">
-    <div class="modal-contenido p-6 bg-white rounded-xl shadow-lg max-w-lg mx-auto relative">
+    <div class="modal-contenido p-6 rounded-xl shadow-lg max-w-lg mx-auto relative">
       <span id="cerrarModal" class="absolute top-4 right-4 text-xl cursor-pointer text-gray-500 hover:text-red-500">&times;</span>
       
       <h2 class="text-2xl font-bold mb-6 text-center text-gray-800 flex items-center justify-center gap-2">
-        ✏️ <span>Tomar Pedido</span>
+        <i data-feather="edit"></i> <span>Tomar Pedido</span>
       </h2>
   
       <form method="post" action="{% url 'ver_pedidos' %}" class="flex flex-col gap-5">
@@ -120,34 +121,32 @@
   
         <!-- Botones -->
         <div class="flex flex-col sm:flex-row gap-3 justify-between mt-4">
-          <button type="button" onclick="agregarProducto()" class="btn-agregar">
-            ➕ Agregar producto
+          <button type="button" onclick="agregarProducto()" class="btn-filtrar custom-btn-filtrar">
+            <i data-feather="plus"></i>
           </button>
-          <button type="submit" class="btn-guardar">
-            💾 Guardar Pedido
+          <button type="submit" class="btn-filtrar custom-btn-filtrar">
+            <i data-feather="save"></i>
           </button>
         </div>
       </form>
     </div>
-  </div>
+</div>
     
 <!-- Modal Editar Pedido -->
 <div id="modalEditarPedido" class="modal">
-    <div class="modal-contenido p-6 bg-white rounded-xl shadow-lg max-w-lg mx-auto relative">
+    <div class="modal-contenido p-6 rounded-xl shadow-lg max-w-lg mx-auto relative">
       <span id="cerrarModalEditar" class="absolute top-4 right-4 text-xl cursor-pointer text-gray-500 hover:text-red-500">&times;</span>
   
       <h2 class="text-2xl font-bold mb-6 text-center text-gray-800 flex items-center justify-center gap-2">
-        ✏️ <span>Editar Pedido</span>
+        <i data-feather="edit"></i> <span>Editar Pedido</span>
       </h2>
   
       <form id="formEditarPedido" method="POST" class="flex flex-col gap-5">
         {% csrf_token %}
         <input type="hidden" name="pedido_id" id="pedido_id_input">
   
-        <!-- Etiqueta -->
         <label class="block mb-1 font-semibold text-gray-700">Agregar Productos:</label>
   
-        <!-- Contenedor de productos -->
         <div id="editar-productos-container" class="flex flex-col gap-3">
           <div class="grupo-producto flex flex-col sm:flex-row gap-3">
             <select name="producto[]" class="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-400" required>
@@ -160,23 +159,22 @@
           </div>
         </div>
   
-        <!-- Botones -->
         <div class="flex flex-col sm:flex-row gap-3 justify-between mt-4">
-          <button type="button" onclick="agregarProductoEditar()" class="btn-agregar">
-            ➕ Agregar producto
+          <button type="button" onclick="agregarProductoEditar()" class="btn-filtrar custom-btn-filtrar">
+            <i data-feather="plus"></i>
           </button>
-          <button type="submit" class="btn-guardar">
-            ✅ Actualizar Pedido
+          <button type="submit" class="btn-filtrar custom-btn-filtrar">
+            <i data-feather="check" style="width: 20px; height: 20px;"></i> 
           </button>
         </div>
       </form>
     </div>
-  </div>
-  
+</div>
 {% endblock %}
 
 {% block extra_scripts %}
 <script>
+feather.replace();
 document.addEventListener("DOMContentLoaded", function () {
     // Abrir modal de tomar pedido
     document.getElementById("abrirModal").addEventListener("click", function () {

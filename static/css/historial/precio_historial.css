@@ -1,97 +1,133 @@
-@import url('./base.css');
-@import url('./navbar.css');
-@import url('./botones.css');
-@import url('./animaciones.css');
-@import url('./darkmode.css');
 
-/* precio_historial.css */
+/* BODY */
 body {
-    font-family: 'Rubik', sans-serif;
+  font-family: 'Rubik', sans-serif;
+  background-color: #0b0a1a !important;
+  color: #c0c0c0 !important;
+  margin: 0;
+  padding: 0;
 }
 
+/* TÍTULOS */
 h2 {
-    color: #2c3e50;
-    font-size: 28px;
-    margin-bottom: 20px;
+  color: #d0d0d0 !important;
+  font-size: 28px;
+  margin-bottom: 20px;
+  font-weight: 700;
 }
 
 form {
-    background-color: #ffffff;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  background-color: #1a1a2e; /* azul muy oscuro */
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  color: #d0d0d0;
 }
 
+/* FORMULARIO LABELS */
 form label {
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 6px;
-    display: block;
+  font-weight: 700;
+  color: #b0b0b0 !important;
+  margin-bottom: 6px;
+  display: block;
+  font-size: 14px;
 }
 
+/* INPUTS Y SELECTS */
 form input, form select {
-    width: 100%;
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    margin-bottom: 12px;
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #3a3a3a !important;
+  border-radius: 0.6rem !important;
+  font-size: 14px;
+  color: #b0b0b0 !important;
+  background-color: transparent !important;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
+form input:focus, form select:focus {
+  border-color: #5ea35e;
+  box-shadow: 0 0 6px #5ea35e88;
+  outline: none;
+}
+
+/* BOTÓN SUBMIT */
 button[type="submit"] {
-    background-color: #5c6bc0; /* Azul suave */
-    color: white !important; /* Aseguramos que el texto sea blanco con !important */
-    border: none;
-    border-radius: 10px;
-    padding: 12px 24px;
-    font-size: 14px;
-    font-weight: 600;
-    transition: background-color 0.3s, transform 0.2s ease;
-    box-shadow: 0 4px 8px rgba(92, 107, 192, 0.3); /* Sombra sutil */
+  color: #9c3164 !important;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: color 0.3s ease, transform 0.15s ease;
 }
 
 button[type="submit"]:hover {
-    background-color: #3f51b5; /* Azul más oscuro al pasar el ratón */
-    transform: translateY(-3px); /* Ligera elevación */
-    box-shadow: 0 6px 12px rgba(92, 107, 192, 0.4); /* Sombra más pronunciada */
+  color: #a72e64 !important;
+  transform: translateY(-2px);
 }
 
+/* TÍTULO SECUNDARIO */
 h3 {
-    font-size: 22px;
-    margin-top: 40px;
-    margin-bottom: 15px;
-    color: #374151;
+  font-size: 22px;
+  margin-top: 40px;
+  margin-bottom: 15px;
+  color: #d0d0d0 !important;
+  font-weight: 700;
 }
 
+/* LISTAS */
 ul.list-disc li {
-    margin-bottom: 8px;
-    font-size: 16px;
-    color: #444;
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #b0b0b0 !important;
 }
 
 ul.list-disc strong {
-    color: #111;
+  color: #d0d0d0 !important;
 }
 
+/* TABLA */
 .historial-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    font-size: 14px;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 0 0 1px #ddd;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  font-size: 14px;
+  border-radius: 1rem !important;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7) !important;
+  background-color: #121024 !important;
+  color: #b0b0b0 !important;
 }
 
 .historial-table thead {
-    background-color: #f3f4f6;
+  background-color: #121024 !important;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999 !important;
 }
 
 .historial-table th, .historial-table td {
-    padding: 12px 16px;
-    border-bottom: 1px solid #e5e7eb;
-    text-align: left;
+  padding: 0.4rem 0.6rem !important;
+  text-align: left;
+  border-bottom: 1px solid #333 !important;
+  color: #b0b0b0 !important;
+  font-size: 14px;
 }
 
 .historial-table tr:hover {
-    background-color: #f9fafb;
+  background-color: #1f1f3a !important;
+}
+
+/* IMÁGENES EN TABLA (si aplican) */
+.historial-table td img {
+  width: 40px;
+  height: 40px;
+  border-radius: 1rem;
+  object-fit: cover;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+/* Texto italic en tabla */
+.historial-table td span.italic {
+  color: #7f7f7f !important;
 }

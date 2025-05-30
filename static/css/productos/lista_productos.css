@@ -1,153 +1,184 @@
-@import url('./base.css');
-@import url('./navbar.css');
-@import url('./animaciones.css');
-@import url('./darkmode.css');
-
+/* body con estilos adaptados del inspo */
 body {
   font-family: 'Rubik', sans-serif;
-  background-color: #121212; /* fondo oscuro mate */
-  color: #e0e0e0; /* texto claro */
+  background-color: #0b0a1a !important;  /* más oscuro y saturado del inspo */
+  color: #c0c0c0 !important;             /* color de texto claro inspo */
+  margin: 0;
+  padding: 0;
 }
 
-/* TÍTULOS */
+/* TÍTULOS h2 con color y fuente del inspo */
 h2 {
-  color: #a8d0a8; /* verde suave */
+  color: #d0d0d0 !important;
   font-size: 28px;
   margin-bottom: 20px;
+  font-weight: 700;
 }
 
-/* 🟦 BOTÓN FILTRAR */
+/* BOTÓN FILTRAR con estilos adaptados del inspo */
 .custom-btn-filtrar {
-  background: linear-gradient(135deg, #3a5a3a, #1f3d1f);
-  color: #cbd5b1 !important;
+  background: linear-gradient(135deg, #4b2979, #2b1645) !important;
+  color: #b0aee3 !important;
   border: none;
-  border-radius: 10px;
-  padding: 12px 24px;
-  font-size: 14px;
-  font-weight: 600;
-  box-shadow: 0 4px 8px #28482899;
-  transition: background 0.3s ease, transform 0.2s ease;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.65) !important;
+  transition: background 0.3s ease, transform 0.15s ease;
   cursor: pointer;
 }
 
 .custom-btn-filtrar:hover {
-  background: linear-gradient(135deg, #5ea35e, #3f7d3f);
-  transform: translateY(-3px);
-  box-shadow: 0 6px 12px #3f7d3fbb;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
-/* 🟩 BOTÓN CREAR PRODUCTO */
+/* BOTÓN CREAR PRODUCTO adaptado de crear usuario inspo */
 .custom-btn-crear-producto {
-  background: linear-gradient(135deg, #406740, #2a4f2a);
-  color: #d9e5d9;
+  background: linear-gradient(135deg, #0b372a, #052116) !important;
+  color: #8fcab8 !important;
   border: none;
-  border-radius: 12px;
-  padding: 12px 24px;
-  font-size: 18px;
-  font-weight: 600;
-  box-shadow: 0 6px 14px #2a4f2a88;
-  transition: background 0.3s, transform 0.2s ease, box-shadow 0.3s ease;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.65) !important;
+  transition: background 0.3s ease, transform 0.15s ease;
   cursor: pointer;
 }
 
 .custom-btn-crear-producto:hover {
-  background: linear-gradient(135deg, #5ea35e, #4c7d4c);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 16px #4c7d4cbb;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85) !important;
 }
 
-/* TABLA */
+/* TABLA adaptada del inspo */
 table {
   border-collapse: collapse;
   width: 100%;
-  background-color: #1e2a1f;
-  border-radius: 10px;
+  background-color: #121024 !important;
+  border-radius: 1rem !important;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(10, 20, 10, 0.7);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7) !important;
+  color: #b0b0b0 !important;
 }
 
 thead {
-  background-color: #2a3a29;
+  background-color: #121024 !important;
   text-transform: uppercase;
   font-size: 14px;
-  color: #9ccc65;
+  color: #999999 !important;
 }
 
 th, td {
-  padding: 14px 16px;
+  padding: 0.4rem 0.6rem !important;
   text-align: left;
-  border-bottom: 1px solid #39493c;
-  color: #cbd5b1;
+  border-bottom: 1px solid #333 !important;
+  color: #b0b0b0 !important;
+  font-size: 14px;
 }
 
 /* CELDA CON IMAGEN */
 td img {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 1rem;
   object-fit: cover;
-  box-shadow: 0 0 4px #2a4f2a88;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
 }
 
 /* SIN IMAGEN */
 td span.italic {
-  color: #6b756b;
+  color: #7f7f7f !important;
 }
 
 /* BOTÓN EDITAR */
 button.btn-editar {
-  font-weight: 500;
-  color: #8bc34a;
+  font-weight: 700;
+  color: #b0b0b0 !important;
   background: transparent;
   border: none;
   cursor: pointer;
-  transition: color 0.3s ease, transform 0.2s ease;
+  transition: color 0.3s ease, transform 0.15s ease;
+  font-size: 14px;
 }
 
 button.btn-editar:hover {
-  color: #a5d65c;
-  transform: scale(1.03);
+  color: #d0d0d0 !important;
+  transform: translateY(-2px);
 }
 
 /* BOTÓN ELIMINAR */
 button[type="submit"] {
-  color: #ef5350;
+  color: #9c3164 !important;
   background: transparent;
   border: none;
   cursor: pointer;
-  transition: color 0.3s ease, transform 0.2s ease;
+  transition: color 0.3s ease, transform 0.15s ease;
+  font-size: 14px;
 }
 
 button[type="submit"]:hover {
-  color: #b71c1c;
-  transform: scale(1.03);
+  color: #a72e64 !important;
+  transform: translateY(-2px);
 }
 
-#modal-crear-producto {
-  backdrop-filter: none;
-  background-color: #1e2a1f; /* color sólido igual a la tabla */
-  transition: all 0.3s ease-in-out;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+/* BACKDROP (fondo borroso del modal) */
+.backdrop {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(18, 16, 36, 0.85);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 999;  /* alto para que cubra todo */
+  display: none;
+  transition: opacity 0.3s ease;
 }
 
+.backdrop.visible {
+  display: block;
+  opacity: 1;
+}
+
+.backdrop.hidden {
+  opacity: 0;
+  pointer-events: none;
+  display: none;
+}
+
+/* MODAL container (centrado) */
 .modal {
-  background: transparent;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000; /* encima del backdrop */
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.modal > div {
-  background-color: rgba(30, 42, 31, 0.95);
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.9);
   width: 100%;
   max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 1rem;
+  outline: none;
+}
+
+/* Contenido modal */
+.modal > div {
+  background-color: #121024 !important;
+  border-radius: 1rem !important;
+  padding: 1rem 1.25rem !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7) !important;
+  width: 100%;
+  box-sizing: border-box;
   position: relative;
 }
 
+/* Animación modal */
 .modal-anim {
   animation: slideUpFade 0.4s ease-out;
 }
@@ -163,130 +194,106 @@ button[type="submit"]:hover {
   }
 }
 
-/* FORMULARIO MODAL */
+/* FORMULARIO modal */
 form label {
-  font-weight: 600;
-  color: #a8d0a8;
+  font-weight: 700;
+  color: #b0b0b0 !important;
   margin-bottom: 6px;
   display: block;
+  font-size: 14px;
 }
 
 form input,
 form select {
   width: 100%;
   padding: 10px 14px;
-  border: 1px solid #39493c;
-  border-radius: 6px;
+  border: 1px solid #3a3a3a !important;
+  border-radius: 0.6rem !important;
   font-size: 14px;
-  color: #cbd5b1;
-  background-color: #1e2a1f;
+  color: #b0b0b0 !important;
+  background-color: transparent !important;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 form input:focus,
 form select:focus {
   border-color: #5ea35e;
-  box-shadow: 0 0 8px #5ea35e88;
+  box-shadow: 0 0 6px #5ea35e88;
   outline: none;
 }
 
-/* ANIMACIONES */
+/* Animaciones pulse y fade out */
 @keyframes pulse {
   0%, 100% {
     transform: scale(1);
     opacity: 1;
   }
   50% {
-    transform: scale(1.2);
-    opacity: 0.6;
+    transform: scale(1.1);
+    opacity: 0.7;
   }
 }
 
+@keyframes parpadeo-fondo {
+  0%, 100% {
+    background-color: #fee2e2;
+  }
+  50% {
+    background-color: #fecaca;
+  }
+}
 
 .modal-hide {
   animation: fadeOut 0.3s ease forwards;
 }
 
 @keyframes fadeOut {
-  to { opacity: 0; transform: scale(0.95); }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
 }
 
-/* FONDO MODAL BORROSO */
-.backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
-  display: none;
-  z-index: 40;
-}
-
-.backdrop.hidden {
-  display: none;
-}
-.backdrop:not(.hidden) {
-  display: block;
-}
-
-/* BOTONES MODALES */
-#btnCancelModalCrearProducto,
-#btnCancelModalEditarProducto {
-  background-color: #2a3a29;
-  color: #9ccc65;
-  border: 1px solid #5ea35e;
-  font-weight: 600;
-  border-radius: 6px;
-  padding: 10px 20px;
-  transition: background-color 0.3s, transform 0.2s ease;
-  cursor: pointer;
-}
-
-#btnCancelModalCrearProducto:hover,
-#btnCancelModalEditarProducto:hover {
-  background-color: #5ea35e;
-  color: #1e2a1f;
-  transform: translateY(-2px);
-}
-
-#btnGuardarProducto,
-#btnGuardarCambiosProducto {
-  background-color: #4caf50;
-  color: white;
+/* Botón cancelar modal */
+#btnCancelModalEditar,
+#btnCancelModalCrear {
+  background-color: #121024 !important;
+  color: #b0b0b0 !important;
+  border: 2px solid #4a2e7e !important;
   font-weight: 700;
-  border-radius: 8px;
-  padding: 12px 28px;
-  border: none;
-  box-shadow: 0 6px 12px #357a38aa;
-  transition: background-color 0.3s, transform 0.2s ease;
+  border-radius: 0.8rem !important;
+  padding: 8px 18px !important;
+  font-size: 14px;
+  transition: background-color 0.3s, transform 0.15s ease;
   cursor: pointer;
 }
 
-#btnGuardarProducto:hover,
-#btnGuardarCambiosProducto:hover {
-  background-color: #66bb6a;
+#btnCancelModalEditar:hover,
+#btnCancelModalCrear:hover {
+  background-color: #4a2e7e !important;
+  color: #b0b0b0 !important;
   transform: translateY(-2px);
 }
 
-/* ICONOS */
-.icon-svg {
-  fill: #9ccc65;
-  width: 18px;
-  height: 18px;
-  vertical-align: middle;
-  transition: fill 0.3s ease;
-}
-
-.icon-svg:hover {
-  fill: #c8e6c9;
+/* Botón guardar modal */
+#btnGuardarCambios,
+#btnGuardarUsuario {
+  background-color: #7e5100 !important;
+  color: #d9b86b !important;
+  font-weight: 700;
+  border-radius: 0.8rem !important;
+  padding: 8px 18px !important;
+  font-size: 14px;
+  border: none;
   cursor: pointer;
+  transition: background-color 0.3s, transform 0.15s ease;
+  box-shadow: 0 3px 10px #b9911f88;
 }
 
-button.btn-editar svg.icon-svg,
-button[type="submit"] svg.icon-svg {
-  pointer-events: none;
+#btnGuardarCambios:hover,
+#btnGuardarUsuario:hover {
+  background-color: #a97900 !important;
+  transform: translateY(-2px);
 }
 
 /* Animación de parpadeo */
@@ -304,4 +311,3 @@ button[type="submit"] svg.icon-svg {
   animation: parpadeo 2s infinite;
   color: #fff !important;
 }
-

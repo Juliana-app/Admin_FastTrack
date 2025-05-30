@@ -8,15 +8,18 @@
 
 {% block content %}
 <div class="w-full min-h-screen p-6">
-  <h2 class="text-2xl font-bold mb-4">📦 Inventario de Productos</h2>
+  <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+    <i data-feather="box" class="w-6 h-6"></i> Inventario de Productos
+  </h2>
 
   <div class="flex justify-end mb-4">
-    <button id="btnOpenModal" class="btn-filtrar custom-btn-filtrar">
-      ➕ Agregar Producto
+    <button id="btnOpenModal" class="btn-filtrar custom-btn-filtrar flex items-center gap-2">
+      <i data-feather="plus-circle" class="w-5 h-5"></i> Agregar Producto
     </button>
   </div>
-    <table class="table-auto w-full min-w-max">
-      <thead class="bg-[#2a3a29] text-white sticky top-0 z-10">
+
+  <table class="table-auto w-full min-w-max">
+    <thead class=" text-white sticky top-0 z-10">
       <tr>
         <th class="py-2 px-4 border-b text-left">Imagen</th>
         <th class="py-2 px-4 border-b text-left">Producto</th>
@@ -40,31 +43,31 @@
         <td class="py-2 px-4 border-b">{{ producto.producto.nombre }}</td>
         <td class="py-2 px-4 border-b">{{ producto.cantidad }}</td>
         <td class="py-2 px-4 border-b relative align-middle">
-          <span class="stock-text">
-            {{ producto.stock_minimo }}
-          </span>
+          <span class="stock-text">{{ producto.stock_minimo }}</span>
           {% if producto.cantidad <= producto.stock_minimo %}
-            <span class="icono-alerta-tooltip" title="⚠ Stock bajo: revisar inventario">⚠️</span>
+            <span class="icono-alerta-tooltip text-yellow-500" title="Stock bajo: revisar inventario">
+              <i data-feather="alert-triangle" class="w-4 h-4 inline"></i>
+            </span>
           {% endif %}
         </td>                
         <td class="py-2 px-4 border-b">${{ producto.precio_venta }}</td>
         <td class="py-2 px-4 border-b">{{ producto.sede.nombre }}</td>
         <td class="py-2 px-4 border-b text-center">
-          <button class="btn-editar" 
+          <button class="btn-editar flex items-center gap-1"
             data-id="{{ producto.id }}"
             data-producto="{{ producto.producto.id }}"
             data-cantidad="{{ producto.cantidad }}"
             data-stock_minimo="{{ producto.stock_minimo }}">
-            ✏️ Editar
+            <i data-feather="edit-3" class="w-4 h-4"></i> Editar
           </button>
 
           <form action="{% url 'eliminar_producto_inventario' producto.pk %}" method="post" style="display:inline;">
             {% csrf_token %}
-            <button type="submit" onclick="return confirm('¿Estás seguro de eliminar este producto?')">
-              🗑 Eliminar
+            <button type="submit" class="flex items-center gap-1 text-red-600 hover:text-red-800"
+                    onclick="return confirm('¿Estás seguro de eliminar este producto?')">
+              <i data-feather="trash-2" class="w-4 h-4"></i> Eliminar
             </button>
           </form>
-
         </td>
       </tr>
       {% empty %}
@@ -78,8 +81,8 @@
 
 <!-- Modal -->
 <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-  <div class="p-6 rounded shadow-md w-full max-w-lg relative bg-[#1e2a1f]">
-    <button id="btnCloseModal" type="button" class="absolute top-2 right-2 text-gray-600 hover:text-red-600 text-2xl">&times;</button>
+  <div class="p-6 rounded shadow-md w-full max-w-lg relative bg-[#121024]">
+    <button id="btnCloseModal" type="button" class="absolute top-2 right-2 text-gray-400 hover:text-red-500 text-2xl">&times;</button>
     <h3 id="modalTitle" class="text-xl font-bold mb-4">Agregar Producto al Inventario</h3>
 
     <form method="post" action="{% url 'crear_inventario' %}" enctype="multipart/form-data" id="modalForm">
@@ -87,7 +90,7 @@
       <input type="hidden" name="producto_id" id="edit_producto_id">
 
       <div class="mb-4">
-        <label for="id_producto" class="block text-sm font-medium text-gray-700">Producto</label>
+        <label for="id_producto" class="block text-sm font-medium text-gray-200">Producto</label>
         <select name="producto" id="id_producto" class="w-full border-gray-300 rounded">
           {% for p in form.fields.producto.queryset %}
           <option value="{{ p.id }}">{{ p.nombre }}</option>
@@ -96,17 +99,17 @@
       </div>
 
       <div class="mb-4">
-        <label for="id_cantidad" class="block text-sm font-medium text-gray-700">Cantidad</label>
+        <label for="id_cantidad" class="block text-sm font-medium text-gray-200">Cantidad</label>
         <input type="number" name="cantidad" id="id_cantidad" class="w-full border-gray-300 rounded">
       </div>
 
       <div class="mb-4">
-        <label for="id_stock_minimo" class="block text-sm font-medium text-gray-700">Stock mínimo</label>
+        <label for="id_stock_minimo" class="block text-sm font-medium text-gray-200">Stock mínimo</label>
         <input type="number" name="stock_minimo" id="id_stock_minimo" class="w-full border-gray-300 rounded" value="5">
       </div>
 
       <div class="mb-4">
-        <label for="id_imagen" class="block text-sm font-medium text-gray-700">Imagen</label>
+        <label for="id_imagen" class="block text-sm font-medium text-gray-200">Imagen</label>
         <input type="file" name="imagen" id="id_imagen" class="w-full border-gray-300 rounded">
       </div>
 
@@ -122,6 +125,8 @@
 {% block extra_scripts %}
 <script>
   document.addEventListener('DOMContentLoaded', function () {
+    feather.replace();
+
     const modal = document.getElementById('modal');
     const openBtn = document.getElementById('btnOpenModal');
     const closeBtn = document.getElementById('btnCloseModal');
@@ -132,15 +137,7 @@
     function showModal() {
       modal.classList.remove('hidden');
       modal.classList.add('flex');
-    
-      const modalBox = modal.querySelector('.bg-white'); // selecciona el contenido del modal
-      modalBox.classList.add('modal-anim');
-    
-      // Elimina la clase de animación para que pueda repetirse
-      setTimeout(() => {
-        modalBox.classList.remove('modal-anim');
-      }, 400);
-    }      
+    }
 
     function hideModal() {
       modal.classList.add('hidden');

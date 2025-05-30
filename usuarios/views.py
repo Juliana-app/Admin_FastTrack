@@ -7,8 +7,10 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.hashers import make_password
 
+from inventario.models import InventarioProducto
 from mesa.models import Mesa
 from pedidos.models import Pedido
+from productos.models import Producto
 from sede.models import Sede
 from .models import Usuario
 from .forms import CrearUsuarioForm, LoginForm
@@ -157,23 +159,30 @@ def eliminar_usuario(request, usuario_id):
     messages.success(request, 'Usuario eliminado correctamente.')
     return redirect('listar_usuarios')
 
+@login_required
 def panel_general(request):
-    # Obtener todas las mesas
-    mesas = Mesa.objects.all()
+    sede = request.user.sede
+
+    mesas = Mesa.objects.filter(sede=sede)
     
-    # Contar las mesas vacías y ocupadas
     mesas_vacias_count = mesas.filter(ocupada=False).count()
     mesas_ocupadas_count = mesas.filter(ocupada=True).count()
     
-    # Obtener el conteo de pedidos pendientes y pagados (en lugar de cerrados)
-    pedidos_pendientes_count = Pedido.objects.filter(estado="pendiente").count()
-    pedidos_pagados_count = Pedido.objects.filter(estado="pagado").count()  # Cambié 'cerrado' por 'pagado'
+    pedidos_pendientes_count = Pedido.objects.filter(estado='pendiente', mesa__sede=sede).count()
+    pedidos_pagados_count = Pedido.objects.filter(estado='pagado', mesa__sede=sede).count()
     
-    # Pasar la información al template
+    productos = InventarioProducto.objects.select_related('producto') \
+                                          .filter(sede=sede) \
+                                          .order_by('cantidad')
+
+    print("Productos en inventario para la sede:", productos)
+
     return render(request, 'general.html', {
         'mesas': mesas,
         'mesas_vacias_count': mesas_vacias_count,
         'mesas_ocupadas_count': mesas_ocupadas_count,
         'pedidos_pendientes_count': pedidos_pendientes_count,
-        'pedidos_pagados_count': pedidos_pagados_count,  # Cambié la variable aquí también
+        'pedidos_pagados_count': pedidos_pagados_count,
+        'productos': productos,
     })
+
